@@ -1,4 +1,4 @@
-// File: C:\Users\MSI\Downloads\wedding-invite\app\layout.tsx
+// File: D:\Work\CWS projects\wedding-site\app\layout.tsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

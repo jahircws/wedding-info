@@ -26,7 +26,7 @@ const CORNER_ROSES: CornerRose[] = [
   {
     src: "/red_rose_1.png",
     alt: "",
-    closed: { x: "20vw", y: "650vh", rotate: 0, scale: 2.5 },
+    closed: { x: "20vw", y: "50vh", rotate: 0, scale: 2.5 },
     open: { x: "-45vw", y: "-40vh", rotate: -3, scale: 1.5 },
   },
   {
