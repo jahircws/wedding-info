@@ -43,14 +43,14 @@ export default async function AdminDashboardPage() {
             hotel: p.hotel,
             foodNotes: p.foodNotes,
             attending: p.attending,
-            status: p.status,
+            status: p.status as "PENDING" | "APPROVED" | "DECLINED",
             guests: p.guests.map((g) => ({
               id: g.id,
               fullName: g.fullName,
               age: g.age,
               gender: g.gender,
               foodNotes: g.foodNotes,
-              status: g.status,
+              status: g.status as "PENDING" | "APPROVED" | "DECLINED",
             })),
           }))}
         />
