@@ -22,7 +22,19 @@ const dmSerif = DM_Serif_Text({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://saraandatef.com";
+function getSiteUrl() {
+  const raw = process.env.NEXT_PUBLIC_SITE_URL || "https://saraandatef.com";
+  // Strip accidental wrapping quotes and a trailing slash in case the env
+  // var was pasted with literal quote characters in it.
+  const cleaned = raw.trim().replace(/^["']|["']$/g, "").replace(/\/$/, "");
+  try {
+    return new URL(cleaned).toString();
+  } catch {
+    return "https://saraandatef.com";
+  }
+}
+
+const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
