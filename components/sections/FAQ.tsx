@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import RotatingFlower from "@/components/ui/RotatingFlower";
+import SectionOrnament from "@/components/ui/SectionOrnament";
+import FlowerField from "@/components/ui/FlowerField";
 
 const faqs = [
   {
@@ -26,19 +29,28 @@ export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="bg-blush-50 px-6 py-24 md:py-32" aria-label="Frequently asked questions">
+    <section id="faq" className="relative overflow-hidden bg-blush-50 px-6 pt-24 md:pt-32" aria-label="Frequently asked questions">
+      <RotatingFlower
+        src="/white_rose_bouque.png"
+        size={100}
+        speed={65}
+        reverse
+        className="absolute -left-6 top-10 opacity-50"
+      />
+
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.7, ease: "easeOut" }}
-        className="mx-auto mb-12 max-w-2xl text-center"
+        className="relative z-10 mx-auto mb-12 max-w-2xl text-center"
       >
         <p className="section-heading mb-3">Good to Know</p>
-        <h2 className="font-script text-4xl text-blush-500 md:text-5xl">FAQ</h2>
+        <h2 className="font-script tracking-wide text-4xl text-blush-500 md:text-5xl">F A Q</h2>
+        <SectionOrnament className="mt-6" />
       </motion.div>
 
-      <div className="mx-auto max-w-2xl divide-y divide-gold/30">
+      <div className="relative z-10 mx-auto max-w-2xl divide-y divide-gold/30">
         {faqs.map((item, i) => {
           const isOpen = openIndex === i;
           return (
@@ -66,6 +78,10 @@ export default function FAQ() {
           );
         })}
       </div>
+
+      {/* Grassland of animated flowers, flush with the section's bottom
+          edge — blooms staggered once this comes into view on scroll. */}
+      <FlowerField className="mt-16" />
     </section>
   );
 }

@@ -1,24 +1,35 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
 
 // How long the open animation takes before we unlock page scroll. Keep in
-// sync with ROSE_TRANSITION.duration below (roses settle last) plus a
-// small buffer.
-const OPEN_ANIMATION_MS = 2200;
+// sync with ROSE_TRANSITION.duration below (all roses move together, as
+// one synchronized motion) plus a small buffer.
+const ROSE_DURATION_S = 2.1;
+const OPEN_ANIMATION_MS = Math.round(ROSE_DURATION_S * 1000) + 300;
 
-// Slow, purely ease-out tween — no spring/bounce.
-const ROSE_TRANSITION = { duration: 1.9, ease: [0.16, 1, 0.3, 1], type: "tween" as const };
-const WHITE_ROSE_TRANSITION = { duration: 1, ease: [0.16, 1, 0.3, 1], type: "tween" as const };
+// Gentle, purely ease-out tween (a soft "expo-out" curve) — no spring,
+// no bounce, no sharp deceleration. Kept slow so nothing ever reads as a
+// sudden snap.
+const ROSE_EASE = [0.19, 1, 0.22, 1] as const;
+const ROSE_TRANSITION = { duration: ROSE_DURATION_S, ease: ROSE_EASE, type: "tween" as const };
+const WHITE_ROSE_TRANSITION = { duration: 1.1, ease: ROSE_EASE, type: "tween" as const };
 
+// Every rose is centered via left/top 50%, so each offset below folds the
+// "-50%" centering into the same x/y value framer-motion animates. That
+// way the element that's actually hit-tested for clicks moves along with
+// the rose — no separate untransformed wrapper left sitting (and
+// intercepting clicks) at dead center after the rose has visually moved
+// away.
 type CornerRose = {
   src: string;
   alt: string;
   // Covering the center, hiding the video, before the click.
   closed: { x: string; y: string; rotate: number; scale: number };
-  // Framing a corner, after the click.
+  // Framing a corner, after the click. Rotation kept small and gentle —
+  // large spins read as sudden rather than elegant.
   open: { x: string; y: string; rotate: number; scale: number };
 };
 
@@ -26,40 +37,60 @@ const CORNER_ROSES: CornerRose[] = [
   {
     src: "/red_rose_1.png",
     alt: "",
-    closed: { x: "20vw", y: "50vh", rotate: 0, scale: 2.5 },
-    open: { x: "-45vw", y: "-40vh", rotate: -3, scale: 1.5 },
+    closed: { x: "calc(-50% + 20vw)", y: "calc(-50% + 50vh)", rotate: 0, scale: 2.5 },
+    open: { x: "calc(-50% - 45vw)", y: "calc(-50% - 40vh)", rotate: -3, scale: 1.5 },
   },
   {
     src: "/red_rose_2.png",
     alt: "",
-    closed: { x: "-20vw", y: "50vh", rotate: 0, scale: 2.5 },
-    open: { x: "45vw", y: "-40vh", rotate: -75, scale: 1.5 },
+    closed: { x: "calc(-50% - 20vw)", y: "calc(-50% + 50vh)", rotate: 0, scale: 2.5 },
+    open: { x: "calc(-50% + 45vw)", y: "calc(-50% - 40vh)", rotate: -8, scale: 1.5 },
   },
   {
     src: "/red_rose_3.png",
     alt: "",
-    closed: { x: "20vw", y: "-55vh", rotate: 0, scale: 2.5 },
-    open: { x: "-45vw", y: "40vh", rotate: 10, scale: 1.5 },
+    closed: { x: "calc(-50% + 20vw)", y: "calc(-50% - 55vh)", rotate: 0, scale: 2.5 },
+    open: { x: "calc(-50% - 45vw)", y: "calc(-50% + 40vh)", rotate: 6, scale: 1.5 },
   },
   {
     src: "/red_rose_4.png",
     alt: "",
-    closed: { x: "-20vw", y: "-55vh", rotate: 0, scale: 2.5 },
-    open: { x: "45vw", y: "35vh", rotate: -10, scale: 1.5 },
+    closed: { x: "calc(-50% - 20vw)", y: "calc(-50% - 55vh)", rotate: 0, scale: 2.5 },
+    open: { x: "calc(-50% + 45vw)", y: "calc(-50% + 35vh)", rotate: -6, scale: 1.5 },
   },
 ];
 
 export default function EnvelopeIntro() {
   const [opened, setOpened] = useState(false);
   const [introComplete, setIntroComplete] = useState(false);
+  // True once we've determined, on mount, that the page loaded already
+  // scrolled past the hero (e.g. a reload while reading the RSVP section).
+  // In that case we must never lock scroll or wait for a tap on a rose the
+  // visitor can't even see — that's what was leaving the page "stuck".
+  const [skipIntro, setSkipIntro] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const shouldReduceMotion = useReducedMotion();
 
-  // Always shows the flower intro fresh on every load/reload — no
-  // sessionStorage skip.
+  // Always shows the flower intro fresh on every load/reload, but only
+  // when the visitor is actually at the top, in the hero section. Runs
+  // synchronously before paint (useLayoutEffect) so there's no visible
+  // flash of the sealed envelope before it's skipped.
+  useLayoutEffect(() => {
+    if (window.scrollY > window.innerHeight * 0.5) {
+      setSkipIntro(true);
+      setOpened(true);
+      setIntroComplete(true);
+      videoRef.current?.play().catch(() => {
+        /* autoplay may be blocked without a user gesture; the poster image
+           covers us visually either way */
+      });
+    }
+  }, []);
 
-  // Lock page scroll until the reveal animation has fully played out.
+  // Lock page scroll until the reveal animation has fully played out —
+  // unless we've already decided to skip the intro entirely.
   useEffect(() => {
+    if (skipIntro) return;
     const shouldLock = !introComplete;
     document.documentElement.style.overflow = shouldLock ? "hidden" : "";
     document.body.style.overflow = shouldLock ? "hidden" : "";
@@ -67,7 +98,7 @@ export default function EnvelopeIntro() {
       document.documentElement.style.overflow = "";
       document.body.style.overflow = "";
     };
-  }, [introComplete]);
+  }, [introComplete, skipIntro]);
 
   function handleOpen() {
     if (opened) return;
@@ -79,6 +110,10 @@ export default function EnvelopeIntro() {
 
     const delay = shouldReduceMotion ? 0 : OPEN_ANIMATION_MS;
     window.setTimeout(() => setIntroComplete(true), delay);
+  }
+
+  function scrollToRsvp() {
+    document.getElementById("rsvp")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   return (
@@ -97,6 +132,11 @@ export default function EnvelopeIntro() {
           playsInline
           loop
           poster="/overlay_bg.jpg"
+          // Only fetch metadata up front — the poster image covers us
+          // visually, and the rose+backdrop animation gives the browser
+          // ~2s of user-gesture buffering time to fetch the rest before
+          // the video is actually revealed. Keeps first paint light.
+          preload="metadata"
         />
         <div className="absolute inset-0 bg-ink/20" />
       </div>
@@ -113,31 +153,28 @@ export default function EnvelopeIntro() {
       />
 
       {/* Red roses: clustered over the center while closed, spread out to
-          frame the four corners once opened. Each is anchored to true
-          center with a static wrapper; the inner motion element carries the
-          animated translate/rotate/scale so the two transforms don't
-          collide. */}
+          frame the four corners once opened, all moving together as one
+          synchronized motion. The motion element itself carries both the
+          centering offset and the animated x/y/rotate/scale (via calc()),
+          so its hit-testable box travels with it — nothing untransformed
+          is left sitting at dead center to swallow clicks once opened. */}
       {CORNER_ROSES.map((rose) => (
-        <div
+        <motion.div
           key={rose.src}
-          className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2"
+          className="pointer-events-none absolute left-1/2 top-1/2 z-20"
           style={{ width: 260, height: 260 }}
+          initial={false}
+          animate={
+            shouldReduceMotion
+              ? { x: "-50%", y: "-50%", rotate: opened ? rose.open.rotate : 0, scale: 1 }
+              : opened
+              ? rose.open
+              : rose.closed
+          }
+          transition={ROSE_TRANSITION}
         >
-          <motion.div
-            className="relative h-full w-full"
-            initial={false}
-            animate={
-              shouldReduceMotion
-                ? { x: 0, y: 0, rotate: opened ? rose.open.rotate : 0, scale: 1 }
-                : opened
-                ? rose.open
-                : rose.closed
-            }
-            transition={ROSE_TRANSITION}
-          >
-            <Image src={rose.src} alt={rose.alt} fill sizes="260px" className="object-contain drop-shadow-lg" />
-          </motion.div>
-        </div>
+          <Image src={rose.src} alt={rose.alt} fill sizes="260px" className="object-contain drop-shadow-lg" />
+        </motion.div>
       ))}
 
       {/* White rose: the tap target, dead center, fades away on open */}
@@ -196,6 +233,16 @@ export default function EnvelopeIntro() {
             >
               27 &ndash; 28 September 2026 &bull; Seville, Spain
             </motion.p>
+            <motion.button
+              type="button"
+              onClick={scrollToRsvp}
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: "easeOut", delay: 1.8 }}
+              className="mt-2 rounded-full border border-ivory/80 px-8 py-3 font-heading text-xs uppercase tracking-[0.25em] text-ivory backdrop-blur-sm transition-colors duration-300 ease-out hover:bg-ivory hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+            >
+              RSVP Now
+            </motion.button>
           </div>
         )}
       </AnimatePresence>

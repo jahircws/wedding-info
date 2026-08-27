@@ -1,6 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
+import FloatingButterfly from "@/components/ui/FloatingButterfly";
+import SectionOrnament from "@/components/ui/SectionOrnament";
 
 const days = [
   {
@@ -25,7 +27,9 @@ const days = [
 
 export default function Schedule() {
   return (
-    <section id="schedule" className="bg-ivory px-6 py-24 md:py-32" aria-label="Wedding schedule">
+    <section id="schedule" className="relative overflow-hidden bg-ivory px-6 py-24 md:py-32" aria-label="Wedding schedule">
+      <FloatingButterfly className="absolute right-12 top-16" delay={0.8} size={26} color="#8a9a76" />
+
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -34,10 +38,11 @@ export default function Schedule() {
         className="mx-auto mb-14 max-w-2xl text-center"
       >
         <p className="section-heading mb-3">Two Days to Celebrate</p>
-        <h2 className="font-script text-4xl text-blush-500 md:text-5xl">The Schedule</h2>
+        <h2 className="font-script tracking-wide text-4xl text-blush-500 md:text-5xl">The Schedule</h2>
+        <SectionOrnament className="mt-6" />
       </motion.div>
 
-      <div className="mx-auto grid max-w-4xl grid-cols-1 gap-10 md:grid-cols-2">
+      <div className="relative z-10 mx-auto grid max-w-4xl grid-cols-1 gap-10 md:grid-cols-2">
         {days.map((day, dayIdx) => (
           <motion.div
             key={day.label}

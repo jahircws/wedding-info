@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import SectionOrnament from "@/components/ui/SectionOrnament";
 
 export type VenueInfo = {
   venueName: string;
@@ -32,9 +33,14 @@ export default function Venue({ venue }: { venue: VenueInfo }) {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="frosted-card relative z-10 mx-auto w-full max-w-lg rounded-2xl p-8 text-center shadow-xl md:p-12"
       >
+        {/* Fine gold corner accents, echoing an invitation card */}
+        <span className="pointer-events-none absolute left-3 top-3 h-8 w-8 rounded-tl-lg border-l border-t border-gold/50" />
+        <span className="pointer-events-none absolute bottom-3 right-3 h-8 w-8 rounded-br-lg border-b border-r border-gold/50" />
+
         <p className="section-heading mb-3 text-ink/70">The Venue</p>
-        <h2 className="font-script text-4xl text-blush-500 md:text-5xl">{venue.venueName}</h2>
-        <p className="mt-4 font-body text-base text-ink/90 md:text-lg">{venue.venueAddress}</p>
+        <h2 className="font-script tracking-wide text-4xl text-blush-500 md:text-5xl">{venue.venueName}</h2>
+        <SectionOrnament className="mt-4" />
+        <p className="mt-5 font-body text-base text-ink/90 md:text-lg">{venue.venueAddress}</p>
 
         <div className="mt-6 flex flex-col gap-2 font-heading text-sm uppercase tracking-widest text-ink/80">
           <span>{venue.dateLabel}</span>

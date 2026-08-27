@@ -5,6 +5,7 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion, AnimatePresence } from "framer-motion";
 import { rsvpSchema, type RsvpFormValues } from "@/lib/validations";
+import SectionOrnament from "@/components/ui/SectionOrnament";
 
 export default function RsvpForm() {
   const [submitState, setSubmitState] = useState<"idle" | "submitting" | "success" | "error">(
@@ -63,7 +64,8 @@ export default function RsvpForm() {
         className="mx-auto mb-12 max-w-2xl text-center"
       >
         <p className="section-heading mb-3">Kindly Reply</p>
-        <h2 className="font-script text-4xl text-blush-500 md:text-5xl">RSVP</h2>
+        <h2 className="font-script tracking-wide text-4xl text-blush-500 md:text-5xl">R S V P</h2>
+        <SectionOrnament className="mt-4" />
         <p className="mt-3 font-body text-ink/70">
           Please respond by 1 September 2026. We can&apos;t wait to celebrate with you.
         </p>
