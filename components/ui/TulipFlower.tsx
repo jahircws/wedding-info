@@ -7,10 +7,7 @@ export default function TulipFlower({
   size = 130,
   className = "",
 }: {
-  /** Start (and keep running) every animation in the tree once true. */
   bloom?: boolean;
-  /** Overall height in px (roughly the stem length) — everything else
-   *  (petals, sparkles, stem leaves) scales with it via em units. */
   size?: number;
   className?: string;
 }) {
