@@ -51,7 +51,7 @@ export default function FAQ() {
   return (
     <section id="faq" className="relative overflow-hidden bg-blush-50 px-6 pt-24 md:pt-32" aria-label="Frequently asked questions">
       <RotatingFlower
-        src="/white_rose_bouque.png"
+        src="/bunch.png"
         size={100}
         speed={65}
         reverse

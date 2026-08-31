@@ -17,48 +17,138 @@ const ROSE_EASE = [0.19, 1, 0.22, 1] as const;
 const ROSE_TRANSITION = { duration: ROSE_DURATION_S, ease: ROSE_EASE, type: "tween" as const };
 const WHITE_ROSE_TRANSITION = { duration: 1.1, ease: ROSE_EASE, type: "tween" as const };
 
-// Every rose is centered via left/top 50%, so each offset below folds the
-// "-50%" centering into the same x/y value framer-motion animates. That
-// way the element that's actually hit-tested for clicks moves along with
-// the rose — no separate untransformed wrapper left sitting (and
-// intercepting clicks) at dead center after the rose has visually moved
+// Every corner floral is centered via left/top 50%, so each offset below
+// folds the "-50%" centering into the same x/y value framer-motion
+// animates. That way the element that's actually hit-tested for clicks
+// moves along with it — no separate untransformed wrapper left sitting
+// (and intercepting clicks) at dead center after it has visually moved
 // away.
-type CornerRose = {
-  src: string;
-  alt: string;
-  // Covering the center, hiding the video, before the click.
-  closed: { x: string; y: string; rotate: number; scale: number };
-  // Framing a corner, after the click. Rotation kept small and gentle —
-  // large spins read as sudden rather than elegant.
-  open: { x: string; y: string; rotate: number; scale: number };
+//
+// Breakpoints match the rest of the site's Tailwind usage: mobile is
+// below `md` (768px), tablet is `md` up to `lg` (1024px), laptop is
+// `lg` and up.
+type Tier = "mobile" | "tablet" | "laptop";
+type CornerKey = "topLeft" | "topRight" | "bottomLeft" | "bottomRight";
+type Transform = { x: string; y: string; rotate: number; scale: number };
+
+// Where each corner floral lands once opened, per breakpoint — tuned from
+// live UI testing rather than derived from the desktop values, since a
+// straight scale-down reads cramped on real phones/tablets.
+const CORNER_OPEN_BY_TIER: Record<Tier, Record<CornerKey, Transform>> = {
+  laptop: {
+    topLeft: { x: "calc(-50% - 40vw)", y: "calc(-50% - 50vh)", rotate: -8, scale: 1 },
+    topRight: { x: "calc(-50% + 40vw)", y: "calc(-50% - 50vh)", rotate: -8, scale: 1 },
+    bottomLeft: { x: "calc(-50% - 40vw)", y: "calc(-50% + 50vh)", rotate: 45, scale: 1 },
+    bottomRight: { x: "calc(-50% + 40vw)", y: "calc(-50% + 50vh)", rotate: -45, scale: 1 },
+  },
+  tablet: {
+    topLeft: { x: "calc(-50% - 25vw)", y: "calc(-50% - 50vh)", rotate: -8, scale: 1.2 },
+    topRight: { x: "calc(-50% + 25vw)", y: "calc(-50% - 50vh)", rotate: -8, scale: 1.2 },
+    bottomLeft: { x: "calc(-50% - 25vw)", y: "calc(-50% + 50vh)", rotate: 40, scale: 1.2 },
+    bottomRight: { x: "calc(-50% + 25vw)", y: "calc(-50% + 50vh)", rotate: -40, scale: 1.2 },
+  },
+  mobile: {
+    topLeft: { x: "calc(-50% - 25vw)", y: "calc(-50% - 50vh)", rotate: 10, scale: 1 },
+    topRight: { x: "calc(-50% + 25vw)", y: "calc(-50% - 50vh)", rotate: -8, scale: 1 },
+    bottomLeft: { x: "calc(-50% - 25vw)", y: "calc(-50% + 50vh)", rotate: 40, scale: 1 },
+    bottomRight: { x: "calc(-50% + 25vw)", y: "calc(-50% + 50vh)", rotate: -40, scale: 1 },
+  },
 };
 
-const CORNER_ROSES: CornerRose[] = [
+type CornerFloral = {
+  src: string;
+  alt: string;
+  corner: CornerKey;
+  // Clustered near the bottom, behind the white rose, before the click —
+  // this doesn't vary by breakpoint, only the open position does.
+  closed: { x: string; y: string; rotate: number; scale: number };
+};
+
+const CORNER_FLORALS: CornerFloral[] = [
   {
-    src: "/red_rose_1.png",
+    src: "/top-left.png",
     alt: "",
+    corner: "topLeft",
     closed: { x: "calc(-50% + 20vw)", y: "calc(-50% + 50vh)", rotate: 0, scale: 2.5 },
-    open: { x: "calc(-50% - 45vw)", y: "calc(-50% - 40vh)", rotate: -3, scale: 1.5 },
   },
   {
-    src: "/red_rose_2.png",
+    src: "/top-right.png",
     alt: "",
+    corner: "topRight",
     closed: { x: "calc(-50% - 20vw)", y: "calc(-50% + 50vh)", rotate: 0, scale: 2.5 },
-    open: { x: "calc(-50% + 45vw)", y: "calc(-50% - 40vh)", rotate: -8, scale: 1.5 },
   },
   {
-    src: "/red_rose_3.png",
+    src: "/bottom-left.png",
     alt: "",
+    corner: "bottomLeft",
     closed: { x: "calc(-50% + 20vw)", y: "calc(-50% - 55vh)", rotate: 0, scale: 2.5 },
-    open: { x: "calc(-50% - 45vw)", y: "calc(-50% + 40vh)", rotate: 6, scale: 1.5 },
   },
   {
-    src: "/red_rose_4.png",
+    src: "/bottom-right.png",
     alt: "",
+    corner: "bottomRight",
     closed: { x: "calc(-50% - 20vw)", y: "calc(-50% - 55vh)", rotate: 0, scale: 2.5 },
-    open: { x: "calc(-50% + 45vw)", y: "calc(-50% + 35vh)", rotate: -6, scale: 1.5 },
   },
 ];
+
+// The two hanging vines and two corner sprays only make visual sense once
+// the envelope is open, so they're mounted (and only then fetched — see
+// the `{opened && ...}` gate below) at that point rather than on first
+// paint. That keeps first load down to just the 4 corner florals + the
+// white rose + the video poster.
+type EdgeFloral = {
+  src: string;
+  alt: string;
+  edge: "top" | "bottom"; // which edge it grows from — "top" is a hanging vine, "bottom" is a corner spray
+  side: "left" | "right";
+  heightVh: number;
+  delay: number;
+};
+
+const EDGE_FLORALS: EdgeFloral[] = [
+  { src: "/left-hanging-flower.png", alt: "", edge: "top", side: "left", heightVh: 38, delay: 0.4 },
+  { src: "/right-hanging-flower.png", alt: "", edge: "top", side: "right", heightVh: 38, delay: 0.55 },
+  { src: "/left-corner.png", alt: "", edge: "bottom", side: "left", heightVh: 30, delay: 0.7 },
+  { src: "/right-corner.png", alt: "", edge: "bottom", side: "right", heightVh: 30, delay: 0.85 },
+];
+const EDGE_FLORAL_DURATION_S = 1.3;
+
+// Widths for the hanging vines and corner sprays, per breakpoint.
+const EDGE_WIDTH_BY_TIER: Record<Tier, { hanging: number; corner: number }> = {
+  laptop: { hanging: 150, corner: 150 },
+  tablet: { hanging: 160, corner: 180 },
+  mobile: { hanging: 130, corner: 120 },
+};
+
+// Soft, blurred shadow so the hero text stays readable over whichever
+// part of the video happens to be behind it, without a harsh drop-shadow
+// edge.
+const TEXT_POP_CLASS = "[text-shadow:0_2px_16px_rgba(0,0,0,0.55)]";
+
+function useResponsiveTier(): Tier {
+  const [tier, setTier] = useState<Tier>("laptop");
+
+  useEffect(() => {
+    const mobileQuery = window.matchMedia("(max-width: 767px)");
+    const tabletQuery = window.matchMedia("(min-width: 768px) and (max-width: 1023px)");
+
+    function update() {
+      if (mobileQuery.matches) setTier("mobile");
+      else if (tabletQuery.matches) setTier("tablet");
+      else setTier("laptop");
+    }
+
+    update();
+    mobileQuery.addEventListener("change", update);
+    tabletQuery.addEventListener("change", update);
+    return () => {
+      mobileQuery.removeEventListener("change", update);
+      tabletQuery.removeEventListener("change", update);
+    };
+  }, []);
+
+  return tier;
+}
 
 export default function EnvelopeIntro() {
   const [opened, setOpened] = useState(false);
@@ -70,6 +160,7 @@ export default function EnvelopeIntro() {
   const [skipIntro, setSkipIntro] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const shouldReduceMotion = useReducedMotion();
+  const tier = useResponsiveTier();
 
   // Always shows the flower intro fresh on every load/reload, but only
   // when the visitor is actually at the top, in the hero section. Runs
@@ -152,30 +243,72 @@ export default function EnvelopeIntro() {
         style={{ pointerEvents: opened ? "none" : "auto" }}
       />
 
-      {/* Red roses: clustered over the center while closed, spread out to
-          frame the four corners once opened, all moving together as one
+      {/* Corner florals: clustered near the bottom while closed, spread out
+          to frame the four corners once opened, all moving together as one
           synchronized motion. The motion element itself carries both the
           centering offset and the animated x/y/rotate/scale (via calc()),
           so its hit-testable box travels with it — nothing untransformed
           is left sitting at dead center to swallow clicks once opened. */}
-      {CORNER_ROSES.map((rose) => (
-        <motion.div
-          key={rose.src}
-          className="pointer-events-none absolute left-1/2 top-1/2 z-20"
-          style={{ width: 260, height: 260 }}
-          initial={false}
-          animate={
-            shouldReduceMotion
-              ? { x: "-50%", y: "-50%", rotate: opened ? rose.open.rotate : 0, scale: 1 }
-              : opened
-              ? rose.open
-              : rose.closed
-          }
-          transition={ROSE_TRANSITION}
-        >
-          <Image src={rose.src} alt={rose.alt} fill sizes="260px" className="object-contain drop-shadow-lg" />
-        </motion.div>
-      ))}
+      {CORNER_FLORALS.map((floral) => {
+        const open = CORNER_OPEN_BY_TIER[tier][floral.corner];
+        return (
+          <motion.div
+            key={floral.src}
+            className="pointer-events-none absolute left-1/2 top-1/2 z-20"
+            style={{ width: 260, height: 260 }}
+            initial={false}
+            animate={
+              shouldReduceMotion
+                ? { x: "-50%", y: "-50%", rotate: opened ? open.rotate : 0, scale: 1 }
+                : opened
+                ? open
+                : floral.closed
+            }
+            transition={ROSE_TRANSITION}
+          >
+            <Image src={floral.src} alt={floral.alt} fill sizes="260px" className="object-contain drop-shadow-lg" />
+          </motion.div>
+        );
+      })}
+
+      {/* Hanging vines (from the top) and corner sprays (from the bottom) —
+          only mounted once opened, so they aren't fetched on first load. */}
+      {opened && (
+        <>
+          {EDGE_FLORALS.map((floral) => {
+            const widthPx =
+              floral.edge === "top" ? EDGE_WIDTH_BY_TIER[tier].hanging : EDGE_WIDTH_BY_TIER[tier].corner;
+            return (
+              <motion.div
+                key={floral.src}
+                className="pointer-events-none absolute z-20"
+                style={{
+                  [floral.edge]: 0,
+                  [floral.side]: 0,
+                  width: widthPx,
+                  height: `${floral.heightVh}vh`,
+                  transformOrigin: floral.edge,
+                }}
+                initial={shouldReduceMotion ? { scaleY: 1, opacity: 1 } : { scaleY: 0, opacity: 0 }}
+                animate={{ scaleY: 1, opacity: 1 }}
+                transition={{
+                  duration: shouldReduceMotion ? 0.01 : EDGE_FLORAL_DURATION_S,
+                  ease: ROSE_EASE,
+                  delay: shouldReduceMotion ? 0 : floral.delay,
+                }}
+              >
+                <Image
+                  src={floral.src}
+                  alt={floral.alt}
+                  fill
+                  sizes={`${widthPx}px`}
+                  className={`object-contain ${floral.edge === "top" ? "object-top" : "object-bottom"} drop-shadow-lg`}
+                />
+              </motion.div>
+            );
+          })}
+        </>
+      )}
 
       {/* White rose: the tap target, dead center, fades away on open */}
       <div className="absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2">
@@ -197,7 +330,7 @@ export default function EnvelopeIntro() {
               transition={WHITE_ROSE_TRANSITION}
             >
               <Image src="/white_rose.png" alt="" fill sizes="220px" className="object-contain drop-shadow-xl" priority />
-              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap font-heading text-xs uppercase tracking-[0.3em] text-ink/70 md:text-sm">
+              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap font-heading text-xs font-bold uppercase tracking-[0.3em] text-white md:text-sm md:font-normal md:text-ink/70">
                 Tap to open
               </span>
             </motion.button>
@@ -213,7 +346,7 @@ export default function EnvelopeIntro() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: "easeOut", delay: 0.9 }}
-              className="font-script text-6xl drop-shadow-md md:text-8xl"
+              className={`font-script text-6xl md:text-8xl ${TEXT_POP_CLASS}`}
             >
               Sara &amp; Atef
             </motion.h1>
@@ -221,7 +354,7 @@ export default function EnvelopeIntro() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: "easeOut", delay: 1.2 }}
-              className="max-w-md font-body text-lg italic md:text-xl"
+              className={`max-w-md font-body text-lg italic md:text-xl ${TEXT_POP_CLASS}`}
             >
               Two hearts, one story — join us as we begin the next chapter.
             </motion.p>
@@ -229,7 +362,7 @@ export default function EnvelopeIntro() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: "easeOut", delay: 1.5 }}
-              className="font-heading text-xs uppercase tracking-[0.3em] md:text-sm"
+              className={`font-heading text-xs uppercase tracking-[0.3em] md:text-sm ${TEXT_POP_CLASS}`}
             >
               27 &ndash; 28 September 2026 &bull; Seville, Spain
             </motion.p>

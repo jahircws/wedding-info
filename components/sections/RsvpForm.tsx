@@ -4,8 +4,18 @@ import { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion, AnimatePresence } from "framer-motion";
-import { rsvpSchema, type RsvpFormValues } from "@/lib/validations";
+import { rsvpSchema, MENU_CHOICES, type RsvpFormValues } from "@/lib/validations";
 import SectionOrnament from "@/components/ui/SectionOrnament";
+
+const MENU_LABELS: Record<(typeof MENU_CHOICES)[number], string> = {
+  MEAT: "Meat",
+  FISH: "Fish",
+  VEGETARIAN: "Vegetarian",
+};
+
+const inputClass =
+  "w-full rounded-lg border border-blush-200 bg-white px-4 py-2.5 font-body outline-none transition-colors duration-200 ease-out focus:border-gold";
+const labelClass = "mb-1 block font-heading text-xs uppercase tracking-wide text-ink/70";
 
 export default function RsvpForm() {
   const [submitState, setSubmitState] = useState<"idle" | "submitting" | "success" | "error">(
@@ -17,6 +27,7 @@ export default function RsvpForm() {
     register,
     control,
     handleSubmit,
+    watch,
     formState: { errors },
     reset,
   } = useForm<RsvpFormValues>({
@@ -24,14 +35,23 @@ export default function RsvpForm() {
     defaultValues: {
       mainName: "",
       email: "",
+      phone: "",
+      attendingSunday: true,
+      attendingMonday: true,
       hotel: "",
+      shuttleToHacienda: false,
+      shuttleBack: false,
+      shuttleBackTime: "",
+      menuChoice: "",
       foodNotes: "",
-      attending: true,
+      songRequest: "",
+      notes: "",
       guests: [],
     },
   });
 
   const { fields, append, remove } = useFieldArray({ control, name: "guests" });
+  const shuttleBack = watch("shuttleBack");
 
   async function onSubmit(values: RsvpFormValues) {
     setSubmitState("submitting");
@@ -67,7 +87,7 @@ export default function RsvpForm() {
         <h2 className="font-script tracking-wide text-4xl text-blush-500 md:text-5xl">R S V P</h2>
         <SectionOrnament className="mt-4" />
         <p className="mt-3 font-body text-ink/70">
-          Please respond by 1 September 2026. We can&apos;t wait to celebrate with you.
+          Please respond by 4 September 2026 so we can finalise numbers with the venues.
         </p>
       </motion.div>
 
@@ -110,7 +130,7 @@ export default function RsvpForm() {
                 <legend className="section-heading">Main Guest</legend>
 
                 <div>
-                  <label htmlFor="mainName" className="mb-1 block font-heading text-xs uppercase tracking-wide text-ink/70">
+                  <label htmlFor="mainName" className={labelClass}>
                     Full name
                   </label>
                   <input
@@ -119,7 +139,7 @@ export default function RsvpForm() {
                     {...register("mainName")}
                     aria-invalid={!!errors.mainName}
                     aria-describedby={errors.mainName ? "mainName-error" : undefined}
-                    className="w-full rounded-lg border border-blush-200 bg-white px-4 py-2.5 font-body outline-none transition-colors duration-200 ease-out focus:border-gold"
+                    className={inputClass}
                   />
                   {errors.mainName && (
                     <p id="mainName-error" role="alert" className="mt-1 text-sm text-red-600">
@@ -128,60 +148,146 @@ export default function RsvpForm() {
                   )}
                 </div>
 
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  <div>
+                    <label htmlFor="email" className={labelClass}>
+                      Email
+                    </label>
+                    <input
+                      id="email"
+                      type="email"
+                      {...register("email")}
+                      aria-invalid={!!errors.email}
+                      aria-describedby={errors.email ? "email-error" : undefined}
+                      className={inputClass}
+                    />
+                    {errors.email && (
+                      <p id="email-error" role="alert" className="mt-1 text-sm text-red-600">
+                        {errors.email.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label htmlFor="phone" className={labelClass}>
+                      Phone (WhatsApp, for day-of updates)
+                    </label>
+                    <input id="phone" type="tel" {...register("phone")} className={inputClass} />
+                  </div>
+                </div>
+
                 <div>
-                  <label htmlFor="email" className="mb-1 block font-heading text-xs uppercase tracking-wide text-ink/70">
-                    Email
-                  </label>
-                  <input
-                    id="email"
-                    type="email"
-                    {...register("email")}
-                    aria-invalid={!!errors.email}
-                    aria-describedby={errors.email ? "email-error" : undefined}
-                    className="w-full rounded-lg border border-blush-200 bg-white px-4 py-2.5 font-body outline-none transition-colors duration-200 ease-out focus:border-gold"
-                  />
-                  {errors.email && (
-                    <p id="email-error" role="alert" className="mt-1 text-sm text-red-600">
-                      {errors.email.message}
+                  <p className={labelClass}>Which day(s) will you join us?</p>
+                  <div className="flex flex-col gap-3 sm:flex-row sm:gap-8">
+                    <label className="flex items-center gap-3 font-body text-sm text-ink/80">
+                      <input
+                        type="checkbox"
+                        {...register("attendingSunday")}
+                        className="h-4 w-4 accent-gold"
+                      />
+                      Sunday 27 &mdash; Welcome evening
+                    </label>
+                    <label className="flex items-center gap-3 font-body text-sm text-ink/80">
+                      <input
+                        type="checkbox"
+                        {...register("attendingMonday")}
+                        className="h-4 w-4 accent-gold"
+                      />
+                      Monday 28 &mdash; The wedding
+                    </label>
+                  </div>
+                  {errors.attendingMonday && (
+                    <p role="alert" className="mt-1 text-sm text-red-600">
+                      {errors.attendingMonday.message}
                     </p>
                   )}
                 </div>
 
                 <div>
-                  <label htmlFor="hotel" className="mb-1 block font-heading text-xs uppercase tracking-wide text-ink/70">
-                    Hotel you&apos;re staying at
+                  <label htmlFor="hotel" className={labelClass}>
+                    Where are you staying in Seville?
                   </label>
                   <input
                     id="hotel"
                     type="text"
+                    placeholder="Alfonso XIII, Villapanés, or another hotel"
                     {...register("hotel")}
-                    className="w-full rounded-lg border border-blush-200 bg-white px-4 py-2.5 font-body outline-none transition-colors duration-200 ease-out focus:border-gold"
+                    className={inputClass}
                   />
+                </div>
+
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  <div>
+                    <label htmlFor="menuChoice" className={labelClass}>
+                      Menu choice for Monday
+                    </label>
+                    <select id="menuChoice" {...register("menuChoice")} className={inputClass}>
+                      <option value="">Select a menu</option>
+                      {MENU_CHOICES.map((choice) => (
+                        <option key={choice} value={choice}>
+                          {MENU_LABELS[choice]}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label htmlFor="foodNotes" className={labelClass}>
+                      Allergies or intolerances
+                    </label>
+                    <input id="foodNotes" type="text" {...register("foodNotes")} className={inputClass} />
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <label className="flex items-center gap-3 font-body text-sm text-ink/80">
+                    <input
+                      type="checkbox"
+                      {...register("shuttleToHacienda")}
+                      className="h-4 w-4 accent-gold"
+                    />
+                    I&apos;ll use the shuttle bus to the Hacienda on the 28th
+                  </label>
+                  <label className="flex items-center gap-3 font-body text-sm text-ink/80">
+                    <input type="checkbox" {...register("shuttleBack")} className="h-4 w-4 accent-gold" />
+                    I&apos;ll use the shuttle bus back to Seville
+                  </label>
+                  <AnimatePresence initial={false}>
+                    {shuttleBack && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3, ease: "easeOut" }}
+                        className="overflow-hidden"
+                      >
+                        <label htmlFor="shuttleBackTime" className={labelClass}>
+                          Roughly what time?
+                        </label>
+                        <input
+                          id="shuttleBackTime"
+                          type="text"
+                          placeholder="e.g. 1:00 AM"
+                          {...register("shuttleBackTime")}
+                          className={inputClass}
+                        />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
 
                 <div>
-                  <label htmlFor="foodNotes" className="mb-1 block font-heading text-xs uppercase tracking-wide text-ink/70">
-                    Food preferences / allergies
+                  <label htmlFor="songRequest" className={labelClass}>
+                    A song that will get you on the dance floor
                   </label>
-                  <textarea
-                    id="foodNotes"
-                    rows={3}
-                    {...register("foodNotes")}
-                    className="w-full rounded-lg border border-blush-200 bg-white px-4 py-2.5 font-body outline-none transition-colors duration-200 ease-out focus:border-gold"
-                  />
+                  <input id="songRequest" type="text" {...register("songRequest")} className={inputClass} />
                 </div>
 
-                <div className="flex items-center gap-3">
-                  <input
-                    id="attending"
-                    type="checkbox"
-                    {...register("attending")}
-                    defaultChecked
-                    className="h-4 w-4 accent-gold"
-                  />
-                  <label htmlFor="attending" className="font-body text-sm text-ink/80">
-                    We plan to attend
+                <div>
+                  <label htmlFor="notes" className={labelClass}>
+                    Anything else you&apos;d like us to know?
                   </label>
+                  <textarea id="notes" rows={3} {...register("notes")} className={inputClass} />
                 </div>
               </fieldset>
 
@@ -190,7 +296,7 @@ export default function RsvpForm() {
                   <legend className="section-heading">Additional Guests</legend>
                   <button
                     type="button"
-                    onClick={() => append({ fullName: "", age: undefined, gender: "", foodNotes: "" })}
+                    onClick={() => append({ fullName: "", menuChoice: "", foodNotes: "" })}
                     className="rounded-full border border-gold px-4 py-1.5 font-heading text-xs uppercase tracking-widest text-gold transition-colors duration-200 ease-out hover:bg-gold hover:text-ivory"
                   >
                     + Add another guest
@@ -228,10 +334,10 @@ export default function RsvpForm() {
                       </div>
 
                       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                        <div>
+                        <div className="md:col-span-2">
                           <label
                             htmlFor={`guests.${index}.fullName`}
-                            className="mb-1 block font-heading text-xs uppercase tracking-wide text-ink/70"
+                            className={labelClass}
                           >
                             Full name
                           </label>
@@ -240,7 +346,7 @@ export default function RsvpForm() {
                             type="text"
                             {...register(`guests.${index}.fullName` as const)}
                             aria-invalid={!!errors.guests?.[index]?.fullName}
-                            className="w-full rounded-lg border border-blush-200 bg-white px-4 py-2.5 font-body outline-none transition-colors duration-200 ease-out focus:border-gold"
+                            className={inputClass}
                           />
                           {errors.guests?.[index]?.fullName && (
                             <p role="alert" className="mt-1 text-sm text-red-600">
@@ -251,47 +357,37 @@ export default function RsvpForm() {
 
                         <div>
                           <label
-                            htmlFor={`guests.${index}.age`}
-                            className="mb-1 block font-heading text-xs uppercase tracking-wide text-ink/70"
+                            htmlFor={`guests.${index}.menuChoice`}
+                            className={labelClass}
                           >
-                            Age
+                            Menu choice
                           </label>
-                          <input
-                            id={`guests.${index}.age`}
-                            type="number"
-                            min={0}
-                            {...register(`guests.${index}.age` as const)}
-                            className="w-full rounded-lg border border-blush-200 bg-white px-4 py-2.5 font-body outline-none transition-colors duration-200 ease-out focus:border-gold"
-                          />
-                        </div>
-
-                        <div>
-                          <label
-                            htmlFor={`guests.${index}.gender`}
-                            className="mb-1 block font-heading text-xs uppercase tracking-wide text-ink/70"
+                          <select
+                            id={`guests.${index}.menuChoice`}
+                            {...register(`guests.${index}.menuChoice` as const)}
+                            className={inputClass}
                           >
-                            Gender
-                          </label>
-                          <input
-                            id={`guests.${index}.gender`}
-                            type="text"
-                            {...register(`guests.${index}.gender` as const)}
-                            className="w-full rounded-lg border border-blush-200 bg-white px-4 py-2.5 font-body outline-none transition-colors duration-200 ease-out focus:border-gold"
-                          />
+                            <option value="">Select a menu</option>
+                            {MENU_CHOICES.map((choice) => (
+                              <option key={choice} value={choice}>
+                                {MENU_LABELS[choice]}
+                              </option>
+                            ))}
+                          </select>
                         </div>
 
                         <div>
                           <label
                             htmlFor={`guests.${index}.foodNotes`}
-                            className="mb-1 block font-heading text-xs uppercase tracking-wide text-ink/70"
+                            className={labelClass}
                           >
-                            Food allergies / preferences
+                            Allergies / preferences
                           </label>
                           <input
                             id={`guests.${index}.foodNotes`}
                             type="text"
                             {...register(`guests.${index}.foodNotes` as const)}
-                            className="w-full rounded-lg border border-blush-200 bg-white px-4 py-2.5 font-body outline-none transition-colors duration-200 ease-out focus:border-gold"
+                            className={inputClass}
                           />
                         </div>
                       </div>

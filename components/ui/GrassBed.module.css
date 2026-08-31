@@ -1,0 +1,470 @@
+/* Ported from the uploaded tulip_flower.html / white_flower.html sources.
+   This is everything that sat alongside div.flower in those scenes: the
+   grass tufts, long blades, and side sprays filling out the base. Same
+   vmin -> em conversion as TulipFlower/WhiteFlower, scaled via the
+   component's `size` prop.
+
+   The two source files used different grass color themes (tulip: a
+   single green; white flower: a two-tone teal/cyan) rather than a single
+   shared palette, so both are kept as a `variant` prop instead of
+   discarding one.
+
+   Two adaptations from the original, both because the night backdrop is
+   gone: the three spots that faded a leaf into var(--dark-color) (black,
+   to blend into the night sky) now fade into --grass-deep instead, so
+   blades read as shadowed grass rather than a dark smudge on a light
+   background. And flower__grass__overlay -- a black 60%-opacity blur
+   meant to silhouette a tuft against a bright sky -- is dropped
+   entirely, since there's no bright sky to contrast against here. Every
+   shape, position, and animation timing is otherwise unchanged. */
+
+.bed {
+  --grass-bright: #1aaa15;
+  --grass-deep: #1aaa15;
+  --grass-accent2: #1aaa15;
+  position: relative;
+  isolation: isolate;
+}
+.teal {
+  --grass-bright: #159faa;
+  --grass-deep: #079097;
+  --grass-accent2: #23f0ff;
+}
+
+.paused * {
+  animation-play-state: paused !important;
+}
+
+/* Generic one-shot "pop in" wrapper, driven by --d per instance (set via
+   inline style, matching the original's style="--d:1.2s") */
+.growAns {
+  animation: growAns 2s var(--d) backwards;
+}
+@keyframes growAns {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+.growingGrass {
+  animation: growingGrassAns 1s 2s backwards;
+}
+@keyframes growingGrassAns {
+  0% {
+    transform: scale(0);
+  }
+}
+
+/* flower__g-long: a single tall blade pair */
+.gLong {
+  --w: 2em;
+  --h: 6em;
+  position: absolute;
+  bottom: 10em;
+  left: -3em;
+  transform-origin: bottom center;
+  transform: rotate(-30deg) rotateY(-20deg);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  animation: gLongSway 3s linear infinite;
+}
+@keyframes gLongSway {
+  0%, 100% { transform: rotate(-30deg) rotateY(-20deg); }
+  50% { transform: rotate(-32deg) rotateY(-20deg); }
+}
+.gLongTop {
+  top: calc(var(--h) * -1);
+  width: calc(var(--w) + 1em);
+  height: var(--h);
+  border-top-right-radius: 100%;
+  border-right: 0.7em solid var(--grass-bright);
+  transform: translate(-0.7em, 1em);
+}
+.gLongBottom {
+  width: var(--w);
+  height: 50em;
+  transform-origin: bottom center;
+  background-image: linear-gradient(to top, transparent 30%, var(--grass-bright));
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.5);
+  clip-path: polygon(35% 0, 65% 1%, 100% 100%, 0% 100%);
+}
+
+/* flower__grass: the two bright, fanned-leaf tufts */
+.grass {
+  --line-w: 1.5em;
+  position: absolute;
+  bottom: 12em;
+  left: -7em;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  z-index: 20;
+  transform-origin: bottom center;
+  transform: rotate(-48deg) rotateY(40deg);
+}
+.grass1 {
+  animation: movingGrass1 2s linear infinite;
+}
+.grass2 {
+  left: 2em;
+  bottom: 10em;
+  transform: scale(0.5) rotate(75deg) rotateX(10deg) rotateY(-200deg);
+  opacity: 0.8;
+  z-index: 0;
+  animation: movingGrass2 1.5s linear infinite;
+}
+@keyframes movingGrass1 {
+  0%, 100% { transform: rotate(-48deg) rotateY(40deg); }
+  50% { transform: rotate(-50deg) rotateY(40deg); }
+}
+@keyframes movingGrass2 {
+  0%, 100% { transform: scale(0.5) rotate(75deg) rotateX(10deg) rotateY(-200deg); }
+  50% { transform: scale(0.5) rotate(79deg) rotateX(10deg) rotateY(-200deg); }
+}
+.grassTop {
+  width: 7em;
+  height: 10em;
+  border-top-right-radius: 100%;
+  border-right: var(--line-w) solid var(--grass-bright);
+  transform-origin: bottom center;
+  transform: rotate(-2deg);
+}
+.grassBottom {
+  margin-top: -2px;
+  width: var(--line-w);
+  height: 25em;
+  background-image: linear-gradient(to top, transparent, var(--grass-bright));
+}
+.grassLeaf {
+  --size: 10em;
+  position: absolute;
+  width: calc(var(--size) * 2.1);
+  height: var(--size);
+  border-top-left-radius: var(--size);
+  border-top-right-radius: var(--size);
+  background-image: linear-gradient(to top, transparent, transparent 30%, var(--grass-bright));
+  z-index: 100;
+}
+.grassLeaf1 { top: -6%; left: 30%; --size: 6em; transform: rotate(-20deg); animation: growingGrassLeaf1 2s 2.6s backwards; }
+.grassLeaf2 { top: -5%; left: -110%; --size: 6em; transform: rotate(10deg); animation: growingGrassLeaf2 2s 2.4s linear backwards; }
+.grassLeaf3 { top: 5%; left: 60%; --size: 8em; transform: rotate(-18deg) rotateX(-20deg); animation: growingGrassLeaf3 2s 2.2s linear backwards; }
+.grassLeaf4 { top: 6%; left: -135%; --size: 8em; transform: rotate(2deg); animation: growingGrassLeaf4 2s 2s linear backwards; }
+.grassLeaf5 { top: 20%; left: 60%; --size: 10em; transform: rotate(-24deg) rotateX(-20deg); animation: growingGrassLeaf5 2s 1.8s linear backwards; }
+.grassLeaf6 { top: 22%; left: -180%; --size: 10em; transform: rotate(10deg); animation: growingGrassLeaf6 2s 1.6s linear backwards; }
+.grassLeaf7 { top: 39%; left: 70%; --size: 10em; transform: rotate(-10deg); animation: growingGrassLeaf7 2s 1.4s linear backwards; }
+.grassLeaf8 { top: 40%; left: -215%; --size: 11em; transform: rotate(10deg); animation: growingGrassLeaf8 2s 1.2s linear backwards; }
+@keyframes growingGrassLeaf1 { 0% { transform-origin: bottom left; transform: rotate(-20deg) scale(0); } }
+@keyframes growingGrassLeaf2 { 0% { transform-origin: bottom right; transform: rotate(10deg) scale(0); } }
+@keyframes growingGrassLeaf3 { 0% { transform-origin: bottom left; transform: rotate(-18deg) rotateX(-20deg) scale(0); } }
+@keyframes growingGrassLeaf4 { 0% { transform-origin: bottom right; transform: rotate(2deg) scale(0); } }
+@keyframes growingGrassLeaf5 { 0% { transform-origin: bottom left; transform: rotate(-24deg) rotateX(-20deg) scale(0); } }
+@keyframes growingGrassLeaf6 { 0% { transform-origin: bottom right; transform: rotate(10deg) scale(0); } }
+@keyframes growingGrassLeaf7 { 0% { transform-origin: bottom left; transform: rotate(-10deg) scale(0); } }
+@keyframes growingGrassLeaf8 { 0% { transform-origin: bottom right; transform: rotate(10deg) scale(0); } }
+
+/* flower__g-right: two long side blades, masked to fade in at the top.
+   background-image fades to --grass-deep where the original faded to
+   var(--dark-color) (the night sky). */
+.gRight {
+  position: absolute;
+  bottom: 6em;
+  left: -2em;
+  transform-origin: bottom left;
+  transform: rotate(20deg);
+}
+.gRightLeaf {
+  width: 30em;
+  height: 50em;
+  border-top-left-radius: 100%;
+  border-left: 2em solid var(--grass-deep);
+  background-image: linear-gradient(to bottom, transparent, var(--grass-deep) 60%);
+  -webkit-mask-image: linear-gradient(to top, transparent 30%, var(--grass-bright) 60%);
+}
+.gRight1 {
+  animation: gRight1Sway 2.5s linear infinite;
+}
+.gRight2 {
+  left: 5em;
+  transform: rotateY(-180deg);
+  animation: gRight2Sway 3s linear infinite;
+}
+.gRight2 .gRightLeaf {
+  height: 75em;
+  filter: blur(0.3em);
+  opacity: 0.8;
+}
+@keyframes gRight1Sway {
+  0%, 100% { transform: rotate(20deg); }
+  50% { transform: rotate(24deg) rotateX(-20deg); }
+}
+@keyframes gRight2Sway {
+  0%, 100% { transform: rotateY(-180deg) rotate(0deg) rotateX(-20deg); }
+  50% { transform: rotateY(-180deg) rotate(6deg) rotateX(-20deg); }
+}
+
+/* flower__g-front: a fan of 8 small leaves either side of a thin stem */
+.gFront {
+  position: absolute;
+  bottom: 6em;
+  left: 2.5em;
+  z-index: 100;
+  transform-origin: bottom center;
+  transform: rotate(-28deg) rotateY(30deg) scale(1.04);
+  animation: gFrontSway 2s linear infinite;
+}
+@keyframes gFrontSway {
+  0%, 100% { transform: rotate(-28deg) rotateY(30deg) scale(1.04); }
+  50% { transform: rotate(-35deg) rotateY(40deg) scale(1.04); }
+}
+.gFrontLine {
+  width: 0.3em;
+  height: 20em;
+  background-image: linear-gradient(to top, transparent, var(--grass-bright), transparent 100%);
+  position: relative;
+}
+.gFrontLeafWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: bottom left;
+  transform: rotate(10deg);
+}
+.gFrontLeafWrapper:nth-child(even) {
+  left: 0em;
+  transform: rotateY(-180deg) rotate(5deg);
+  animation: gFrontLeafLeftAns 1s ease-in backwards;
+}
+.gFrontLeafWrapper:nth-child(odd) {
+  animation: gFrontLeafAns 1s ease-in backwards;
+}
+.gFrontLeafWrapper1 {
+  top: -8em;
+  transform: scale(0.7);
+  animation: gFrontLeafAns 1s 5.5s ease-in backwards !important;
+}
+.gFrontLeafWrapper2 {
+  top: -8em;
+  transform: rotateY(-180deg) scale(0.7) !important;
+  animation: gFrontLeafLeftAns2 1s 4.6s ease-in backwards !important;
+  animation-delay: 5.2s !important;
+}
+.gFrontLeafWrapper3 {
+  top: -3em;
+  animation: gFrontLeafAns 1s 4.6s ease-in backwards;
+  animation-delay: 4.9s !important;
+}
+.gFrontLeafWrapper4 {
+  top: -3em;
+  transform: rotateY(-180deg) scale(0.9) !important;
+  animation: gFrontLeafLeftAns2 1s 4.6s ease-in backwards !important;
+}
+.gFrontLeafWrapper5 {
+  top: 2em;
+  animation-delay: 4.3s !important;
+}
+.gFrontLeafWrapper6 {
+  top: 2em;
+  animation-delay: 4.1s !important;
+}
+.gFrontLeafWrapper7 {
+  top: 6.5em;
+  animation-delay: 3.8s !important;
+}
+.gFrontLeafWrapper8 {
+  top: 6.5em;
+  animation-delay: 3.5s !important;
+}
+@keyframes gFrontLeafAns {
+  0% { transform: rotate(10deg) scale(0); }
+}
+@keyframes gFrontLeafLeftAns {
+  0% { transform: rotateY(-180deg) rotate(5deg) scale(0); }
+}
+@keyframes gFrontLeafLeftAns2 {
+  0% { transform: rotateY(-180deg) scale(0); }
+}
+.gFrontLeaf {
+  width: 10em;
+  height: 10em;
+  border-radius: 100% 0% 0% 100% / 100% 100% 0% 0%;
+  box-shadow: inset 0 2px 1em rgba(44, 238, 252, 0.2);
+  background-image: linear-gradient(to bottom left, transparent, var(--grass-deep)), linear-gradient(to bottom right, var(--grass-bright) 50%, transparent 50%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom right, var(--grass-bright) 50%, transparent 50%, transparent);
+}
+
+/* flower__g-fr: one big base blade plus 8 small accent leaves */
+.gFr {
+  position: absolute;
+  bottom: -4em;
+  transform-origin: bottom left;
+  z-index: 10;
+  animation: gFrSway 2s linear infinite;
+}
+@keyframes gFrSway {
+  0%, 100% { transform: rotate(2deg); }
+  50% { transform: rotate(4deg); }
+}
+.gFrBaseLeaf {
+  width: 30em;
+  height: 50em;
+  border-top-left-radius: 100%;
+  border-left: 2em solid var(--grass-deep);
+  -webkit-mask-image: linear-gradient(to top, transparent 25%, var(--grass-deep) 50%);
+  position: relative;
+  z-index: 1;
+}
+.gFrLeaf {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10em;
+  height: 10em;
+  border-radius: 100% 0% 0% 100% / 100% 100% 0% 0%;
+  box-shadow: inset 0 2px 1em rgba(44, 238, 252, 0.2);
+  background-image: linear-gradient(to bottom left, transparent, var(--grass-deep) 98%), linear-gradient(to bottom right, var(--grass-accent2) 45%, transparent 50%, transparent);
+  -webkit-mask-image: linear-gradient(135deg, var(--grass-bright) 40%, transparent 50%, transparent);
+}
+.gFrLeaf1 { left: 20em; transform: rotate(45deg); animation: gFrLeafAnsA 0.5s 5.2s linear backwards; }
+.gFrLeaf2 { left: 12em; top: -7em; transform: rotate(25deg) rotateY(-180deg); animation: gFrLeafAnsB 0.5s 5s linear backwards; }
+.gFrLeaf3 { left: 15em; top: 6em; transform: rotate(55deg); animation: gFrLeafAnsC 0.5s 4.8s linear backwards; }
+.gFrLeaf4 { left: 6em; top: -2em; transform: rotate(25deg) rotateY(-180deg); animation: gFrLeafAnsB 0.5s 4.6s linear backwards; }
+.gFrLeaf5 { left: 10em; top: 14em; transform: rotate(55deg); animation: gFrLeafAnsC 0.5s 4.4s linear backwards; }
+.gFrLeaf6 { left: 0em; top: 6em; transform: rotate(25deg) rotateY(-180deg); animation: gFrLeafAnsB 0.5s 4.2s linear backwards; }
+.gFrLeaf7 { left: 5em; top: 22em; transform: rotate(45deg); animation: gFrLeafAnsA 0.5s 4s linear backwards; }
+.gFrLeaf8 { left: -4em; top: 15em; transform: rotate(15deg) rotateY(-180deg); animation: gFrLeafAnsD 0.5s 3.8s linear backwards; }
+@keyframes gFrLeafAnsA {
+  0% { transform-origin: left; transform: rotate(45deg) scale(0); }
+}
+@keyframes gFrLeafAnsB {
+  0% { transform-origin: right; transform: rotate(25deg) rotateY(-180deg) scale(0); }
+}
+@keyframes gFrLeafAnsC {
+  0% { transform-origin: left; transform: rotate(55deg) scale(0); }
+}
+@keyframes gFrLeafAnsD {
+  0% { transform-origin: right; transform: rotate(15deg) rotateY(-180deg) scale(0); }
+}
+
+/* long-g: 8 clumps of tall background/foreground blades scattered around
+   the base */
+.longG {
+  position: absolute;
+  bottom: 25em;
+  left: -42em;
+  transform-origin: bottom left;
+}
+.longG1 {
+  bottom: 0em;
+  transform: scale(0.8) rotate(-5deg);
+}
+.longG1 .longGLeaf {
+  -webkit-mask-image: linear-gradient(to top, transparent 40%, var(--grass-bright) 80%) !important;
+}
+.longG1 .longGLeaf1 {
+  --w: 5em;
+  --h: 60em;
+  left: -2em;
+  transform: rotate(3deg) rotateY(-180deg);
+}
+.longG2, .longG3 {
+  bottom: -3em;
+  left: -35em;
+  transform-origin: center;
+  transform: scale(0.6) rotateX(60deg);
+}
+.longG2 .longGLeaf, .longG3 .longGLeaf {
+  -webkit-mask-image: linear-gradient(to top, transparent 50%, var(--grass-bright) 80%) !important;
+}
+.longG2 .longGLeaf1, .longG3 .longGLeaf1 {
+  left: -1em;
+  transform: rotateY(-180deg);
+}
+.longG3 {
+  left: -17em;
+  bottom: 0em;
+}
+.longG3 .longGLeaf {
+  -webkit-mask-image: linear-gradient(to top, transparent 40%, var(--grass-bright) 80%) !important;
+}
+.longG4 {
+  left: 25em;
+  bottom: -3em;
+  transform-origin: center;
+  transform: scale(0.6) rotateX(60deg);
+}
+.longG4 .longGLeaf {
+  -webkit-mask-image: linear-gradient(to top, transparent 50%, var(--grass-bright) 80%) !important;
+}
+.longG5 {
+  left: 42em;
+  bottom: 0em;
+  transform: scale(0.8) rotate(2deg);
+}
+.longG6 {
+  left: 0em;
+  bottom: -20em;
+  z-index: 100;
+  filter: blur(0.3em);
+  transform: scale(0.8) rotate(2deg);
+}
+.longG7 {
+  left: 35em;
+  bottom: 20em;
+  z-index: -1;
+  filter: blur(0.3em);
+  transform: scale(0.6) rotate(2deg);
+  opacity: 0.7;
+}
+.longGLeaf {
+  --w: 15em;
+  --h: 40em;
+  position: absolute;
+  bottom: 0;
+  width: var(--w);
+  height: var(--h);
+  border-top-left-radius: 100%;
+  border-left: 2em solid var(--grass-bright);
+  -webkit-mask-image: linear-gradient(to top, transparent 20%, var(--grass-bright));
+  transform-origin: bottom center;
+}
+.longGLeaf0 {
+  left: 2em;
+  animation: longGLeafAns1 4s linear infinite;
+}
+.longGLeaf1 {
+  --w: 5em;
+  --h: 60em;
+  animation: longGLeafAns1 4s linear infinite;
+}
+.longGLeaf2 {
+  --w: 10em;
+  --h: 40em;
+  left: -0.5em;
+  bottom: 5em;
+  transform-origin: bottom left;
+  transform: rotateY(-180deg);
+  animation: longGLeafAns2 3s linear infinite;
+}
+.longGLeaf3 {
+  --w: 5em;
+  --h: 30em;
+  left: -1em;
+  bottom: 3.2em;
+  transform-origin: bottom left;
+  transform: rotate(-10deg) rotateY(-180deg);
+  animation: longGLeafAns3 3s linear infinite;
+}
+@keyframes longGLeafAns1 {
+  0%, 100% { transform: rotate(-5deg) scale(1); }
+  50% { transform: rotate(5deg) scale(1.1); }
+}
+@keyframes longGLeafAns2 {
+  0%, 100% { transform: rotateY(-180deg) rotate(5deg); }
+  50% { transform: rotateY(-180deg) rotate(0deg) scale(1.1); }
+}
+@keyframes longGLeafAns3 {
+  0%, 100% { transform: rotate(-10deg) rotateY(-180deg); }
+  50% { transform: rotate(-20deg) rotateY(-180deg); }
+}

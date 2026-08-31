@@ -21,7 +21,7 @@ export default function OurStory() {
       aria-label="Our story"
     >
       <RotatingFlower
-        src="/white_rose_bouque.png"
+        src="/bunch.png"
         size={120}
         speed={55}
         className="absolute -right-10 -top-6 opacity-60"
