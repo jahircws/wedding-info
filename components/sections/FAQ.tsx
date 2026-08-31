@@ -8,20 +8,40 @@ import FlowerField from "@/components/ui/FlowerField";
 
 const faqs = [
   {
-    q: "What's the dress code?",
-    a: "Garden formal. Think soft, breathable fabrics in warm neutrals — Seville in September is beautiful but warm. Please avoid all-white.",
+    q: "When should I RSVP?",
+    a: "Please let us know by Friday 4 September so we can finalise numbers with the venues.",
   },
   {
-    q: "Are you registered anywhere?",
-    a: "Your presence is truly the gift. If you'd like to contribute to our next chapter, a small note about a honeymoon fund will be shared closer to the date.",
+    q: "How do I get to Seville?",
+    a: "Seville Airport (SVQ) is about 20 minutes from the centre by taxi. There are also direct trains from Madrid (approx. 2h30) and M\u00e1laga (approx. 2h).",
   },
   {
-    q: "Any travel tips for Seville?",
-    a: "Late September evenings are warm and lovely; days can still be hot, so plan accordingly. We'll share a short list of recommended hotels and neighborhoods with confirmed guests.",
+    q: "How do I get to the Hacienda on Monday 28th?",
+    a: "Shuttle buses will leave from Hotel Alfonso XIII and Hotel Villapan\u00e9s \u2014 exact time to follow. If you prefer a taxi, allow about 25 minutes from the centre and book in advance, as the Hacienda is outside town.",
   },
   {
-    q: "Can I bring a plus-one or children?",
-    a: "Please add any additional guests directly in the RSVP form below, including their names and ages, so we can plan seating and catering accurately.",
+    q: "How do I get back?",
+    a: "Return shuttles run every 30 minutes from 12:30 AM to 3:00 AM, dropping off in the centre of Seville \u2014 exact stop to follow.",
+  },
+  {
+    q: "What's the weather like?",
+    a: "Late September in Seville is still warm \u2014 typically 28\u201332\u00b0C in the afternoon and around 18\u201320\u00b0C at night. The ceremony and cocktail are outdoors, so bring a light layer for later in the evening.",
+  },
+  {
+    q: "What should I wear?",
+    a: "Sunday 27: cocktail attire. Monday 28: black tie. The Hacienda has gravel paths and lawns, so a block heel or wedge is easier than a stiletto.",
+  },
+  {
+    q: "Can I bring a plus-one?",
+    a: "Invitations are addressed to the named guests only. If your invitation includes a plus-one, they will be named.",
+  },
+  {
+    q: "Dietary requirements?",
+    a: "Please tell us when you RSVP and we'll make sure you're looked after.",
+  },
+  {
+    q: "Can I take photos during the ceremony?",
+    a: "We'd love you to be present with us during the ceremony and leave the photos to our photographer. Afterwards, snap away \u2014 and please share them with us!",
   },
 ];
 

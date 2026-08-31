@@ -6,21 +6,27 @@ import SectionOrnament from "@/components/ui/SectionOrnament";
 
 const days = [
   {
-    label: "Day One",
+    label: "Welcome Evening",
     date: "Sunday, 27 September 2026",
+    venue: "Casa de Pilatos",
+    dressCode: "Cocktail attire",
     items: [
-      { time: "4:00 PM", title: "Guest Arrival & Welcome" },
-      { time: "5:00 PM", title: "Ceremony" },
-      { time: "6:30 PM", title: "Cocktail Hour" },
-      { time: "8:00 PM", title: "Reception Dinner & Dancing" },
+      { time: "8:00 PM", title: "Welcome drinks & live flamenco (outdoor courtyard)" },
+      { time: "Until 11:00 PM", title: "The evening continues indoors" },
     ],
   },
   {
-    label: "Day Two",
+    label: "The Wedding",
     date: "Monday, 28 September 2026",
+    venue: "Hacienda La Soledad",
+    dressCode: "Black tie",
     items: [
-      { time: "11:00 AM", title: "Farewell Brunch" },
-      { time: "1:00 PM", title: "Garden Send-off" },
+      { time: "5:00 PM", title: "Arrival & welcome drink" },
+      { time: "5:30 PM", title: "Ceremony" },
+      { time: "6:30 PM", title: "Cocktail hour with live music" },
+      { time: "8:10 PM", title: "Dinner" },
+      { time: "11:15 PM", title: "First dance, then dancing until late" },
+      { time: "Late night", title: "Snacks served for those who stay" },
     ],
   },
 ];
@@ -56,19 +62,36 @@ export default function Schedule() {
               {day.label}
             </p>
             <h3 className="mt-1 font-body text-xl italic text-ink">{day.date}</h3>
+            <p className="mt-1 font-heading text-sm text-ink/70">{day.venue}</p>
+
             <ul className="mt-6 space-y-4">
               {day.items.map((item) => (
                 <li key={item.title} className="flex items-baseline gap-4">
-                  <span className="w-20 shrink-0 font-heading text-xs uppercase tracking-wider text-gold">
+                  <span className="w-28 shrink-0 font-heading text-xs uppercase tracking-wider text-gold">
                     {item.time}
                   </span>
                   <span className="font-body text-base text-ink/85">{item.title}</span>
                 </li>
               ))}
             </ul>
+
+            <p className="mt-6 border-t border-sage-300/50 pt-4 font-heading text-xs uppercase tracking-widest text-ink/60">
+              Dress code &middot; {day.dressCode}
+            </p>
           </motion.div>
         ))}
       </div>
+
+      <motion.p
+        initial={{ opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+        className="relative z-10 mx-auto mt-10 max-w-2xl text-center font-body text-sm text-ink/70"
+      >
+        Getting home on Monday: shuttle buses run back to Seville every 30 minutes
+        from 12:30 AM until 3:00 AM.
+      </motion.p>
     </section>
   );
 }

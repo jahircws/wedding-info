@@ -1,22 +1,35 @@
 import { z } from "zod";
 
+export const MENU_CHOICES = ["MEAT", "FISH", "VEGETARIAN"] as const;
+const menuChoiceSchema = z.enum(MENU_CHOICES).optional().or(z.literal(""));
+
 export const guestSchema = z.object({
   fullName: z.string().min(2, "Please enter a full name").max(100),
-  age: z
-    .union([z.coerce.number().int().min(0).max(120), z.literal("").transform(() => undefined)])
-    .optional(),
-  gender: z.string().max(40).optional().or(z.literal("")),
+  menuChoice: menuChoiceSchema,
   foodNotes: z.string().max(500).optional().or(z.literal("")),
 });
 
-export const rsvpSchema = z.object({
-  mainName: z.string().min(2, "Please enter your full name").max(100),
-  email: z.string().email("Please enter a valid email address"),
-  hotel: z.string().max(150).optional().or(z.literal("")),
-  foodNotes: z.string().max(500).optional().or(z.literal("")),
-  attending: z.boolean().default(true),
-  guests: z.array(guestSchema).max(10, "Please contact us directly for larger parties"),
-});
+export const rsvpSchema = z
+  .object({
+    mainName: z.string().min(2, "Please enter your full name").max(100),
+    email: z.string().email("Please enter a valid email address"),
+    phone: z.string().max(40).optional().or(z.literal("")),
+    attendingSunday: z.boolean().default(true),
+    attendingMonday: z.boolean().default(true),
+    hotel: z.string().max(150).optional().or(z.literal("")),
+    shuttleToHacienda: z.boolean().default(false),
+    shuttleBack: z.boolean().default(false),
+    shuttleBackTime: z.string().max(60).optional().or(z.literal("")),
+    menuChoice: menuChoiceSchema,
+    foodNotes: z.string().max(500).optional().or(z.literal("")),
+    songRequest: z.string().max(150).optional().or(z.literal("")),
+    notes: z.string().max(1000).optional().or(z.literal("")),
+    guests: z.array(guestSchema).max(10, "Please contact us directly for larger parties"),
+  })
+  .refine((data) => data.attendingSunday || data.attendingMonday, {
+    message: "Please let us know if you'll join us on at least one day.",
+    path: ["attendingMonday"],
+  });
 
 export type RsvpFormValues = z.infer<typeof rsvpSchema>;
 

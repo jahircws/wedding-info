@@ -18,21 +18,43 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const { mainName, email, hotel, foodNotes, attending, guests } = parsed.data;
+  const {
+    mainName,
+    email,
+    phone,
+    attendingSunday,
+    attendingMonday,
+    hotel,
+    shuttleToHacienda,
+    shuttleBack,
+    shuttleBackTime,
+    menuChoice,
+    foodNotes,
+    songRequest,
+    notes,
+    guests,
+  } = parsed.data;
 
   try {
     const party = await prisma.party.create({
       data: {
         mainName,
         email,
+        phone: phone || null,
+        attendingSunday,
+        attendingMonday,
         hotel: hotel || null,
+        shuttleToHacienda,
+        shuttleBack,
+        shuttleBackTime: shuttleBack ? shuttleBackTime || null : null,
+        menuChoice: menuChoice || null,
         foodNotes: foodNotes || null,
-        attending,
+        songRequest: songRequest || null,
+        notes: notes || null,
         guests: {
           create: guests.map((g) => ({
             fullName: g.fullName,
-            age: g.age,
-            gender: g.gender || null,
+            menuChoice: g.menuChoice || null,
             foodNotes: g.foodNotes || null,
           })),
         },
