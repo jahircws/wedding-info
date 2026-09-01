@@ -54,6 +54,11 @@ export async function POST(request: NextRequest) {
         guests: {
           create: guests.map((g) => ({
             fullName: g.fullName,
+            attendingSunday: g.attendingSunday,
+            attendingMonday: g.attendingMonday,
+            shuttleToHacienda: g.shuttleToHacienda,
+            shuttleBack: g.shuttleBack,
+            shuttleBackTime: g.shuttleBack ? g.shuttleBackTime || null : null,
             menuChoice: g.menuChoice || null,
             foodNotes: g.foodNotes || null,
           })),

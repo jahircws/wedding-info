@@ -10,6 +10,7 @@ import RsvpForm from "@/components/sections/RsvpForm";
 import GuestListModal from "@/components/sections/GuestListModal";
 import FAQ from "@/components/sections/FAQ";
 import Footer from "@/components/sections/Footer";
+import Hero from "@/components/sections/Hero";
 
 // Site settings are admin-editable and read fresh on every request so
 // changes in /admin/dashboard reflect on the live site without a redeploy.
@@ -46,7 +47,7 @@ export default async function HomePage() {
         venueName={settings.venueName}
         venueAddress={settings.venueAddress}
       />
-      <EnvelopeIntro />
+      <Hero />
       <Venue
         venue={{
           label: "The Wedding",

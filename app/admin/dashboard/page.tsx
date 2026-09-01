@@ -55,6 +55,11 @@ export default async function AdminDashboardPage() {
             guests: p.guests.map((g) => ({
               id: g.id,
               fullName: g.fullName,
+              attendingSunday: g.attendingSunday,
+              attendingMonday: g.attendingMonday,
+              shuttleToHacienda: g.shuttleToHacienda,
+              shuttleBack: g.shuttleBack,
+              shuttleBackTime: g.shuttleBackTime,
               menuChoice: g.menuChoice,
               foodNotes: g.foodNotes,
               status: g.status as "PENDING" | "APPROVED" | "DECLINED",

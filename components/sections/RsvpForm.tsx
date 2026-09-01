@@ -14,8 +14,10 @@ const MENU_LABELS: Record<(typeof MENU_CHOICES)[number], string> = {
 };
 
 const inputClass =
-  "w-full rounded-lg border border-blush-200 bg-white px-4 py-2.5 font-body outline-none transition-colors duration-200 ease-out focus:border-gold";
-const labelClass = "mb-1 block font-heading text-xs uppercase tracking-wide text-ink/70";
+  "w-full rounded-lg border border-clay-600/25 bg-white px-4 py-2.5 font-body outline-none transition-colors duration-200 ease-in-out focus:border-clay-600";
+const labelClass = "mb-1 block font-body text-xs italic uppercase tracking-wide text-clay-700/70";
+const eyebrowClass = "text-xs italic uppercase tracking-[0.22em] text-honey";
+const checkboxLabelClass = "flex items-center gap-3 font-body text-sm text-clay-700/80";
 
 export default function RsvpForm() {
   const [submitState, setSubmitState] = useState<"idle" | "submitting" | "success" | "error">(
@@ -52,6 +54,7 @@ export default function RsvpForm() {
 
   const { fields, append, remove } = useFieldArray({ control, name: "guests" });
   const shuttleBack = watch("shuttleBack");
+  const guestShuttleBack = watch("guests");
 
   async function onSubmit(values: RsvpFormValues) {
     setSubmitState("submitting");
@@ -75,18 +78,18 @@ export default function RsvpForm() {
   }
 
   return (
-    <section id="rsvp" className="bg-ivory px-6 py-24 md:py-32" aria-label="RSVP form">
+    <section id="rsvp" className="bg-cream-100 px-6 py-24 md:py-32" aria-label="RSVP form">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
+        transition={{ duration: 0.7, ease: "easeInOut" }}
         className="mx-auto mb-12 max-w-2xl text-center"
       >
-        <p className="section-heading mb-3">Kindly Reply</p>
-        <h2 className="font-script tracking-wide text-4xl text-blush-500 md:text-5xl">R S V P</h2>
+        <p className={eyebrowClass}>Kindly Reply</p>
+        <h2 className="mt-2 font-montecarlo text-4xl text-clay-500 md:text-5xl">R S V P</h2>
         <SectionOrnament className="mt-4" />
-        <p className="mt-3 font-body text-ink/70">
+        <p className="mt-3 font-body text-clay-700/70">
           Please respond by 4 September 2026 so we can finalise numbers with the venues.
         </p>
       </motion.div>
@@ -96,21 +99,21 @@ export default function RsvpForm() {
           {submitState === "success" ? (
             <motion.div
               key="success"
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-              className="rounded-2xl border border-sage-300 bg-sage-100/60 p-10 text-center"
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+              className="rounded-2xl border border-clay-600/25 bg-cream-50/70 p-10 text-center"
               role="status"
             >
-              <p className="font-script text-3xl text-sage-700">Thank you!</p>
-              <p className="mt-3 font-body text-ink/80">
+              <p className="font-montecarlo text-3xl text-clay-500">Thank you!</p>
+              <p className="mt-3 font-body text-clay-700/80">
                 Your RSVP has been received. We&apos;ll be in touch with any updates.
               </p>
               <button
                 type="button"
                 onClick={() => setSubmitState("idle")}
-                className="mt-6 font-heading text-xs uppercase tracking-widest text-gold underline underline-offset-4"
+                className="mt-6 font-body text-xs italic uppercase tracking-widest text-honey underline underline-offset-4"
               >
                 Submit another response
               </button>
@@ -121,13 +124,13 @@ export default function RsvpForm() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
               onSubmit={handleSubmit(onSubmit)}
               noValidate
-              className="space-y-6 rounded-2xl border border-blush-200 bg-white/70 p-6 shadow-sm md:p-10"
+              className="space-y-6 rounded-2xl border border-clay-600/20 bg-white/70 p-6 shadow-sm md:p-10"
             >
               <fieldset className="space-y-6">
-                <legend className="section-heading">Main Guest</legend>
+                <legend className={eyebrowClass}>Main Guest</legend>
 
                 <div>
                   <label htmlFor="mainName" className={labelClass}>
@@ -179,19 +182,19 @@ export default function RsvpForm() {
                 <div>
                   <p className={labelClass}>Which day(s) will you join us?</p>
                   <div className="flex flex-col gap-3 sm:flex-row sm:gap-8">
-                    <label className="flex items-center gap-3 font-body text-sm text-ink/80">
+                    <label className={checkboxLabelClass}>
                       <input
                         type="checkbox"
                         {...register("attendingSunday")}
-                        className="h-4 w-4 accent-gold"
+                        className="h-4 w-4 accent-honey"
                       />
                       Sunday 27 &mdash; Welcome evening
                     </label>
-                    <label className="flex items-center gap-3 font-body text-sm text-ink/80">
+                    <label className={checkboxLabelClass}>
                       <input
                         type="checkbox"
                         {...register("attendingMonday")}
-                        className="h-4 w-4 accent-gold"
+                        className="h-4 w-4 accent-honey"
                       />
                       Monday 28 &mdash; The wedding
                     </label>
@@ -240,16 +243,16 @@ export default function RsvpForm() {
                 </div>
 
                 <div className="space-y-3">
-                  <label className="flex items-center gap-3 font-body text-sm text-ink/80">
+                  <label className={checkboxLabelClass}>
                     <input
                       type="checkbox"
                       {...register("shuttleToHacienda")}
-                      className="h-4 w-4 accent-gold"
+                      className="h-4 w-4 accent-honey"
                     />
                     I&apos;ll use the shuttle bus to the Hacienda on the 28th
                   </label>
-                  <label className="flex items-center gap-3 font-body text-sm text-ink/80">
-                    <input type="checkbox" {...register("shuttleBack")} className="h-4 w-4 accent-gold" />
+                  <label className={checkboxLabelClass}>
+                    <input type="checkbox" {...register("shuttleBack")} className="h-4 w-4 accent-honey" />
                     I&apos;ll use the shuttle bus back to Seville
                   </label>
                   <AnimatePresence initial={false}>
@@ -258,7 +261,7 @@ export default function RsvpForm() {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3, ease: "easeOut" }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
                         className="overflow-hidden"
                       >
                         <label htmlFor="shuttleBackTime" className={labelClass}>
@@ -293,11 +296,22 @@ export default function RsvpForm() {
 
               <fieldset className="space-y-6">
                 <div className="flex items-center justify-between">
-                  <legend className="section-heading">Additional Guests</legend>
+                  <legend className={eyebrowClass}>Additional Guests</legend>
                   <button
                     type="button"
-                    onClick={() => append({ fullName: "", menuChoice: "", foodNotes: "" })}
-                    className="rounded-full border border-gold px-4 py-1.5 font-heading text-xs uppercase tracking-widest text-gold transition-colors duration-200 ease-out hover:bg-gold hover:text-ivory"
+                    onClick={() =>
+                      append({
+                        fullName: "",
+                        attendingSunday: true,
+                        attendingMonday: true,
+                        shuttleToHacienda: false,
+                        shuttleBack: false,
+                        shuttleBackTime: "",
+                        menuChoice: "",
+                        foodNotes: "",
+                      })
+                    }
+                    className="rounded-sm border border-clay-600 px-4 py-1.5 font-body text-xs italic uppercase tracking-widest text-clay-500 transition-colors duration-200 ease-in-out hover:bg-clay-800 hover:text-cream-50"
                   >
                     + Add another guest
                   </button>
@@ -310,35 +324,33 @@ export default function RsvpForm() {
                 )}
 
                 <AnimatePresence initial={false}>
-                  {fields.map((field, index) => (
-                    <motion.div
-                      key={field.id}
-                      initial={{ opacity: 0, y: 12 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -8 }}
-                      transition={{ duration: 0.3, ease: "easeOut" }}
-                      className="space-y-4 rounded-xl border border-sage-300/60 bg-sage-100/30 p-4"
-                    >
-                      <div className="flex items-center justify-between">
-                        <p className="font-heading text-xs uppercase tracking-wide text-sage-700">
-                          Guest {index + 1}
-                        </p>
-                        <button
-                          type="button"
-                          onClick={() => remove(index)}
-                          aria-label={`Remove guest ${index + 1}`}
-                          className="font-heading text-xs uppercase tracking-widest text-red-500 hover:underline"
-                        >
-                          Remove
-                        </button>
-                      </div>
-
-                      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                        <div className="md:col-span-2">
-                          <label
-                            htmlFor={`guests.${index}.fullName`}
-                            className={labelClass}
+                  {fields.map((field, index) => {
+                    const guestShuttleBackOn = guestShuttleBack?.[index]?.shuttleBack;
+                    return (
+                      <motion.div
+                        key={field.id}
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -8 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        className="space-y-4 rounded-xl border border-clay-600/20 bg-cream-50/50 p-4"
+                      >
+                        <div className="flex items-center justify-between">
+                          <p className="font-body text-xs italic uppercase tracking-wide text-honey">
+                            Guest {index + 1}
+                          </p>
+                          <button
+                            type="button"
+                            onClick={() => remove(index)}
+                            aria-label={`Remove guest ${index + 1}`}
+                            className="font-body text-xs italic uppercase tracking-widest text-red-500 hover:underline"
                           >
+                            Remove
+                          </button>
+                        </div>
+
+                        <div>
+                          <label htmlFor={`guests.${index}.fullName`} className={labelClass}>
                             Full name
                           </label>
                           <input
@@ -356,43 +368,102 @@ export default function RsvpForm() {
                         </div>
 
                         <div>
-                          <label
-                            htmlFor={`guests.${index}.menuChoice`}
-                            className={labelClass}
-                          >
-                            Menu choice
-                          </label>
-                          <select
-                            id={`guests.${index}.menuChoice`}
-                            {...register(`guests.${index}.menuChoice` as const)}
-                            className={inputClass}
-                          >
-                            <option value="">Select a menu</option>
-                            {MENU_CHOICES.map((choice) => (
-                              <option key={choice} value={choice}>
-                                {MENU_LABELS[choice]}
-                              </option>
-                            ))}
-                          </select>
+                          <p className={labelClass}>Which day(s) will they join?</p>
+                          <div className="flex flex-col gap-3 sm:flex-row sm:gap-8">
+                            <label className={checkboxLabelClass}>
+                              <input
+                                type="checkbox"
+                                {...register(`guests.${index}.attendingSunday` as const)}
+                                className="h-4 w-4 accent-honey"
+                              />
+                              Sunday 27
+                            </label>
+                            <label className={checkboxLabelClass}>
+                              <input
+                                type="checkbox"
+                                {...register(`guests.${index}.attendingMonday` as const)}
+                                className="h-4 w-4 accent-honey"
+                              />
+                              Monday 28
+                            </label>
+                          </div>
                         </div>
 
-                        <div>
-                          <label
-                            htmlFor={`guests.${index}.foodNotes`}
-                            className={labelClass}
-                          >
-                            Allergies / preferences
-                          </label>
-                          <input
-                            id={`guests.${index}.foodNotes`}
-                            type="text"
-                            {...register(`guests.${index}.foodNotes` as const)}
-                            className={inputClass}
-                          />
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                          <div>
+                            <label htmlFor={`guests.${index}.menuChoice`} className={labelClass}>
+                              Menu choice
+                            </label>
+                            <select
+                              id={`guests.${index}.menuChoice`}
+                              {...register(`guests.${index}.menuChoice` as const)}
+                              className={inputClass}
+                            >
+                              <option value="">Select a menu</option>
+                              {MENU_CHOICES.map((choice) => (
+                                <option key={choice} value={choice}>
+                                  {MENU_LABELS[choice]}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+
+                          <div>
+                            <label htmlFor={`guests.${index}.foodNotes`} className={labelClass}>
+                              Allergies / preferences
+                            </label>
+                            <input
+                              id={`guests.${index}.foodNotes`}
+                              type="text"
+                              {...register(`guests.${index}.foodNotes` as const)}
+                              className={inputClass}
+                            />
+                          </div>
                         </div>
-                      </div>
-                    </motion.div>
-                  ))}
+
+                        <div className="space-y-3">
+                          <label className={checkboxLabelClass}>
+                            <input
+                              type="checkbox"
+                              {...register(`guests.${index}.shuttleToHacienda` as const)}
+                              className="h-4 w-4 accent-honey"
+                            />
+                            They&apos;ll use the shuttle bus to the Hacienda
+                          </label>
+                          <label className={checkboxLabelClass}>
+                            <input
+                              type="checkbox"
+                              {...register(`guests.${index}.shuttleBack` as const)}
+                              className="h-4 w-4 accent-honey"
+                            />
+                            They&apos;ll use the shuttle bus back to Seville
+                          </label>
+                          <AnimatePresence initial={false}>
+                            {guestShuttleBackOn && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: "auto" }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.3, ease: "easeInOut" }}
+                                className="overflow-hidden"
+                              >
+                                <label htmlFor={`guests.${index}.shuttleBackTime`} className={labelClass}>
+                                  Roughly what time?
+                                </label>
+                                <input
+                                  id={`guests.${index}.shuttleBackTime`}
+                                  type="text"
+                                  placeholder="e.g. 1:00 AM"
+                                  {...register(`guests.${index}.shuttleBackTime` as const)}
+                                  className={inputClass}
+                                />
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
                 </AnimatePresence>
               </fieldset>
 
@@ -405,7 +476,7 @@ export default function RsvpForm() {
               <button
                 type="submit"
                 disabled={submitState === "submitting"}
-                className="w-full rounded-full bg-blush-500 px-8 py-3 font-heading text-sm uppercase tracking-[0.2em] text-ivory transition-colors duration-200 ease-out hover:bg-blush-400 disabled:opacity-60"
+                className="w-full rounded-sm bg-clay-700 px-8 py-3 font-body text-sm uppercase tracking-[0.2em] text-cream-50 transition-colors duration-200 ease-in-out hover:bg-clay-800 disabled:opacity-60"
               >
                 {submitState === "submitting" ? "Sending..." : "Send RSVP"}
               </button>

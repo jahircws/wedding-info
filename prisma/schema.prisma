@@ -40,14 +40,19 @@ model Party {
 }
 
 model Guest {
-  id          String   @id @default(cuid())
-  partyId     String
-  party       Party    @relation(fields: [partyId], references: [id], onDelete: Cascade)
-  fullName    String
-  menuChoice  String? // "MEAT" | "FISH" | "VEGETARIAN"
-  foodNotes   String?
-  status      String   @default("PENDING") // "PENDING" | "APPROVED" | "DECLINED"
-  createdAt   DateTime @default(now())
+  id                String   @id @default(cuid())
+  partyId           String
+  party             Party    @relation(fields: [partyId], references: [id], onDelete: Cascade)
+  fullName          String
+  attendingSunday   Boolean  @default(true)
+  attendingMonday   Boolean  @default(true)
+  shuttleToHacienda Boolean  @default(false)
+  shuttleBack       Boolean  @default(false)
+  shuttleBackTime   String? // rough time, only meaningful when shuttleBack is true
+  menuChoice        String? // "MEAT" | "FISH" | "VEGETARIAN"
+  foodNotes         String?
+  status            String   @default("PENDING") // "PENDING" | "APPROVED" | "DECLINED"
+  createdAt         DateTime @default(now())
 }
 
 // Singleton row holding admin-editable site content (date/venue/etc.)

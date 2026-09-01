@@ -1,5 +1,15 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
-  "/page": "app/page.js",
-  "/admin/login/page": "app/admin/login/page.js"
+  "/api/admin/login/route": "app/api/admin/login/route.js",
+  "/api/admin/logout/route": "app/api/admin/logout/route.js",
+  "/admin/login/page": "app/admin/login/page.js",
+  "/api/admin/rsvps/[id]/route": "app/api/admin/rsvps/[id]/route.js",
+  "/api/admin/settings/route": "app/api/admin/settings/route.js",
+  "/api/admin/rsvps/route": "app/api/admin/rsvps/route.js",
+  "/sitemap.xml/route": "app/sitemap.xml/route.js",
+  "/robots.txt/route": "app/robots.txt/route.js",
+  "/api/rsvp/route": "app/api/rsvp/route.js",
+  "/api/guests/approved/route": "app/api/guests/approved/route.js",
+  "/admin/dashboard/page": "app/admin/dashboard/page.js",
+  "/page": "app/page.js"
 }

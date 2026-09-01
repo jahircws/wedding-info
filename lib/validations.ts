@@ -5,6 +5,11 @@ const menuChoiceSchema = z.enum(MENU_CHOICES).optional().or(z.literal(""));
 
 export const guestSchema = z.object({
   fullName: z.string().min(2, "Please enter a full name").max(100),
+  attendingSunday: z.boolean().default(true),
+  attendingMonday: z.boolean().default(true),
+  shuttleToHacienda: z.boolean().default(false),
+  shuttleBack: z.boolean().default(false),
+  shuttleBackTime: z.string().max(60).optional().or(z.literal("")),
   menuChoice: menuChoiceSchema,
   foodNotes: z.string().max(500).optional().or(z.literal("")),
 });

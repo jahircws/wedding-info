@@ -1,11 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=MonteCarlo&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  /* Fleur De Leah is loaded via <link> in the root layout (not next/font),
-     so we declare its CSS variable manually here for Tailwind's font-script. */
-  --font-fleur: "Fleur De Leah", cursive;
+  /* The whole site now uses just these two families — DM Serif Text for
+     body copy/headings, MonteCarlo for the couple's-name script lettering —
+     loaded together via the @import above rather than next/font. */
+  --font-dmserif: "DM Serif Text", serif;
+  --font-montecarlo: "MonteCarlo", cursive;
 }
 
 html {
@@ -35,4 +39,156 @@ html {
 
 .section-heading {
   @apply font-heading text-xs md:text-sm tracking-[0.3em] uppercase text-gold;
+}
+
+/* Decorative corner-bracket frame for the hero, matching the approved
+   "Option A: Parallax Courtyard" mockup. Kept as plain CSS since Tailwind's
+   utility classes can't express two independently-positioned pseudo-element
+   corners on one element. */
+.hero-frame {
+  position: absolute;
+  inset: clamp(10px, 2.5vh, 26px) clamp(12px, 3vw, 26px);
+  border: 1px solid rgba(110, 65, 46, 0.3);
+  pointer-events: none;
+}
+.hero-frame::before,
+.hero-frame::after {
+  content: "";
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(110, 65, 46, 0.5);
+}
+.hero-frame::before {
+  top: -1px;
+  left: -1px;
+  border-right: none;
+  border-bottom: none;
+}
+.hero-frame::after {
+  bottom: -1px;
+  right: -1px;
+  border-left: none;
+  border-top: none;
+}
+
+/* Hero (courtyard) layout — same fluid clamp() sizing tuned in the approved
+   mockup, so the whole section fills the viewport with no dead space and
+   the type scales smoothly between phone, tablet, and desktop. */
+.hero-shell {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: clamp(4px, 1.4vh, 14px);
+  text-align: center;
+  padding: clamp(14px, 3.5vh, 7vh) clamp(16px, 6vw, 48px);
+  background:
+    radial-gradient(ellipse at 50% 8%, #fbeee5 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, #e8c8b4 0%, transparent 60%),
+    #f7e5db;
+}
+.hero-eyebrow {
+  font-size: clamp(13px, 2vh, 17px);
+  letter-spacing: 0.22em;
+}
+.hero-stage {
+  width: min(480px, 66vw);
+  max-height: 32vh;
+}
+.hero-stage img {
+  max-height: 32vh;
+  filter: drop-shadow(0 18px 26px rgba(74, 35, 24, 0.12));
+}
+.hero-stage-shadow {
+  width: 78%;
+  height: clamp(8px, 1.5vh, 18px);
+  margin: clamp(2px, 0.5vh, 6px) auto 0;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(74, 35, 24, 0.14) 0%, transparent 72%);
+}
+.hero-names {
+  font-size: clamp(44px, 8vw, 96px);
+  line-height: 1.1;
+}
+.hero-amp {
+  font-size: 0.42em;
+}
+.hero-rule {
+  width: 70px;
+  height: 1px;
+}
+.hero-date {
+  font-size: clamp(16px, 2.2vh, 22px);
+}
+.hero-place {
+  font-size: clamp(12px, 1.7vh, 16px);
+  letter-spacing: 0.18em;
+}
+.hero-rsvp {
+  padding: clamp(11px, 1.8vh, 16px) clamp(30px, 5.5vw, 48px);
+  font-size: clamp(15px, 1.9vh, 18px);
+}
+.hero-footnote {
+  font-size: clamp(11px, 1.4vh, 13px);
+  letter-spacing: 0.06em;
+}
+
+@media (max-width: 1024px) {
+  .hero-shell {
+    justify-content: center;
+    gap: clamp(10px, 2.6vh, 22px);
+  }
+  .hero-names {
+    font-size: clamp(48px, 11vw, 84px);
+  }
+  .hero-eyebrow {
+    font-size: clamp(13px, 1.9vh, 16px);
+  }
+  .hero-date {
+    font-size: clamp(16px, 2vh, 19px);
+  }
+  .hero-place {
+    font-size: clamp(12px, 1.6vh, 14px);
+  }
+  .hero-rsvp {
+    font-size: clamp(15px, 1.8vh, 17px);
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-shell {
+    justify-content: center;
+    gap: clamp(12px, 2.6vh, 20px);
+  }
+  .hero-stage {
+    width: min(360px, 72vw);
+    max-height: 26vh;
+  }
+  .hero-stage img {
+    max-height: 26vh;
+  }
+  .hero-names {
+    font-size: clamp(46px, 13vw, 64px);
+  }
+  .hero-eyebrow {
+    font-size: 14px;
+  }
+  .hero-date {
+    font-size: 17px;
+  }
+  .hero-place {
+    font-size: 13px;
+  }
+  .hero-rsvp {
+    font-size: 16px;
+    padding: 14px clamp(32px, 9vw, 44px);
+  }
+  .hero-footnote {
+    font-size: 12px;
+  }
 }

@@ -25,34 +25,30 @@ const config: Config = {
         },
         ink: "#3a332e",
         gold: "#b08d57",
+        // Hero palette from the approved "Option A: Parallax Courtyard" design —
+        // kept separate from the tokens above so existing sections are untouched.
+        cream: {
+          50: "#fbeee5",
+          100: "#f7e5db",
+          200: "#f1d9cb",
+          300: "#e8c8b4",
+        },
+        clay: {
+          500: "#8b3f27",
+          600: "#6e412e",
+          700: "#663c2c",
+          800: "#4a2318",
+        },
+        honey: "#a8703f",
       },
       fontFamily: {
-        script: ["var(--font-fleur)", "cursive"],
-        heading: ["var(--font-poppins)", "sans-serif"],
+        script: ["var(--font-montecarlo)", "cursive"],
+        heading: ["var(--font-dmserif)", "serif"],
         body: ["var(--font-dmserif)", "serif"],
+        montecarlo: ["var(--font-montecarlo)", "cursive"],
       },
       transitionTimingFunction: {
         "gentle-out": "cubic-bezier(0.16, 1, 0.3, 1)",
-      },
-      keyframes: {
-        "flap-wing": {
-          "0%, 100%": { transform: "scaleX(1)" },
-          "50%": { transform: "scaleX(0.55)" },
-        },
-        "drift": {
-          "0%": { transform: "translate(0,0) rotate(0deg)" },
-          "50%": { transform: "translate(10px,-14px) rotate(4deg)" },
-          "100%": { transform: "translate(0,0) rotate(0deg)" },
-        },
-        "slow-spin": {
-          "0%": { transform: "rotate(0deg)" },
-          "100%": { transform: "rotate(360deg)" },
-        },
-      },
-      animation: {
-        "flap-wing": "flap-wing 1.6s ease-in-out infinite",
-        "drift": "drift 6s ease-in-out infinite",
-        "slow-spin": "slow-spin 40s linear infinite",
       },
     },
   },

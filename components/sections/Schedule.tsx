@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import FloatingButterfly from "@/components/ui/FloatingButterfly";
 import SectionOrnament from "@/components/ui/SectionOrnament";
 
 const days = [
@@ -11,8 +10,8 @@ const days = [
     venue: "Casa de Pilatos",
     dressCode: "Cocktail attire",
     items: [
-      { time: "8:00 PM", title: "Welcome drinks & live flamenco (outdoor courtyard)" },
-      { time: "Until 11:00 PM", title: "The evening continues indoors" },
+      { time: "8:00 PM", title: "Cocktail reception with substantial canapés (outdoor courtyard)" },
+      { time: "11:00 PM", title: "The evening ends" },
     ],
   },
   {
@@ -33,18 +32,16 @@ const days = [
 
 export default function Schedule() {
   return (
-    <section id="schedule" className="relative overflow-hidden bg-ivory px-6 py-24 md:py-32" aria-label="Wedding schedule">
-      <FloatingButterfly className="absolute right-12 top-16" delay={0.8} size={26} color="#8a9a76" />
-
+    <section id="schedule" className="relative overflow-hidden bg-cream-100 px-6 py-24 md:py-32" aria-label="Wedding schedule">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
+        transition={{ duration: 0.7, ease: "easeInOut" }}
         className="mx-auto mb-14 max-w-2xl text-center"
       >
-        <p className="section-heading mb-3">Two Days to Celebrate</p>
-        <h2 className="font-script tracking-wide text-4xl text-blush-500 md:text-5xl">The Schedule</h2>
+        <p className="text-xs italic uppercase tracking-[0.22em] text-honey md:text-sm">Two Days to Celebrate</p>
+        <h2 className="mt-2 font-montecarlo text-4xl text-clay-500 md:text-5xl">The Schedule</h2>
         <SectionOrnament className="mt-6" />
       </motion.div>
 
@@ -55,27 +52,27 @@ export default function Schedule() {
             initial={{ opacity: 0, y: 28 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7, ease: "easeOut", delay: dayIdx * 0.1 }}
-            className="rounded-2xl border border-sage-300/60 bg-sage-100/40 p-8"
+            transition={{ duration: 0.7, ease: "easeInOut", delay: dayIdx * 0.1 }}
+            className="rounded-2xl border border-clay-600/25 bg-cream-50/60 p-8"
           >
-            <p className="font-heading text-xs uppercase tracking-[0.25em] text-sage-700">
+            <p className="font-body text-xs italic uppercase tracking-[0.25em] text-honey">
               {day.label}
             </p>
-            <h3 className="mt-1 font-body text-xl italic text-ink">{day.date}</h3>
-            <p className="mt-1 font-heading text-sm text-ink/70">{day.venue}</p>
+            <h3 className="mt-1 font-body text-xl italic text-clay-700">{day.date}</h3>
+            <p className="mt-1 font-body text-sm text-clay-700/70">{day.venue}</p>
 
             <ul className="mt-6 space-y-4">
               {day.items.map((item) => (
                 <li key={item.title} className="flex items-baseline gap-4">
-                  <span className="w-28 shrink-0 font-heading text-xs uppercase tracking-wider text-gold">
+                  <span className="w-28 shrink-0 font-body text-xs italic uppercase tracking-wider text-honey">
                     {item.time}
                   </span>
-                  <span className="font-body text-base text-ink/85">{item.title}</span>
+                  <span className="font-body text-base text-clay-700/85">{item.title}</span>
                 </li>
               ))}
             </ul>
 
-            <p className="mt-6 border-t border-sage-300/50 pt-4 font-heading text-xs uppercase tracking-widest text-ink/60">
+            <p className="mt-6 border-t border-clay-600/20 pt-4 font-body text-xs italic uppercase tracking-widest text-clay-700/60">
               Dress code &middot; {day.dressCode}
             </p>
           </motion.div>
@@ -86,8 +83,8 @@ export default function Schedule() {
         initial={{ opacity: 0, y: 12 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.5 }}
-        transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-        className="relative z-10 mx-auto mt-10 max-w-2xl text-center font-body text-sm text-ink/70"
+        transition={{ duration: 0.6, ease: "easeInOut", delay: 0.2 }}
+        className="relative z-10 mx-auto mt-10 max-w-2xl text-center font-body text-sm text-clay-700/70"
       >
         Getting home on Monday: shuttle buses run back to Seville every 30 minutes
         from 12:30 AM until 3:00 AM.

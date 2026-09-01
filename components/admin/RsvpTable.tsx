@@ -7,6 +7,11 @@ type Status = "PENDING" | "APPROVED" | "DECLINED";
 type GuestRow = {
   id: string;
   fullName: string;
+  attendingSunday: boolean;
+  attendingMonday: boolean;
+  shuttleToHacienda: boolean;
+  shuttleBack: boolean;
+  shuttleBackTime: string | null;
   menuChoice: string | null;
   foodNotes: string | null;
   status: Status;
@@ -46,6 +51,23 @@ const MENU_LABELS: Record<string, string> = {
 function menuLabel(choice: string | null) {
   if (!choice) return null;
   return MENU_LABELS[choice] ?? choice;
+}
+
+function summarizeAttendance(entity: {
+  attendingSunday: boolean;
+  attendingMonday: boolean;
+  shuttleToHacienda: boolean;
+  shuttleBack: boolean;
+  shuttleBackTime: string | null;
+}) {
+  const days = [entity.attendingSunday ? "Sunday" : null, entity.attendingMonday ? "Monday" : null].filter(
+    Boolean
+  );
+  const shuttleParts = [
+    entity.shuttleToHacienda ? "to Hacienda" : null,
+    entity.shuttleBack ? `back${entity.shuttleBackTime ? ` (~${entity.shuttleBackTime})` : ""}` : null,
+  ].filter(Boolean);
+  return { days, shuttleParts };
 }
 
 export default function RsvpTable({ initialParties }: { initialParties: PartyRow[] }) {
@@ -130,16 +152,7 @@ export default function RsvpTable({ initialParties }: { initialParties: PartyRow
 
       <div className="space-y-6">
         {filtered.map((party) => {
-          const days = [
-            party.attendingSunday ? "Sunday" : null,
-            party.attendingMonday ? "Monday" : null,
-          ].filter(Boolean);
-          const shuttleParts = [
-            party.shuttleToHacienda ? "to Hacienda" : null,
-            party.shuttleBack
-              ? `back${party.shuttleBackTime ? ` (~${party.shuttleBackTime})` : ""}`
-              : null,
-          ].filter(Boolean);
+          const { days, shuttleParts } = summarizeAttendance(party);
 
           return (
             <div key={party.id} className="rounded-2xl border border-blush-200 bg-white/70 p-5">
@@ -187,32 +200,37 @@ export default function RsvpTable({ initialParties }: { initialParties: PartyRow
 
               {party.guests.length > 0 && (
                 <ul className="mt-4 space-y-2 border-t border-blush-100 pt-4">
-                  {party.guests.map((guest) => (
-                    <li key={guest.id} className="flex flex-wrap items-center justify-between gap-2 text-sm">
-                      <span className="text-ink/80">
-                        {guest.fullName}
-                        {guest.menuChoice ? ` \u00b7 ${menuLabel(guest.menuChoice)}` : ""}
-                        {guest.foodNotes ? ` \u00b7 ${guest.foodNotes}` : ""}
-                      </span>
-                      <div className="flex items-center gap-2">
-                        <span className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${statusStyles[guest.status]}`}>
-                          {guest.status}
+                  {party.guests.map((guest) => {
+                    const guestSummary = summarizeAttendance(guest);
+                    return (
+                      <li key={guest.id} className="flex flex-wrap items-center justify-between gap-2 text-sm">
+                        <span className="text-ink/80">
+                          {guest.fullName}
+                          {guestSummary.days.length > 0 ? ` \u00b7 ${guestSummary.days.join(" + ")}` : " \u00b7 Not attending"}
+                          {guest.menuChoice ? ` \u00b7 ${menuLabel(guest.menuChoice)}` : ""}
+                          {guest.foodNotes ? ` \u00b7 ${guest.foodNotes}` : ""}
+                          {guestSummary.shuttleParts.length > 0 ? ` \u00b7 Shuttle: ${guestSummary.shuttleParts.join(", ")}` : ""}
                         </span>
-                        <button
-                          onClick={() => updateStatus(guest.id, "guest", "APPROVED")}
-                          className="rounded-full border border-sage-500 px-2 py-0.5 text-[11px] text-sage-700 hover:bg-sage-100"
-                        >
-                          Approve
-                        </button>
-                        <button
-                          onClick={() => updateStatus(guest.id, "guest", "DECLINED")}
-                          className="rounded-full border border-red-400 px-2 py-0.5 text-[11px] text-red-500 hover:bg-red-50"
-                        >
-                          Decline
-                        </button>
-                      </div>
-                    </li>
-                  ))}
+                        <div className="flex items-center gap-2">
+                          <span className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${statusStyles[guest.status]}`}>
+                            {guest.status}
+                          </span>
+                          <button
+                            onClick={() => updateStatus(guest.id, "guest", "APPROVED")}
+                            className="rounded-full border border-sage-500 px-2 py-0.5 text-[11px] text-sage-700 hover:bg-sage-100"
+                          >
+                            Approve
+                          </button>
+                          <button
+                            onClick={() => updateStatus(guest.id, "guest", "DECLINED")}
+                            className="rounded-full border border-red-400 px-2 py-0.5 text-[11px] text-red-500 hover:bg-red-50"
+                          >
+                            Decline
+                          </button>
+                        </div>
+                      </li>
+                    );
+                  })}
                 </ul>
               )}
             </div>
