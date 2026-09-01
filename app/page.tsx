@@ -47,7 +47,6 @@ export default async function HomePage() {
         venueAddress={settings.venueAddress}
       />
       <EnvelopeIntro />
-      <CouplePortraits />
       <Venue
         venue={{
           label: "The Wedding",
@@ -58,7 +57,6 @@ export default async function HomePage() {
           dateLabel: "Monday, 28 September 2026",
         }}
       />
-      <OurStory />
       <Schedule />
       <Gifts />
       <RsvpForm />
