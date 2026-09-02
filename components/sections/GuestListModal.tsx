@@ -76,7 +76,7 @@ export default function GuestListModal() {
               className="flex max-h-[80vh] w-full max-w-md flex-col rounded-none bg-ivory p-8 text-left shadow-2xl"
             >
               <div className="mb-4 flex items-center justify-between">
-                <h3 className="font-heading text-3xl text-blush-500">Who&apos;s Coming</h3>
+                <h3 className="font-heading text-3xl text-blush-500 md:break-normal">Who&apos;s Coming</h3>
                 <button
                   type="button"
                   onClick={() => setOpen(false)}

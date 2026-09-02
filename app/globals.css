@@ -169,7 +169,7 @@ html {
     gap: clamp(10px, 2.6vh, 22px);
   }
   .hero-names {
-    font-size: clamp(48px, 11vw, 84px);
+    font-size: 70px;
   }
   .hero-eyebrow {
     font-size: clamp(13px, 1.9vh, 16px);
@@ -198,7 +198,7 @@ html {
     max-height: 26vh;
   }
   .hero-names {
-    font-size: clamp(46px, 13vw, 64px);
+    font-size: 35px;
   }
   .hero-eyebrow {
     font-size: 14px;

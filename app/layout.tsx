@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import MobileNav from "@/components/ui/MobileNav";
 
 function getSiteUrl() {
   const raw = process.env.NEXT_PUBLIC_SITE_URL || "https://saraandatef.com";
@@ -51,7 +52,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="font-body antialiased">{children}</body>
+      <body className="font-body antialiased">
+        <MobileNav />
+        {children}
+      </body>
     </html>
   );
 }

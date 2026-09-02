@@ -47,7 +47,7 @@ export default function Venue({ venue }: { venue: VenueInfo }) {
           className="mx-auto mb-12 max-w-2xl text-center"
         >
           <DirectionsSketch className="mx-auto h-20 w-20 text-cream-100/80" />
-          <h2 className="mt-3 font-heading text-4xl text-cream-50 md:text-5xl">The Venues</h2>
+          <h2 className="mt-3 font-heading text-4xl text-cream-50 leading-[5rem] md:break-normal md:text-5xl md:leading-tight">The Venues</h2>
           <SectionOrnament className="mt-4" />
         </motion.div>
 

@@ -87,8 +87,7 @@ export default function RsvpForm() {
         className="mx-auto mb-12 max-w-2xl text-center"
       >
         <img src="/icons/champagne.svg" alt="" aria-hidden="true" className="mx-auto mb-10 h-20 w-auto text-honey" />
-        <h2 className="mt-2 font-heading text-4xl text-clay-500 md:text-5xl">Join Us</h2>
-        <SectionOrnament className="mt-4" />
+        <h2 className="mt-2 font-heading text-4xl leading-[5rem] text-clay-500 md:break-normal md:text-5xl md:leading-tight">Join Us</h2>
         <p className="mt-3 font-body text-clay-700/70">
           Please reply by <span className="font-bold text-clay-700">4 September 2026</span> so we can give the venues a final headcount.
         </p>

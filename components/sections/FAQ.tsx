@@ -57,7 +57,7 @@ export default function FAQ() {
       >
         <img src="/icons/heart-ribbon.svg" alt="" aria-hidden="true" className="mx-auto mb-10 h-6 w-auto text-honey" />
         <h2 className="font-heading text-4xl text-clay-500 md:text-5xl">Questions</h2>
-        <SectionOrnament className="mt-6" />
+        
       </motion.div>
 
       <div className="relative z-10 mx-auto max-w-2xl divide-y divide-clay-600/25">

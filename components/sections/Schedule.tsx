@@ -41,8 +41,8 @@ export default function Schedule() {
         className="mx-auto mb-14 max-w-2xl text-center"
       >
         <img src="/icons/cake.svg" alt="" className="mx-auto mb-10 h-20 w-auto text-honey" />
-        <h2 className="mt-5 font-heading text-4xl text-clay-500 md:text-5xl">The Schedule</h2>
-        <SectionOrnament className="mt-6" />
+        <h2 className="mt-5 font-heading text-4xl leading-[5rem] text-clay-500 md:break-normal md:text-5xl md:leading-tight">The Schedule</h2>
+        
       </motion.div>
 
       <div className="relative z-10 mx-auto grid max-w-4xl grid-cols-1 gap-10 md:grid-cols-2">

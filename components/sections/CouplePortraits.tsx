@@ -50,7 +50,7 @@ export default function CouplePortraits() {
       >
         <p className="section-heading mb-3">The Happy Couple</p>
         <p className="font-body text-lg italic text-ink/70 md:text-xl">This is us.</p>
-        <SectionOrnament className="mt-6" />
+        
       </motion.div>
 
       {/* One shared crest — both initials, one wreath — instead of two
