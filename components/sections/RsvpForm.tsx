@@ -14,9 +14,9 @@ const MENU_LABELS: Record<(typeof MENU_CHOICES)[number], string> = {
 };
 
 const inputClass =
-  "w-full rounded-lg border border-clay-600/25 bg-white px-4 py-2.5 font-body outline-none transition-colors duration-200 ease-in-out focus:border-clay-600";
-const labelClass = "mb-1 block font-body text-xs italic uppercase tracking-wide text-clay-700/70";
-const eyebrowClass = "text-xs italic uppercase tracking-[0.22em] text-honey";
+  "w-full rounded-none border border-clay-600/25 bg-white px-4 py-2.5 font-body outline-none transition-colors duration-200 ease-in-out focus:border-clay-600";
+const labelClass = "mb-1 block font-body text-xs uppercase tracking-wide text-clay-700/70";
+const eyebrowClass = "text-xs uppercase tracking-[0.22em] text-honey";
 const checkboxLabelClass = "flex items-center gap-3 font-body text-sm text-clay-700/80";
 
 export default function RsvpForm() {
@@ -86,11 +86,11 @@ export default function RsvpForm() {
         transition={{ duration: 0.7, ease: "easeInOut" }}
         className="mx-auto mb-12 max-w-2xl text-center"
       >
-        <p className={eyebrowClass}>Kindly Reply</p>
-        <h2 className="mt-2 font-montecarlo text-4xl text-clay-500 md:text-5xl">R S V P</h2>
+        <img src="/icons/champagne.svg" alt="" className="mx-auto h-20 w-auto text-honey" />
+        <h2 className="mt-2 font-heading text-4xl text-clay-500 md:text-5xl">Join Us</h2>
         <SectionOrnament className="mt-4" />
         <p className="mt-3 font-body text-clay-700/70">
-          Please respond by 4 September 2026 so we can finalise numbers with the venues.
+          Please reply by <span className="font-bold text-clay-700">4 September 2026</span> so we can give the venues a final headcount.
         </p>
       </motion.div>
 
@@ -106,9 +106,9 @@ export default function RsvpForm() {
               className="rounded-2xl border border-clay-600/25 bg-cream-50/70 p-10 text-center"
               role="status"
             >
-              <p className="font-montecarlo text-3xl text-clay-500">Thank you!</p>
+              <p className="font-heading text-3xl text-clay-500">Thank you!</p>
               <p className="mt-3 font-body text-clay-700/80">
-                Your RSVP has been received. We&apos;ll be in touch with any updates.
+                We&apos;ve got your RSVP. We&apos;ll reach out if anything changes.
               </p>
               <button
                 type="button"
@@ -127,7 +127,7 @@ export default function RsvpForm() {
               transition={{ duration: 0.4, ease: "easeInOut" }}
               onSubmit={handleSubmit(onSubmit)}
               noValidate
-              className="space-y-6 rounded-2xl border border-clay-600/20 bg-white/70 p-6 shadow-sm md:p-10"
+              className="space-y-6 rounded-none border border-clay-600/20 bg-white/70 p-6 shadow-sm md:p-10"
             >
               <fieldset className="space-y-6">
                 <legend className={eyebrowClass}>Main Guest</legend>
@@ -311,7 +311,7 @@ export default function RsvpForm() {
                         foodNotes: "",
                       })
                     }
-                    className="rounded-sm border border-clay-600 px-4 py-1.5 font-body text-xs italic uppercase tracking-widest text-clay-500 transition-colors duration-200 ease-in-out hover:bg-clay-800 hover:text-cream-50"
+                    className="rounded-sm border border-clay-600 px-4 py-1.5 font-body text-xs uppercase tracking-widest text-clay-500 transition-colors duration-200 ease-in-out hover:bg-clay-800 hover:text-cream-50"
                   >
                     + Add another guest
                   </button>
@@ -333,7 +333,7 @@ export default function RsvpForm() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -8 }}
                         transition={{ duration: 0.3, ease: "easeInOut" }}
-                        className="space-y-4 rounded-xl border border-clay-600/20 bg-cream-50/50 p-4"
+                        className="space-y-4 rounded-none border border-clay-600/20 bg-cream-50/50 p-4"
                       >
                         <div className="flex items-center justify-between">
                           <p className="font-body text-xs italic uppercase tracking-wide text-honey">
@@ -478,7 +478,7 @@ export default function RsvpForm() {
                 disabled={submitState === "submitting"}
                 className="w-full rounded-sm bg-clay-700 px-8 py-3 font-body text-sm uppercase tracking-[0.2em] text-cream-50 transition-colors duration-200 ease-in-out hover:bg-clay-800 disabled:opacity-60"
               >
-                {submitState === "submitting" ? "Sending..." : "Send RSVP"}
+                {submitState === "submitting" ? "Confirming..." : "Confirm Reply"}
               </button>
             </motion.form>
           )}

@@ -27,13 +27,13 @@ export default function Hero() {
     <section id="hero" className="hero-shell text-clay-700">
       <div className="hero-frame" aria-hidden="true" />
 
-      <motion.p className="hero-eyebrow italic uppercase text-honey" {...riseIn(0.2)}>
+      <motion.p className="hero-eyebrow uppercase text-honey" {...riseIn(0.2)}>
         We look forward to welcoming you
       </motion.p>
 
       <motion.div className="hero-stage" {...riseIn(0.4)}>
         <Image
-          src="/chapel.png"
+          src="/church.png"
           alt="Illustration of a Spanish courtyard with a fountain, palms, and orange trees"
           width={1535}
           height={672}
@@ -42,10 +42,9 @@ export default function Hero() {
           className="h-auto w-full object-contain"
         />
       </motion.div>
-      <div className="hero-stage-shadow" />
 
       <motion.div
-        className="hero-names flex items-baseline gap-[0.28em] font-montecarlo text-clay-500"
+        className="hero-names flex items-baseline gap-[0.28em] font-heading text-clay-500"
         {...riseIn(0.75)}
       >
         <span>Sara</span>

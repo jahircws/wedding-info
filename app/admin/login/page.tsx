@@ -39,7 +39,7 @@ export default function AdminLoginPage() {
         onSubmit={handleSubmit}
         className="w-full max-w-sm space-y-5 rounded-2xl border border-clay-600/25 bg-white/80 p-8 shadow-sm"
       >
-        <h1 className="font-montecarlo text-3xl text-clay-500">Admin Sign In</h1>
+        <h1 className="font-heading text-3xl text-clay-500">Admin Sign In</h1>
 
         <div>
           <label htmlFor="email" className="mb-1 block font-heading text-xs uppercase tracking-wide text-clay-700/70">

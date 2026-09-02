@@ -10,7 +10,7 @@ const days = [
     venue: "Casa de Pilatos",
     dressCode: "Cocktail attire",
     items: [
-      { time: "8:00 PM", title: "Cocktail reception with substantial canapés (outdoor courtyard)" },
+      { time: "8:00 PM", title: "Cocktail reception (outdoor courtyard)" },
       { time: "11:00 PM", title: "The evening ends" },
     ],
   },
@@ -40,8 +40,8 @@ export default function Schedule() {
         transition={{ duration: 0.7, ease: "easeInOut" }}
         className="mx-auto mb-14 max-w-2xl text-center"
       >
-        <p className="text-xs italic uppercase tracking-[0.22em] text-honey md:text-sm">Two Days to Celebrate</p>
-        <h2 className="mt-2 font-montecarlo text-4xl text-clay-500 md:text-5xl">The Schedule</h2>
+        <img src="/icons/cake.svg" alt="" className="mx-auto h-20 w-auto text-honey" />
+        <h2 className="mt-5 font-heading text-4xl text-clay-500 md:text-5xl">The Schedule</h2>
         <SectionOrnament className="mt-6" />
       </motion.div>
 
@@ -53,7 +53,7 @@ export default function Schedule() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.7, ease: "easeInOut", delay: dayIdx * 0.1 }}
-            className="rounded-2xl border border-clay-600/25 bg-cream-50/60 p-8"
+            className="rounded-none border border-clay-600/25 bg-cream-50/60 p-8"
           >
             <p className="font-body text-xs italic uppercase tracking-[0.25em] text-honey">
               {day.label}
@@ -73,7 +73,7 @@ export default function Schedule() {
             </ul>
 
             <p className="mt-6 border-t border-clay-600/20 pt-4 font-body text-xs italic uppercase tracking-widest text-clay-700/60">
-              Dress code &middot; {day.dressCode}
+              Dress code &middot; <span className="font-bold text-clay-700">{day.dressCode}</span>
             </p>
           </motion.div>
         ))}

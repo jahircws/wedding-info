@@ -1,15 +1,40 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=MonteCarlo&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=MonteCarlo&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Headings: Bathey. Everything else (body copy): Balerno-Lt. Both are local
+   files in /public/fonts — MonteCarlo (couple's-name script lettering) stays
+   on Google Fonts via the @import above. */
+@font-face {
+  font-family: "Bathey";
+  src: url("/fonts/Bathey.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Balerno-Lt";
+  src: url("/fonts/balerno-tf.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  /* The whole site now uses just these two families — DM Serif Text for
-     body copy/headings, MonteCarlo for the couple's-name script lettering —
-     loaded together via the @import above rather than next/font. */
-  --font-dmserif: "DM Serif Text", serif;
+  --font-heading: "Bathey", serif;
+  --font-body: "Balerno-Lt", serif;
   --font-montecarlo: "MonteCarlo", cursive;
+}
+
+body {
+  font: 20px/1.5em "Balerno-Lt";
+  letter-spacing: 0px;
+  min-width: 320px;
+  color: #723333;
+  background: #f1ece1;
 }
 
 html {

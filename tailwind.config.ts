@@ -42,10 +42,10 @@ const config: Config = {
         honey: "#a8703f",
       },
       fontFamily: {
-        script: ["var(--font-montecarlo)", "cursive"],
-        heading: ["var(--font-dmserif)", "serif"],
-        body: ["var(--font-dmserif)", "serif"],
-        montecarlo: ["var(--font-montecarlo)", "cursive"],
+        script: ["var(--font-heading)", "cursive"],
+        heading: ["var(--font-heading)", "serif"],
+        body: ["var(--font-body)", "serif"],
+        montecarlo: ["var(--font-heading)", "cursive"],
       },
       transitionTimingFunction: {
         "gentle-out": "cubic-bezier(0.16, 1, 0.3, 1)",

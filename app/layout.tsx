@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import "./globals.css";
-
-// Both fonts the site uses (DM Serif Text + MonteCarlo) are loaded together
-// via the single @import at the top of globals.css, per the approved
-// courtyard design — no next/font Google Fonts and no extra <link> tags.
 
 function getSiteUrl() {
   const raw = process.env.NEXT_PUBLIC_SITE_URL || "https://saraandatef.com";
@@ -30,7 +27,7 @@ export const metadata: Metadata = {
       "27–28 September 2026, Seville, Spain. RSVP and celebration details inside.",
     url: siteUrl,
     siteName: "Sara & Atef",
-    images: [{ url: "/rings_on_flower.jpg", width: 1200, height: 630 }],
+    images: [{ url: "/icons/android-chrome-512x512.png", width: 1200, height: 630 }],
     locale: "en_US",
     type: "website",
   },
@@ -38,15 +35,23 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Sara & Atef are getting married",
     description: "27–28 September 2026, Seville, Spain.",
-    images: ["/rings_on_flower.jpg"],
+    images: ["/icons/android-chrome-512x512.png"],
   },
   alternates: { canonical: siteUrl },
+  icons: {
+    icon: [
+      { url: "/icons/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icons/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
+  manifest: "/icons/site.webmanifest",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="bg-cream-100 font-body text-clay-700 antialiased">{children}</body>
+      <body className="font-body antialiased">{children}</body>
     </html>
   );
 }

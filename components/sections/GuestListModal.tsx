@@ -9,6 +9,7 @@ export default function GuestListModal() {
   const [open, setOpen] = useState(false);
   const [guests, setGuests] = useState<ApprovedEntry[]>([]);
   const [loading, setLoading] = useState(false);
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     if (!open) return;
@@ -18,6 +19,12 @@ export default function GuestListModal() {
       .then((data) => setGuests(data.guests || []))
       .catch(() => setGuests([]))
       .finally(() => setLoading(false));
+  }, [open]);
+
+  // Reset the search whenever the modal is closed, so it doesn't linger
+  // the next time it's opened.
+  useEffect(() => {
+    if (!open) setQuery("");
   }, [open]);
 
   // Close on Escape for keyboard accessibility.
@@ -30,13 +37,19 @@ export default function GuestListModal() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [open]);
 
+  const filteredGuests = guests.filter((g) =>
+    g.name.toLowerCase().includes(query.trim().toLowerCase())
+  );
+
   return (
     <section className="bg-blush-50 px-6 py-16 text-center" aria-label="Approved guest list">
-      <p className="mb-4 font-body text-ink/70">Curious who else will be there?</p>
+      <p className="mb-4 font-body text-ink/70">
+        <span className="font-heading">Curious</span> who else will be there?
+      </p>
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="rounded-full border border-gold px-8 py-3 font-heading text-xs uppercase tracking-[0.2em] text-gold transition-colors duration-300 ease-out hover:bg-gold hover:text-ivory"
+        className="rounded-full border border-gold px-8 py-3 font-body text-xs uppercase tracking-[0.2em] text-gold transition-colors duration-300 ease-out hover:bg-gold hover:text-ivory"
       >
         View Guest List
       </button>
@@ -60,10 +73,10 @@ export default function GuestListModal() {
               exit={{ opacity: 0, scale: 0.96 }}
               transition={{ duration: 0.35, ease: "easeOut" }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-md rounded-2xl bg-ivory p-8 text-left shadow-2xl"
+              className="flex max-h-[80vh] w-full max-w-md flex-col rounded-none bg-ivory p-8 text-left shadow-2xl"
             >
               <div className="mb-4 flex items-center justify-between">
-                <h3 className="font-script text-3xl text-blush-500">Who&apos;s Coming</h3>
+                <h3 className="font-heading text-3xl text-blush-500">Who&apos;s Coming</h3>
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
@@ -74,24 +87,38 @@ export default function GuestListModal() {
                 </button>
               </div>
 
-              {loading && <p className="font-body text-ink/60">Loading...</p>}
-              {!loading && guests.length === 0 && (
-                <p className="font-body text-ink/60">
-                  No approved guests yet &mdash; check back soon!
-                </p>
-              )}
-              {!loading && guests.length > 0 && (
-                <ul className="max-h-80 space-y-2 overflow-y-auto">
-                  {guests.map((g) => (
-                    <li
-                      key={g.id}
-                      className="border-b border-blush-200 pb-2 font-body text-ink/85 last:border-0"
-                    >
-                      {g.name}
-                    </li>
-                  ))}
-                </ul>
-              )}
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search for a name..."
+                aria-label="Search guest list"
+                className="mb-4 w-full shrink-0 border border-blush-200 bg-white px-4 py-2 font-body text-sm text-ink outline-none transition-colors duration-200 ease-in-out focus:border-gold"
+              />
+
+              <div className="overflow-y-auto">
+                {loading && <p className="font-body text-ink/60">Loading...</p>}
+                {!loading && guests.length === 0 && (
+                  <p className="font-body text-ink/60">
+                    No approved guests yet &mdash; check back soon!
+                  </p>
+                )}
+                {!loading && guests.length > 0 && filteredGuests.length === 0 && (
+                  <p className="font-body text-ink/60">No names match &quot;{query}&quot;.</p>
+                )}
+                {!loading && filteredGuests.length > 0 && (
+                  <ul className="space-y-2">
+                    {filteredGuests.map((g) => (
+                      <li
+                        key={g.id}
+                        className="border-b border-blush-200 pb-2 font-body text-ink/85"
+                      >
+                        {g.name}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
             </motion.div>
           </motion.div>
         )}

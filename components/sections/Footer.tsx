@@ -19,12 +19,11 @@ export default function Footer() {
         />
 
         <div className="min-w-0 flex-1">
-          <SectionOrnament className="mb-5" />
-          <p className="font-montecarlo text-4xl tracking-wide">S &amp; A</p>
+          <p className="font-heading text-4xl tracking-wide">S &amp; A</p>
           <p className="mt-3 font-body italic text-cream-50/80">
             With love, we can&apos;t wait to celebrate with you.
           </p>
-          <p className="mt-6 font-body text-[11px] italic uppercase tracking-[0.3em] text-cream-50/40">
+          <p className="mt-6 font-body text-[11px] uppercase tracking-[0.3em] text-cream-50/40">
             Made with love &middot; Seville, 2026
           </p>
         </div>

@@ -34,15 +34,15 @@ export default function Gifts() {
         transition={{ duration: 0.7, ease: "easeInOut" }}
         className="relative z-10 mx-auto mb-10 max-w-2xl text-center"
       >
-        <p className="text-xs italic uppercase tracking-[0.22em] text-honey md:text-sm">Gifts</p>
-        <h2 className="mt-2 font-montecarlo text-4xl text-clay-500 md:text-5xl">Honeymoon Fund</h2>
+        <img src="/icons/beach.svg" alt="" aria-hidden="true" className="mx-auto h-20 w-auto text-honey" />
+        <h2 className="mt-3 font-heading text-4xl text-clay-500 md:text-5xl">Honeymoon Fund</h2>
         <SectionOrnament className="mt-6" />
-        <p className="mt-6 font-body text-base leading-relaxed text-clay-700/80">
+        <p className="mt-6 font-body leading-relaxed text-clay-700/80">
           Your presence is the greatest gift we could ask for. We know that joining us in
           Seville takes time, planning and travel, and we are so grateful to have you there
           with us.
         </p>
-        <p className="mt-4 font-body text-base leading-relaxed text-clay-700/80">
+        <p className="mt-4 font-body leading-relaxed text-clay-700/80">
           If you would nonetheless like to give something, we have set up an account to
           help us plan our honeymoon. Any contribution, big or small, will go towards
           making it unforgettable.
@@ -54,7 +54,7 @@ export default function Gifts() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.7, ease: "easeInOut", delay: 0.1 }}
-        className="relative z-10 mx-auto max-w-md rounded-2xl border border-clay-600/25 bg-white/70 p-6 shadow-sm md:p-8"
+        className="relative z-10 mx-auto max-w-md rounded-none border border-clay-600/25 bg-white/70 p-6 shadow-sm md:p-8"
       >
         <dl className="space-y-4">
           {ACCOUNT_DETAILS.map((item) => (
