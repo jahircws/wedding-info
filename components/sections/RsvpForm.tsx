@@ -18,8 +18,8 @@ const baseFieldClass =
 const inputClass = `${baseFieldClass} h-[46px]`;
 const selectClass = `${inputClass} appearance-none bg-no-repeat bg-[right_1rem_center] bg-[length:11px] pr-9 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%238b3f27%22 stroke-width=%222%22><polyline points=%226 9 12 15 18 9%22/></svg>')]`;
 const textareaClass = `${baseFieldClass} py-3`;
-const labelClass = "mb-1 block font-body text-xs uppercase tracking-wide text-clay-700/70";
-const eyebrowClass = "text-xs uppercase tracking-[0.22em] text-honey";
+const labelClass = "mb-1 block font-body text-xs uppercase tracking-wide text-clay-700/90";
+const eyebrowClass = "text-sm text-center uppercase tracking-[0.22em] text-honey";
 const checkboxLabelClass = "flex items-center gap-3 font-body text-sm text-clay-700/80";
 
 export default function RsvpForm() {
@@ -144,6 +144,7 @@ export default function RsvpForm() {
                     {...register("mainName")}
                     aria-invalid={!!errors.mainName}
                     aria-describedby={errors.mainName ? "mainName-error" : undefined}
+                    placeholder="e.g. Sara Altamimi" maxLength={100}
                     className={inputClass}
                   />
                   {errors.mainName && (
@@ -161,6 +162,7 @@ export default function RsvpForm() {
                     <input
                       id="email"
                       type="email"
+                      placeholder="name@example.com"
                       {...register("email")}
                       aria-invalid={!!errors.email}
                       aria-describedby={errors.email ? "email-error" : undefined}
@@ -177,7 +179,7 @@ export default function RsvpForm() {
                     <label htmlFor="phone" className={labelClass}>
                       Phone (WhatsApp, for day-of updates)
                     </label>
-                    <input id="phone" type="tel" {...register("phone")} className={inputClass} />
+                    <input id="phone" type="tel" placeholder="+34 600 000 000" maxLength={40} {...register("phone")} className={inputClass} />
                   </div>
                 </div>
 
@@ -226,7 +228,7 @@ export default function RsvpForm() {
                     <label htmlFor="menuChoice" className={labelClass}>
                       Menu choice for Monday
                     </label>
-                    <select id="menuChoice" {...register("menuChoice")} className={inputClass}>
+                    <select id="menuChoice" {...register("menuChoice")} className={selectClass}>
                       <option value="">Select a menu</option>
                       {MENU_CHOICES.map((choice) => (
                         <option key={choice} value={choice}>
@@ -240,7 +242,7 @@ export default function RsvpForm() {
                     <label htmlFor="foodNotes" className={labelClass}>
                       Allergies or intolerances
                     </label>
-                    <input id="foodNotes" type="text" {...register("foodNotes")} className={inputClass} />
+                    <input id="foodNotes" type="text" placeholder="e.g. nut allergy, vegetarian" maxLength={150} {...register("foodNotes")} className={inputClass} />
                   </div>
                 </div>
 
@@ -285,14 +287,14 @@ export default function RsvpForm() {
                   <label htmlFor="songRequest" className={labelClass}>
                     A song that will get you on the dance floor
                   </label>
-                  <input id="songRequest" type="text" {...register("songRequest")} className={inputClass} />
+                  <input id="songRequest" type="text" placeholder="e.g. Uptown Funk – Bruno Mars" maxLength={100} {...register("songRequest")} className={inputClass} />
                 </div>
 
                 <div>
                   <label htmlFor="notes" className={labelClass}>
                     Anything else you&apos;d like us to know?
                   </label>
-                  <textarea id="notes" rows={3} {...register("notes")} className={inputClass} />
+                  <textarea id="notes" rows={3} {...register("notes")} className={textareaClass} />
                 </div>
               </fieldset>
 
@@ -345,7 +347,7 @@ export default function RsvpForm() {
                             type="button"
                             onClick={() => remove(index)}
                             aria-label={`Remove guest ${index + 1}`}
-                            className="font-body text-xs italic uppercase tracking-widest text-red-500 hover:underline"
+                            className="font-body text-xs uppercase tracking-widest text-red-500 hover:underline"
                           >
                             Remove
                           </button>
@@ -358,6 +360,7 @@ export default function RsvpForm() {
                           <input
                             id={`guests.${index}.fullName`}
                             type="text"
+                            placeholder="e.g. John Smith" maxLength={100}
                             {...register(`guests.${index}.fullName` as const)}
                             aria-invalid={!!errors.guests?.[index]?.fullName}
                             className={inputClass}
@@ -399,7 +402,7 @@ export default function RsvpForm() {
                             <select
                               id={`guests.${index}.menuChoice`}
                               {...register(`guests.${index}.menuChoice` as const)}
-                              className={inputClass}
+                              className={selectClass}
                             >
                               <option value="">Select a menu</option>
                               {MENU_CHOICES.map((choice) => (
@@ -417,6 +420,7 @@ export default function RsvpForm() {
                             <input
                               id={`guests.${index}.foodNotes`}
                               type="text"
+                              placeholder="e.g. gluten-free" maxLength={150}
                               {...register(`guests.${index}.foodNotes` as const)}
                               className={inputClass}
                             />

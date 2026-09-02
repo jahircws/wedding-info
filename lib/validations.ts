@@ -11,7 +11,7 @@ export const guestSchema = z.object({
   shuttleBack: z.boolean().default(false),
   shuttleBackTime: z.string().max(60).optional().or(z.literal("")),
   menuChoice: menuChoiceSchema,
-  foodNotes: z.string().max(500).optional().or(z.literal("")),
+  foodNotes: z.string().max(150).optional().or(z.literal("")),
 });
 
 export const rsvpSchema = z
@@ -26,9 +26,9 @@ export const rsvpSchema = z
     shuttleBack: z.boolean().default(false),
     shuttleBackTime: z.string().max(60).optional().or(z.literal("")),
     menuChoice: menuChoiceSchema,
-    foodNotes: z.string().max(500).optional().or(z.literal("")),
-    songRequest: z.string().max(150).optional().or(z.literal("")),
-    notes: z.string().max(1000).optional().or(z.literal("")),
+    foodNotes: z.string().max(150).optional().or(z.literal("")),
+    songRequest: z.string().max(100).optional().or(z.literal("")),
+    notes: z.string().max(400).optional().or(z.literal("")),
     guests: z.array(guestSchema).max(10, "Please contact us directly for larger parties"),
   })
   .refine((data) => data.attendingSunday || data.attendingMonday, {

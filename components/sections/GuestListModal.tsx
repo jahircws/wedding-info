@@ -44,7 +44,7 @@ export default function GuestListModal() {
   return (
     <section className="bg-blush-50 px-6 py-16 text-center" aria-label="Approved guest list">
       <p className="mb-4 font-body text-ink/70">
-        <span className="font-heading">Curious</span> who else will be there?
+        <span className="font-heading font-bold">Curious</span> who else will be there?
       </p>
       <button
         type="button"
