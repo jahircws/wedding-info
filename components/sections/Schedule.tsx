@@ -40,7 +40,7 @@ export default function Schedule() {
         transition={{ duration: 0.7, ease: "easeInOut" }}
         className="mx-auto mb-14 max-w-2xl text-center"
       >
-        <img src="/icons/cake.svg" alt="" className="mx-auto h-20 w-auto text-honey" />
+        <img src="/icons/cake.svg" alt="" className="mx-auto mb-10 h-20 w-auto text-honey" />
         <h2 className="mt-5 font-heading text-4xl text-clay-500 md:text-5xl">The Schedule</h2>
         <SectionOrnament className="mt-6" />
       </motion.div>

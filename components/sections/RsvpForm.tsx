@@ -86,7 +86,7 @@ export default function RsvpForm() {
         transition={{ duration: 0.7, ease: "easeInOut" }}
         className="mx-auto mb-12 max-w-2xl text-center"
       >
-        <img src="/icons/champagne.svg" alt="" className="mx-auto h-20 w-auto text-honey" />
+        <img src="/icons/champagne.svg" alt="" aria-hidden="true" className="mx-auto mb-10 h-20 w-auto text-honey" />
         <h2 className="mt-2 font-heading text-4xl text-clay-500 md:text-5xl">Join Us</h2>
         <SectionOrnament className="mt-4" />
         <p className="mt-3 font-body text-clay-700/70">
