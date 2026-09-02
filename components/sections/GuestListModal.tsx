@@ -49,7 +49,7 @@ export default function GuestListModal() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="rounded-full border border-gold px-8 py-3 font-body text-xs uppercase tracking-[0.2em] text-gold transition-colors duration-300 ease-out hover:bg-gold hover:text-ivory"
+        className="rounded-none border border-gold px-8 py-3 font-body text-xs uppercase tracking-[0.2em] text-gold transition-colors duration-300 ease-out hover:bg-gold hover:text-ivory"
       >
         View Guest List
       </button>

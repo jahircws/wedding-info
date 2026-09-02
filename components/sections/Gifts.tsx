@@ -54,7 +54,7 @@ export default function Gifts() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.7, ease: "easeInOut", delay: 0.1 }}
-        className="relative z-10 mx-auto max-w-md rounded-none border border-clay-600/25 bg-white/70 p-6 shadow-sm md:p-8"
+        className="relative z-10 mx-auto max-w-md rounded-none bg-cream-50 p-6 md:p-8"
       >
         <dl className="space-y-4">
           {ACCOUNT_DETAILS.map((item) => (

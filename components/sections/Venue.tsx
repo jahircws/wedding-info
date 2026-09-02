@@ -59,29 +59,30 @@ export default function Venue({ venue }: { venue: VenueInfo }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.4 }}
               transition={{ duration: 0.8, ease: "easeInOut", delay: i * 0.12 }}
-              className="frosted-card relative mx-auto w-full max-w-lg rounded-none p-8 text-center shadow-xl md:p-10"
+              className="relative mx-auto flex w-full max-w-lg flex-col items-center p-8 text-center"
             >
-              <span className="pointer-events-none absolute left-3 top-3 h-8 w-8 border-l border-t border-honey/50" />
-              <span className="pointer-events-none absolute bottom-3 right-3 h-8 w-8 border-b border-r border-honey/50" />
-
               <p className="text-xs italic uppercase tracking-[0.22em] text-honey md:text-sm">{v.label}</p>
-              <h3 className="mt-2 font-body text-2xl text-clay-500 md:text-3xl">{v.venueName}</h3>
-              <p className="mt-5 font-body text-base text-clay-700/90">{v.venueAddress}</p>
+            <h3 className="mt-2 font-body text-2xl text-cream-50 [text-shadow:0_2px_14px_rgba(0,0,0,0.6)] md:text-3xl">
+              {v.venueName}
+            </h3>
+            <p className="mt-5 font-body text-base text-cream-50/90 [text-shadow:0_1px_10px_rgba(0,0,0,0.55)]">
+              {v.venueAddress}
+            </p>
 
-              <div className="mt-6 flex flex-col gap-2 font-body text-sm uppercase tracking-widest font-bold text-clay-700">
-                <span>{v.dateLabel}</span>
-                <span>{v.timeLabel}</span>
-              </div>
+            <div className="mt-6 flex flex-col gap-2 font-body text-sm italic uppercase tracking-widest text-cream-50/80">
+              <span>{v.dateLabel}</span>
+              <span>{v.timeLabel}</span>
+            </div>
 
-              <a
-                href={v.mapUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-8 inline-block rounded-sm border border-clay-600 px-8 py-3 font-body text-xs italic uppercase tracking-[0.2em] text-clay-500 transition-colors duration-300 ease-in-out hover:bg-clay-800 hover:text-cream-50"
-              >
-                Get Directions
-              </a>
-            </motion.div>
+            <a
+              href={v.mapUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-8 inline-block border border-cream-50/50 px-8 py-3 font-body text-xs italic uppercase tracking-[0.2em] text-cream-50 transition-colors duration-300 ease-in-out hover:bg-cream-50 hover:text-clay-800"
+            >
+              Get Directions
+            </a>
+          </motion.div>
           ))}
         </div>
       </div>

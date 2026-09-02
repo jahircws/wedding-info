@@ -13,8 +13,11 @@ const MENU_LABELS: Record<(typeof MENU_CHOICES)[number], string> = {
   VEGETARIAN: "Vegetarian",
 };
 
-const inputClass =
-  "w-full rounded-none border border-clay-600/25 bg-white px-4 py-2.5 font-body outline-none transition-colors duration-200 ease-in-out focus:border-clay-600";
+const baseFieldClass =
+  "w-full rounded-none border border-clay-600/25 bg-white px-4 font-body text-sm outline-none transition-colors duration-200 ease-in-out focus:border-clay-600 placeholder:text-xs placeholder:text-clay-700/40";
+const inputClass = `${baseFieldClass} h-[46px]`;
+const selectClass = `${inputClass} appearance-none bg-no-repeat bg-[right_1rem_center] bg-[length:11px] pr-9 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%238b3f27%22 stroke-width=%222%22><polyline points=%226 9 12 15 18 9%22/></svg>')]`;
+const textareaClass = `${baseFieldClass} py-3`;
 const labelClass = "mb-1 block font-body text-xs uppercase tracking-wide text-clay-700/70";
 const eyebrowClass = "text-xs uppercase tracking-[0.22em] text-honey";
 const checkboxLabelClass = "flex items-center gap-3 font-body text-sm text-clay-700/80";
@@ -102,7 +105,7 @@ export default function RsvpForm() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
-              className="rounded-2xl border border-clay-600/25 bg-cream-50/70 p-10 text-center"
+              className="rounded-none bg-cream-50 p-10 text-center"
               role="status"
             >
               <p className="font-heading text-3xl text-clay-500">Thank you!</p>
@@ -126,7 +129,7 @@ export default function RsvpForm() {
               transition={{ duration: 0.4, ease: "easeInOut" }}
               onSubmit={handleSubmit(onSubmit)}
               noValidate
-              className="space-y-6 rounded-none border border-clay-600/20 bg-white/70 p-6 shadow-sm md:p-10"
+              className="space-y-6 rounded-none bg-cream-100 p-6 md:p-10"
             >
               <fieldset className="space-y-6">
                 <legend className={eyebrowClass}>Main Guest</legend>

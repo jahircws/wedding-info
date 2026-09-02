@@ -53,7 +53,7 @@ export default function Schedule() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.7, ease: "easeInOut", delay: dayIdx * 0.1 }}
-            className="rounded-none border border-clay-600/25 bg-cream-50/60 p-8"
+            className="rounded-none bg-cream-100 p-8"
           >
             <p className="font-body text-xs italic uppercase tracking-[0.25em] text-honey">
               {day.label}

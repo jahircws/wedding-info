@@ -25,7 +25,6 @@ export default function Hero() {
 
   return (
     <section id="hero" className="hero-shell text-clay-700">
-      <div className="hero-frame" aria-hidden="true" />
 
       <motion.p className="hero-eyebrow uppercase text-honey" {...riseIn(0.2)}>
         We look forward to welcoming you
@@ -44,7 +43,7 @@ export default function Hero() {
       </motion.div>
 
       <motion.div
-        className="hero-names mt-5 flex flex-row items-baseline gap-[0.15em] whitespace-nowrap font-heading text-[35px] text-clay-500 md:text-[70px] lg:text-[5.5rem]"
+        className="hero-names mt-5 flex flex-row items-baseline gap-[0.15em] whitespace-nowrap font-heading text-clay-500 lg:text-[5.5rem]"
         {...riseIn(0.75)}
       >
         <span>Sara</span>
