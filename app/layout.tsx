@@ -23,11 +23,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "Sara & Atef | September 27–28, 2026 | Seville, Spain",
   description:
-    "Join Sara Altamimi and Atef Merhej as they celebrate their wedding on 27–28 September 2026 in Seville, Spain. RSVP and find all the details here.",
+    "We look forward to welcoming you to celebrate our wedding, 27–28 September 2026, in Seville, Spain. RSVP and find all the details here.",
   openGraph: {
     title: "Sara & Atef are getting married",
     description:
-      "27–28 September 2026, Seville, Spain. RSVP and celebration details inside.",
+      "We look forward to welcoming you — 27–28 September 2026, Seville, Spain. RSVP and celebration details inside.",
     url: siteUrl,
     siteName: "Sara & Atef",
     images: [
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Sara & Atef are getting married",
-    description: "27–28 September 2026, Seville, Spain.",
+    description: "We look forward to welcoming you — 27–28 September 2026, Seville, Spain.",
     images: [ogImageUrl],
   },
   alternates: { canonical: siteUrl },
