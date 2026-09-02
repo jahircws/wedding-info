@@ -35,7 +35,7 @@ export default function Gifts() {
         className="relative z-10 mx-auto mb-10 max-w-2xl text-center"
       >
         <img src="/icons/beach.svg" alt="" aria-hidden="true" className="mx-auto h-20 w-auto text-honey" />
-        <h2 className="mt-3 font-heading text-4xl text-clay-500 md:text-5xl">Honeymoon Fund</h2>
+        <h2 className="mt-3 font-heading text-4xl text-clay-500 md:text-5xl">Our Honeymoon</h2>
         <SectionOrnament className="mt-6" />
         <p className="mt-6 font-body leading-relaxed text-clay-700/80">
           Your presence is the greatest gift we could ask for. We know that joining us in
