@@ -17,6 +17,8 @@ function getSiteUrl() {
 
 const siteUrl = getSiteUrl();
 
+const ogImageUrl = `${siteUrl}/og-image.png`;
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "Sara & Atef | September 27–28, 2026 | Seville, Spain",
@@ -28,7 +30,16 @@ export const metadata: Metadata = {
       "27–28 September 2026, Seville, Spain. RSVP and celebration details inside.",
     url: siteUrl,
     siteName: "Sara & Atef",
-    images: [{ url: "/icons/android-chrome-512x512.png", width: 1200, height: 630 }],
+    images: [
+      {
+        url: ogImageUrl,
+        secureUrl: ogImageUrl,
+        width: 1200,
+        height: 630,
+        alt: "Sara & Atef — 27–28 September 2026, Seville, Spain",
+        type: "image/png",
+      },
+    ],
     locale: "en_US",
     type: "website",
   },
@@ -36,7 +47,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Sara & Atef are getting married",
     description: "27–28 September 2026, Seville, Spain.",
-    images: ["/icons/android-chrome-512x512.png"],
+    images: [ogImageUrl],
   },
   alternates: { canonical: siteUrl },
   icons: {
