@@ -61,7 +61,7 @@ export default async function HomePage() {
       <Schedule />
       <Gifts />
       <RsvpForm />
-      <GuestListModal />
+      {/* <GuestListModal /> */}
       <FAQ />
       <Footer />
     </main>
