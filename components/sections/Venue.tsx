@@ -32,7 +32,7 @@ export default function Venue({ venue }: { venue: VenueInfo }) {
       aria-label="Wedding venues"
     >
       <div
-        className="absolute inset-0 bg-[url('/bgoverlay.png')] bg-cover bg-center"
+        className="absolute inset-0  bg-[url('/bg-venue-mobile.png')] md:bg-[url('/bg-venue-desktop.png')] bg-cover bg-center"
         role="img"
         aria-label="A traditional Andalusian estate near Seville, Spain, where the wedding will be held"
       />
