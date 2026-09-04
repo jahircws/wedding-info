@@ -186,7 +186,7 @@ export default function MobileNav() {
           >
             <Menu size={21} strokeWidth={1.5} />
 
-            <span className="font-heading text-xs">
+            <span className="font-body font-bold text-xs">
               More
             </span>
           </button>
