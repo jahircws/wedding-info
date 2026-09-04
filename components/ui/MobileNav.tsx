@@ -15,7 +15,7 @@ const MENU_ITEMS = [
   { label: "Venue", href: "#venue"},
   { label: "Registry", href: "#gifts"},
   { label: "Schedule", href: "#schedule"},
-  { label: "RSVP", href: "#rsvp"},
+  { label: "Reply", href: "#rsvp"},
   { label: "FAQ", href: "#faq"},
 ];
 
@@ -23,7 +23,7 @@ const MOBILE_ITEMS = [
   { label: "Home", href: "#hero", icon: Home, }, 
   { label: "Venue", href: "#venue", icon: MapPin, }, 
   { label: "Registry", href: "#gifts", icon: Gift, }, 
-  { label: "RSVP", href: "#rsvp", icon: Mail, }, 
+  { label: "Reply", href: "#rsvp", icon: Mail, }, 
 ];
 
 // Height of the fixed desktop nav (h-20 = 80px) plus a little breathing
@@ -186,7 +186,7 @@ export default function MobileNav() {
           >
             <Menu size={21} strokeWidth={1.5} />
 
-            <span className="font-body font-bold text-xs">
+            <span className="font-heading text-xs">
               More
             </span>
           </button>
