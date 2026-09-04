@@ -20,12 +20,12 @@ const days = [
     venue: "Hacienda La Soledad",
     dressCode: "Black tie",
     items: [
-      { time: "5:00 PM", title: "Arrival & welcome drink" },
-      { time: "5:30 PM", title: "Ceremony" },
-      { time: "6:30 PM", title: "Cocktail hour with live music" },
-      { time: "8:10 PM", title: "Dinner" },
-      { time: "11:15 PM", title: "First dance, then dancing until late" },
-      { time: "Late night", title: "Snacks served for those who stay" },
+      { time: "5:30 PM", title: "Arrival & welcome drink" },
+      { time: "6:00 PM", title: "Ceremony" },
+      { time: "7:00 PM", title: "Cocktail hour" },
+      { time: "8:30 PM", title: "Dinner followed by dancing" },
+      // { time: "11:15 PM", title: "First dance, then dancing until late" },
+      // { time: "Late night", title: "Snacks served for those who stay" },
     ],
   },
 ];

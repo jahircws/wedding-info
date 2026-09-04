@@ -12,7 +12,7 @@ import {
 
 const MENU_ITEMS = [
   { label: "Home", href: "#hero"},
-  { label: "Venue", href: "#venue"},
+  { label: "Venues", href: "#venue"},
   { label: "Registry", href: "#gifts"},
   { label: "Schedule", href: "#schedule"},
   { label: "Reply", href: "#rsvp"},
@@ -21,7 +21,7 @@ const MENU_ITEMS = [
 
 const MOBILE_ITEMS = [ 
   { label: "Home", href: "#hero", icon: Home, }, 
-  { label: "Venue", href: "#venue", icon: MapPin, }, 
+  { label: "Venues", href: "#venue", icon: MapPin, }, 
   { label: "Registry", href: "#gifts", icon: Gift, }, 
   { label: "Reply", href: "#rsvp", icon: Mail, }, 
 ];

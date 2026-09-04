@@ -43,7 +43,7 @@ export default function Hero() {
       </motion.div>
 
       <motion.div
-        className="hero-names mt-5 flex flex-row items-baseline gap-[0.15em] whitespace-nowrap font-heading text-clay-500 font-bold lg:text-[5.5rem]"
+        className="hero-names mt-8 flex flex-row items-baseline gap-[0.15em] whitespace-nowrap font-heading text-clay-500 lg:text-[5.5rem]"
         {...riseIn(0.75)}
       >
         <span>Sara</span>
