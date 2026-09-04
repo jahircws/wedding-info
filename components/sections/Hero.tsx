@@ -67,13 +67,11 @@ export default function Hero() {
         RSVP
       </motion.button>
 
-      <motion.p
-        className="hero-date flex flex-row items-baseline justify-center gap-3"
-        {...riseIn(1.5)}
-      >
-        <span>27th &amp; 28th of September 2026</span>
-        <br/>
-        <span>Seville, Spain</span>
+      <motion.p className="hero-date" {...riseIn(1.5)}>
+        27th &amp; 28th of September 2026
+      </motion.p>
+      <motion.p className="hero-place uppercase text-honey" {...riseIn(1.65)}>
+        Seville, Spain
       </motion.p>
 
       <motion.p className="hero-footnote italic opacity-[0.55]" {...riseIn(1.75)}>
