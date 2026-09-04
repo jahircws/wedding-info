@@ -42,7 +42,7 @@ export default function AdminLoginPage() {
         <h1 className="font-heading text-3xl text-clay-500">Admin Sign In</h1>
 
         <div>
-          <label htmlFor="email" className="mb-1 block font-heading text-xs uppercase tracking-wide text-clay-700/70">
+          <label htmlFor="email" className="mb-1 block font-body text-xs uppercase tracking-wide text-clay-700/70">
             Email
           </label>
           <input
