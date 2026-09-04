@@ -37,12 +37,12 @@ export default function Gifts() {
                 <img src="/icons/beach.svg" alt="" aria-hidden="true" className="mx-auto mb-10 h-20 w-20 text-honey" />
         <h2 className="font-heading text-4xl leading-[5rem] text-clay-600 md:break-normal md:text-5xl md:leading-tight">Registry</h2>
         
-        <p className="mt-6 font-body leading-relaxed text-clay-700/80">
+        <p className="copy-caps mt-6 leading-relaxed text-clay-700/80">
           Your presence is the greatest gift we could ask for. We know that joining us in
           Seville takes time, planning and travel, and we are so grateful to have you there
           with us.
         </p>
-        <p className="mt-4 font-body leading-relaxed text-clay-700/80">
+        <p className="copy-caps mt-4 leading-relaxed text-clay-700/80">
           If you would nonetheless like to give something, we have set up an account to
           help us plan our honeymoon. Any contribution, big or small, will go towards
           making it unforgettable.
@@ -60,15 +60,15 @@ export default function Gifts() {
           {ACCOUNT_DETAILS.map((item) => (
             <div key={item.label} className="flex items-center justify-between gap-4">
               <div>
-                <dt className="font-body text-xs italic uppercase tracking-widest text-clay-700/50">
+                <dt className="copy-caps text-clay-700/50">
                   {item.label}
                 </dt>
-                <dd className="mt-0.5 font-body text-sm text-clay-700/90 md:text-base">{item.value}</dd>
+                <dd className="copy-caps mt-0.5 text-clay-700/90">{item.value}</dd>
               </div>
               <button
                 type="button"
                 onClick={() => handleCopy(item.label, item.value)}
-                className="shrink-0 rounded-sm border border-clay-600 px-3 py-1.5 font-body text-[11px] italic uppercase tracking-widest text-clay-500 transition-colors duration-200 ease-in-out hover:bg-clay-800 hover:text-cream-50"
+                className="copy-caps shrink-0 rounded-sm border border-clay-600 px-3 py-1.5 text-clay-500 transition-colors duration-200 ease-in-out hover:bg-clay-800 hover:text-cream-50"
               >
                 {copied === item.label ? "Copied" : "Copy"}
               </button>

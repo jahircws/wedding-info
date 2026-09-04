@@ -210,6 +210,18 @@ html {
   letter-spacing: 0.06em;
 }
 
+/* Shared body-copy style, matched exactly to the hero's "SEVILLE, SPAIN"
+   line (.hero-place): same family (inherits var(--font-body)), same
+   fluid size, same tracking, all caps. Used for every non-heading piece
+   of running text site-wide so type stays consistent across sections —
+   headings (.font-heading) are untouched. */
+.copy-caps {
+  font-size: clamp(12px, 1.7vh, 16px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-style: normal;
+}
+
 @media (max-width: 1024px) {
   .hero-shell {
     justify-content: center;

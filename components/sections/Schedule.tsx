@@ -1,36 +1,47 @@
 "use client";
 
 import { motion } from "framer-motion";
-import SectionOrnament from "@/components/ui/SectionOrnament";
+import { ArrowUpRight } from "lucide-react";
 
-const days = [
-  {
-    label: "Welcome Evening",
-    date: "Sunday, 27 September 2026",
-    venue: "Casa de Pilatos",
-    dressCode: "Cocktail attire",
-    items: [
-      { time: "8:00 PM", title: "Cocktail reception (outdoor courtyard)" },
-      { time: "11:00 PM", title: "The evening ends" },
-    ],
-  },
-  {
-    label: "The Wedding",
-    date: "Monday, 28 September 2026",
-    venue: "Hacienda La Soledad",
-    dressCode: "Black tie",
-    items: [
-      { time: "5:30 PM", title: "Arrival & welcome drink" },
-      { time: "6:00 PM", title: "Ceremony" },
-      { time: "7:00 PM", title: "Cocktail hour" },
-      { time: "8:30 PM", title: "Dinner followed by dancing" },
-      // { time: "11:15 PM", title: "First dance, then dancing until late" },
-      // { time: "Late night", title: "Snacks served for those who stay" },
-    ],
-  },
-];
+export type ScheduleVenue = {
+  venueName: string;
+  venueAddress: string;
+  mapUrl: string;
+};
 
-export default function Schedule() {
+const WELCOME_VENUE: ScheduleVenue = {
+  venueName: "Casa de Pilatos",
+  venueAddress: "Plaza de Pilatos 1, 41003 Sevilla, Spain",
+  mapUrl: "https://maps.google.com/?cid=722524835013631915",
+};
+
+function buildDays(weddingVenue: ScheduleVenue) {
+  return [
+    {
+      label: "Welcome Evening",
+      date: "Sunday, 27 September 2026",
+      venue: WELCOME_VENUE,
+      dressCode: "Cocktail attire",
+      items: [{ time: "8:00 PM – 11:00 PM", title: "Cocktail reception (outdoor courtyard)" }],
+    },
+    {
+      label: "The Wedding",
+      date: "Monday, 28 September 2026",
+      venue: weddingVenue,
+      dressCode: "Black tie",
+      items: [
+        { time: "5:30 PM", title: "Arrival & welcome drink" },
+        { time: "6:00 PM", title: "Ceremony" },
+        { time: "7:00 PM", title: "Cocktail hour" },
+        { time: "8:30 PM", title: "Dinner followed by dancing" },
+      ],
+    },
+  ];
+}
+
+export default function Schedule({ weddingVenue }: { weddingVenue: ScheduleVenue }) {
+  const days = buildDays(weddingVenue);
+
   return (
     <section id="schedule" className="relative scroll-mt-24 overflow-hidden bg-cream-50 px-6 py-24 md:py-32" aria-label="Wedding schedule">
       <motion.div
@@ -54,24 +65,31 @@ export default function Schedule() {
             transition={{ duration: 0.7, ease: "easeInOut", delay: dayIdx * 0.1 }}
             className="rounded-none bg-cream-50 p-8"
           >
-            <p className="font-body text-xs italic uppercase tracking-[0.25em] text-honey">
-              {day.label}
-            </p>
-            <h3 className="mt-1 font-body text-xl italic text-clay-700">{day.date}</h3>
-            <p className="mt-1 font-body text-sm text-clay-700/70">{day.venue}</p>
+            <p className="copy-caps text-honey">{day.label}</p>
+            <h3 className="mt-1 font-body copy-caps text-clay-700">{day.date}</h3>
+
+            <p className="mt-3 copy-caps text-clay-700/80">{day.venue.venueName}</p>
+            <p className="mt-1 copy-caps text-clay-700/60">{day.venue.venueAddress}</p>
+            <a
+              href={day.venue.mapUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="copy-caps mt-2 inline-flex items-center gap-1 border-b border-clay-600/60 text-clay-700/80 transition-colors duration-200 ease-in-out hover:text-clay-900"
+            >
+              Get Directions
+              <ArrowUpRight size={14} strokeWidth={2} aria-hidden="true" />
+            </a>
 
             <ul className="mt-6 space-y-4">
               {day.items.map((item) => (
                 <li key={item.title} className="flex items-baseline gap-4">
-                  <span className="w-28 shrink-0 font-body text-xs italic uppercase tracking-wider text-honey">
-                    {item.time}
-                  </span>
-                  <span className="font-body text-base text-clay-700/85">{item.title}</span>
+                  <span className="copy-caps w-32 shrink-0 text-honey">{item.time}</span>
+                  <span className="copy-caps text-clay-700/85">{item.title}</span>
                 </li>
               ))}
             </ul>
 
-            <p className="mt-6 border-t border-clay-600/20 pt-4 font-body text-xs italic uppercase tracking-widest text-clay-700/60">
+            <p className="mt-6 border-t border-clay-600/20 pt-4 copy-caps text-clay-700/60">
               Dress code &middot; <span className="font-bold text-clay-700">{day.dressCode}</span>
             </p>
           </motion.div>
@@ -83,7 +101,7 @@ export default function Schedule() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.5 }}
         transition={{ duration: 0.6, ease: "easeInOut", delay: 0.2 }}
-        className="relative z-10 mx-auto mt-10 max-w-2xl text-center font-body text-sm text-clay-700/70"
+        className="copy-caps relative z-10 mx-auto mt-10 max-w-2xl text-center text-clay-700/70"
       >
         Getting home on Monday: shuttle buses run back to Seville every 30 minutes
         from 12:30 AM until 3:00 AM.

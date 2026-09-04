@@ -90,9 +90,9 @@ export default function RsvpForm() {
         className="mx-auto mb-12 max-w-2xl text-center"
       >
         <img src="/icons/champagne.svg" alt="" aria-hidden="true" className="mx-auto mb-10 h-20 w-auto text-honey" />
-        <h2 className="mt-2 font-heading text-4xl leading-[5rem] text-clay-600 md:break-normal md:text-5xl md:leading-tight">Join Us</h2>
-        <p className="mt-3 font-body text-clay-700/70">
-          Please reply by <span className="font-bold text-clay-700">11th September 2026</span> so we can give the venues a final headcount.
+        <h2 className="mt-2 font-heading text-4xl leading-[5rem] text-clay-600 md:break-normal md:text-5xl md:leading-tight">Please RSVP</h2>
+        <p className="copy-caps mt-3 text-clay-700/70">
+          Please reconfirm by <span className="font-bold text-clay-700">Friday, 11 September</span>, so we can have a final headcount.
         </p>
       </motion.div>
 
@@ -109,13 +109,13 @@ export default function RsvpForm() {
               role="status"
             >
               <p className="font-heading text-3xl text-clay-500">Thank you!</p>
-              <p className="mt-3 font-body text-clay-700/80">
+              <p className="copy-caps mt-3 text-clay-700/80">
                 We&apos;ve got your RSVP. We&apos;ll reach out if anything changes.
               </p>
               <button
                 type="button"
                 onClick={() => setSubmitState("idle")}
-                className="mt-6 font-body text-xs italic uppercase tracking-widest text-honey underline underline-offset-4"
+                className="copy-caps mt-6 text-honey underline underline-offset-4"
               >
                 Submit another response
               </button>

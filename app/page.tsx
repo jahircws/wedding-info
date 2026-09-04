@@ -1,9 +1,5 @@
 import { prisma } from "@/lib/prisma";
 import JsonLd from "@/components/JsonLd";
-import EnvelopeIntro from "@/components/sections/EnvelopeIntro";
-import CouplePortraits from "@/components/sections/CouplePortraits";
-import Venue from "@/components/sections/Venue";
-import OurStory from "@/components/sections/OurStory";
 import Schedule from "@/components/sections/Schedule";
 import Gifts from "@/components/sections/Gifts";
 import RsvpForm from "@/components/sections/RsvpForm";
@@ -49,17 +45,13 @@ export default async function HomePage() {
       />
       <Hero />
       <RsvpForm />
-      <Venue
-        venue={{
-          label: "The Wedding",
+      <Schedule
+        weddingVenue={{
           venueName: settings.venueName,
           venueAddress: settings.venueAddress,
-          timeLabel: `Ceremony \u00b7 ${settings.ceremonyTime}`,
           mapUrl: settings.mapUrl,
-          dateLabel: "Monday, 28 September 2026",
         }}
       />
-      <Schedule />
       <Gifts />
       
       {/* <GuestListModal /> */}

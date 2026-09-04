@@ -20,10 +20,10 @@ export default function Footer() {
 
         <div className="min-w-0 flex-1">
           <p className="font-heading font-bold text-4xl tracking-wide">S &amp; A</p>
-          <p className="mt-3 font-body text-cream-50/80">
+          <p className="copy-caps mt-3 text-cream-50/80">
             With love, we can&apos;t wait to celebrate with you.
           </p>
-          <p className="mt-6 font-body text-[11px] uppercase tracking-[0.3em] text-cream-50/40">
+          <p className="copy-caps mt-6 text-cream-50/40">
             Made with love &middot; Seville, 2026
           </p>
         </div>

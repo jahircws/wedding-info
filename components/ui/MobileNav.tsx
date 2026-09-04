@@ -1,30 +1,30 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import {
   Home,
-  MapPin,
-  Gift,
   Mail,
-  Menu,
+  Calendar,
+  Gift,
+  HelpCircle,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 
+// Order matches the order sections actually appear on the page.
 const MENU_ITEMS = [
-  { label: "Home", href: "#hero"},
-  { label: "Venues", href: "#venue"},
-  { label: "Registry", href: "#gifts"},
-  { label: "Schedule", href: "#schedule"},
-  { label: "Reply", href: "#rsvp"},
-  { label: "FAQ", href: "#faq"},
+  { label: "Home", href: "#hero" },
+  { label: "Please RSVP", href: "#rsvp" },
+  { label: "Schedule", href: "#schedule" },
+  { label: "Registry", href: "#gifts" },
+  { label: "FAQ", href: "#faq" },
 ];
 
-const MOBILE_ITEMS = [ 
-  { label: "Home", href: "#hero", icon: Home, }, 
-  { label: "Venues", href: "#venue", icon: MapPin, }, 
-  { label: "Registry", href: "#gifts", icon: Gift, }, 
-  { label: "Reply", href: "#rsvp", icon: Mail, }, 
+const MOBILE_ITEMS = [
+  { label: "Home", href: "#hero", icon: Home },
+  { label: "RSVP", href: "#rsvp", icon: Mail },
+  { label: "Schedule", href: "#schedule", icon: Calendar },
+  { label: "Registry", href: "#gifts", icon: Gift },
+  { label: "FAQ", href: "#faq", icon: HelpCircle },
 ];
 
 // Height of the fixed desktop nav (h-20 = 80px) plus a little breathing
@@ -37,7 +37,6 @@ export default function MobileNav() {
   if (pathname?.startsWith("/admin")) return null;
 
   const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("#hero");
 
   useEffect(() => {
@@ -82,18 +81,7 @@ export default function MobileNav() {
   };
 }, []);
 
-  // Lock background scroll while mobile menu is open.
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [open]);
-
   function handleSelect(href: string) {
-    setOpen(false);
-
     setTimeout(() => {
       document
         .querySelector(href)
@@ -164,7 +152,7 @@ export default function MobileNav() {
                 key={item.href}
                 type="button"
                 onClick={() => handleSelect(item.href)}
-                className={`flex min-w-[64px] flex-col items-center justify-center gap-1 transition-colors ${
+                className={`flex min-w-[56px] flex-col items-center justify-center gap-1 transition-colors ${
                   active
                     ? "text-clay-900"
                     : "text-clay-600"
@@ -175,67 +163,14 @@ export default function MobileNav() {
                   strokeWidth={1.5}
                 />
 
-                <span className="font-body font-bold text-xs">
+                <span className="copy-caps font-bold tracking-normal">
                   {item.label}
                 </span>
               </button>
             );
           })}
-
-          {/* More */}
-          <button
-            type="button"
-            onClick={() => setOpen(true)}
-            className="flex min-w-[64px] flex-col items-center justify-center gap-1 text-clay-600"
-          >
-            <Menu size={21} strokeWidth={1.5} />
-
-            <span className="font-body font-bold text-xs">
-              More
-            </span>
-          </button>
         </div>
       </nav>
-
-      {/* =========================
-          MOBILE FULLSCREEN MENU
-          ========================= */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="fixed inset-0 z-50 flex h-[100dvh] flex-col items-center justify-center bg-cream-50 md:hidden"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Site navigation"
-          >
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              aria-label="Close menu"
-              className="absolute right-5 top-5 text-2xl text-clay-600"
-            >
-              &times;
-            </button>
-
-            <nav className="w-full max-w-xs divide-y divide-clay-600/25 text-center">
-              {MENU_ITEMS.map((item) => (
-                <button
-                  key={item.href}
-                  type="button"
-                  onClick={() => handleSelect(item.href)}
-                  className="block w-full py-5 font-body font-bold text-2xl text-clay-900 transition-colors duration-200 ease-in-out hover:text-honey"
-                >
-                  {item.label}
-                </button>
-              ))}
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </>
   );
 }

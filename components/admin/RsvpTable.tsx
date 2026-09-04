@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type Status = "PENDING" | "APPROVED" | "DECLINED";
 
@@ -33,6 +33,7 @@ type PartyRow = {
   songRequest: string | null;
   notes: string | null;
   status: Status;
+  createdAt: string;
   guests: GuestRow[];
 };
 
@@ -47,6 +48,18 @@ const MENU_LABELS: Record<string, string> = {
   FISH: "Fish",
   VEGETARIAN: "Vegetarian",
 };
+
+const MENU_OPTIONS = Object.keys(MENU_LABELS);
+
+const PAGE_SIZE = 10;
+
+// Fixed UTC formatting so the server-rendered markup and the client's
+// hydration pass always agree, regardless of the admin's local timezone.
+const submittedFormatter = new Intl.DateTimeFormat("en-GB", {
+  dateStyle: "medium",
+  timeStyle: "short",
+  timeZone: "UTC",
+});
 
 function menuLabel(choice: string | null) {
   if (!choice) return null;
@@ -70,13 +83,41 @@ function summarizeAttendance(entity: {
   return { days, shuttleParts };
 }
 
+// Builds a compact page list like [1, "ellipsis", 4, 5, 6, "ellipsis", 20]
+// instead of rendering every page number when there are a lot of them.
+function getPageItems(current: number, total: number): (number | "ellipsis")[] {
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+
+  const items: (number | "ellipsis")[] = [1];
+  const start = Math.max(2, current - 1);
+  const end = Math.min(total - 1, current + 1);
+
+  if (start > 2) items.push("ellipsis");
+  for (let i = start; i <= end; i++) items.push(i);
+  if (end < total - 1) items.push("ellipsis");
+
+  items.push(total);
+  return items;
+}
+
 export default function RsvpTable({ initialParties }: { initialParties: PartyRow[] }) {
   const [parties, setParties] = useState(initialParties);
   const [dayFilter, setDayFilter] = useState<"all" | "sunday" | "monday" | "neither">("all");
   const [hotelFilter, setHotelFilter] = useState("");
   const [allergyOnly, setAllergyOnly] = useState(false);
+  const [nameSearch, setNameSearch] = useState("");
+  const [menuFilter, setMenuFilter] = useState<string[]>([]);
+  const [page, setPage] = useState(1);
+
+  function toggleMenuFilter(choice: string) {
+    setMenuFilter((prev) =>
+      prev.includes(choice) ? prev.filter((c) => c !== choice) : [...prev, choice]
+    );
+  }
 
   const filtered = useMemo(() => {
+    const query = nameSearch.trim().toLowerCase();
+
     return parties.filter((p) => {
       if (dayFilter === "sunday" && !p.attendingSunday) return false;
       if (dayFilter === "monday" && !p.attendingMonday) return false;
@@ -88,9 +129,30 @@ export default function RsvpTable({ initialParties }: { initialParties: PartyRow
         const hasAllergy = !!p.foodNotes || p.guests.some((g) => !!g.foodNotes);
         if (!hasAllergy) return false;
       }
+      if (query) {
+        const matchesParty = p.mainName.toLowerCase().includes(query);
+        const matchesGuest = p.guests.some((g) => g.fullName.toLowerCase().includes(query));
+        if (!matchesParty && !matchesGuest) return false;
+      }
+      if (menuFilter.length > 0) {
+        const matchesParty = p.menuChoice && menuFilter.includes(p.menuChoice);
+        const matchesGuest = p.guests.some((g) => g.menuChoice && menuFilter.includes(g.menuChoice));
+        if (!matchesParty && !matchesGuest) return false;
+      }
       return true;
     });
-  }, [parties, dayFilter, hotelFilter, allergyOnly]);
+  }, [parties, dayFilter, hotelFilter, allergyOnly, nameSearch, menuFilter]);
+
+  // Any filter change can shrink the result set below the current page —
+  // jump back to page 1 whenever the filters themselves change.
+  useEffect(() => {
+    setPage(1);
+  }, [dayFilter, hotelFilter, allergyOnly, nameSearch, menuFilter]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const paginated = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+  const pageItems = getPageItems(currentPage, totalPages);
 
   async function updateStatus(id: string, targetType: "party" | "guest", status: Status) {
     // optimistic update
@@ -119,7 +181,15 @@ export default function RsvpTable({ initialParties }: { initialParties: PartyRow
         RSVP Submissions ({filtered.length})
       </h2>
 
-      <div className="mb-6 flex flex-wrap gap-4">
+      <div className="mb-4 flex flex-wrap gap-4">
+        <input
+          type="text"
+          placeholder="Search by name"
+          value={nameSearch}
+          onChange={(e) => setNameSearch(e.target.value)}
+          className="rounded-lg border border-blush-200 bg-white px-3 py-2 text-sm"
+        />
+
         <select
           value={dayFilter}
           onChange={(e) => setDayFilter(e.target.value as typeof dayFilter)}
@@ -150,8 +220,39 @@ export default function RsvpTable({ initialParties }: { initialParties: PartyRow
         </label>
       </div>
 
+      <div className="mb-6 flex flex-wrap items-center gap-2">
+        <span className="text-sm text-ink/60">Menu:</span>
+        {MENU_OPTIONS.map((choice) => {
+          const active = menuFilter.includes(choice);
+          return (
+            <button
+              key={choice}
+              type="button"
+              onClick={() => toggleMenuFilter(choice)}
+              aria-pressed={active}
+              className={`rounded-full border px-3 py-1 text-xs transition-colors ${
+                active
+                  ? "border-gold bg-gold text-white"
+                  : "border-blush-200 bg-white text-ink/70 hover:border-gold"
+              }`}
+            >
+              {MENU_LABELS[choice]}
+            </button>
+          );
+        })}
+        {menuFilter.length > 0 && (
+          <button
+            type="button"
+            onClick={() => setMenuFilter([])}
+            className="text-xs text-ink/50 underline hover:text-ink/70"
+          >
+            Clear
+          </button>
+        )}
+      </div>
+
       <div className="space-y-6">
-        {filtered.map((party) => {
+        {paginated.map((party) => {
           const { days, shuttleParts } = summarizeAttendance(party);
 
           return (
@@ -177,6 +278,9 @@ export default function RsvpTable({ initialParties }: { initialParties: PartyRow
                     <p className="mt-1 text-xs text-ink/60">Song request: {party.songRequest}</p>
                   )}
                   {party.notes && <p className="mt-1 text-xs text-ink/60">Message: {party.notes}</p>}
+                  <p className="mt-1 text-[11px] text-ink/40">
+                    Submitted {submittedFormatter.format(new Date(party.createdAt))}
+                  </p>
                 </div>
 
                 <div className="flex items-center gap-2">
@@ -241,6 +345,50 @@ export default function RsvpTable({ initialParties }: { initialParties: PartyRow
           <p className="text-sm text-ink/50">No submissions match these filters.</p>
         )}
       </div>
+
+      {totalPages > 1 && (
+        <nav aria-label="Pagination" className="mt-8 flex items-center justify-center gap-1">
+          <button
+            type="button"
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={currentPage === 1}
+            className="rounded-lg border border-blush-200 bg-white px-3 py-1.5 text-sm text-ink/70 hover:bg-blush-50 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            Prev
+          </button>
+
+          {pageItems.map((item, i) =>
+            item === "ellipsis" ? (
+              <span key={`ellipsis-${i}`} className="px-2 text-sm text-ink/40">
+                &hellip;
+              </span>
+            ) : (
+              <button
+                key={item}
+                type="button"
+                onClick={() => setPage(item)}
+                aria-current={item === currentPage ? "page" : undefined}
+                className={`min-w-[36px] rounded-lg border px-3 py-1.5 text-sm ${
+                  item === currentPage
+                    ? "border-gold bg-gold text-white"
+                    : "border-blush-200 bg-white text-ink/70 hover:bg-blush-50"
+                }`}
+              >
+                {item}
+              </button>
+            )
+          )}
+
+          <button
+            type="button"
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            disabled={currentPage === totalPages}
+            className="rounded-lg border border-blush-200 bg-white px-3 py-1.5 text-sm text-ink/70 hover:bg-blush-50 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            Next
+          </button>
+        </nav>
+      )}
     </section>
   );
 }

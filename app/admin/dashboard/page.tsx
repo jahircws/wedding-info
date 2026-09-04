@@ -52,6 +52,7 @@ export default async function AdminDashboardPage() {
             songRequest: p.songRequest,
             notes: p.notes,
             status: p.status as "PENDING" | "APPROVED" | "DECLINED",
+            createdAt: p.createdAt.toISOString(),
             guests: p.guests.map((g) => ({
               id: g.id,
               fullName: g.fullName,
