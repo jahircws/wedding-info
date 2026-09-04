@@ -72,7 +72,7 @@ export default function Hero() {
         {...riseIn(1.5)}
       >
         <span>27th &amp; 28th of September 2026</span>
-        <span className="text-honey" aria-hidden="true">|</span>
+        <br/>
         <span>Seville, Spain</span>
       </motion.p>
 
