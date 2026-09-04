@@ -47,11 +47,20 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Glemada-Regular";
+  src: url("/fonts/glemada-reguler-regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* --font-heading: "Bathey", serif;
   --font-body: "Balerno-Lt", serif; 
-  --font-heading: "GL-Script", serif;  */
-  --font-heading: "Blue-Sapphire", serif;
+  --font-heading: "GL-Script", serif; 
+  --font-heading: "Blue-Sapphire", serif; */
+  --font-heading: "Glemada-Regular", serif;
   --font-body: "Grande-Laguna", serif;
   --font-montecarlo: "MonteCarlo", cursive;
 }

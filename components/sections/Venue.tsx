@@ -28,15 +28,15 @@ export default function Venue({ venue }: { venue: VenueInfo }) {
   return (
     <section
       id="venue"
-      className="relative flex min-h-[85vh] items-center justify-center overflow-hidden bg-clay-800 px-6 py-24"
+      className="relative flex min-h-[85vh] scroll-mt-24 items-center justify-center overflow-hidden bg-cream-100 px-6 py-24 md:py-32"
       aria-label="Wedding venues"
     >
-      <div
+      {/* <div
         className="absolute inset-0  bg-[url('/bg-venue-mobile.png')] md:bg-[url('/bg-venue-desktop.png')] bg-cover bg-center"
         role="img"
         aria-label="A traditional Andalusian estate near Seville, Spain, where the wedding will be held"
       />
-      <div className="absolute inset-0 bg-clay-800/55" />
+      <div className="absolute inset-0 bg-clay-800/55" /> */}
 
       <div className="relative z-10 mx-auto w-full max-w-4xl">
         <motion.div
@@ -46,8 +46,8 @@ export default function Venue({ venue }: { venue: VenueInfo }) {
           transition={{ duration: 0.7, ease: "easeInOut" }}
           className="mx-auto mb-12 max-w-2xl text-center"
         >
-          <DirectionsSketch className="mx-auto h-20 w-20 text-cream-100/80" />
-          <h2 className="mt-3 font-heading text-4xl text-cream-50 leading-[5rem] md:break-normal md:text-5xl md:leading-tight">The Venues</h2>
+          <DirectionsSketch className="mx-auto h-20 w-20 text-clay-100/80" />
+          <h2 className="mt-3 font-heading text-4xl text-clay-500 font-bold leading-[5rem] md:break-normal md:text-5xl md:leading-tight">The Venues</h2>
           <SectionOrnament className="mt-4" />
         </motion.div>
 
@@ -62,14 +62,14 @@ export default function Venue({ venue }: { venue: VenueInfo }) {
               className="relative mx-auto flex w-full max-w-lg flex-col items-center p-8 text-center"
             >
               <p className="text-xs italic uppercase tracking-[0.22em] text-honey md:text-sm">{v.label}</p>
-            <h3 className="mt-2 font-body text-2xl text-cream-50 [text-shadow:0_2px_14px_rgba(0,0,0,0.6)] md:text-3xl">
+            <h3 className="mt-2 font-body text-2xl text-clay-50 md:text-3xl">
               {v.venueName}
             </h3>
-            <p className="mt-5 font-body text-base text-cream-50/90 [text-shadow:0_1px_10px_rgba(0,0,0,0.55)]">
+            <p className="mt-5 font-body text-base text-clay-50/90">
               {v.venueAddress}
             </p>
 
-            <div className="mt-6 flex flex-col gap-2 font-body text-sm italic uppercase tracking-widest text-cream-50/80">
+            <div className="mt-6 flex flex-col gap-2 font-body text-sm italic uppercase tracking-widest text-clay-50/80">
               <span>{v.dateLabel}</span>
               <span>{v.timeLabel}</span>
             </div>
@@ -78,7 +78,7 @@ export default function Venue({ venue }: { venue: VenueInfo }) {
               href={v.mapUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-8 inline-block border border-cream-50/50 px-8 py-3 font-body text-xs italic uppercase tracking-[0.2em] text-cream-50 transition-colors duration-300 ease-in-out hover:bg-cream-50 hover:text-clay-800"
+              className="mt-8 inline-block border-b-2 border-clay-500 px-8 py-3 font-body text-xs italic uppercase tracking-[0.2em] text-clay-50 transition-colors duration-300 ease-in-out hover:bg-cream-50 hover:text-clay-800"
             >
               Get Directions
             </a>

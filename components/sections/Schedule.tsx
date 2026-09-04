@@ -32,7 +32,7 @@ const days = [
 
 export default function Schedule() {
   return (
-    <section id="schedule" className="relative overflow-hidden bg-cream-100 px-6 py-24 md:py-32" aria-label="Wedding schedule">
+    <section id="schedule" className="relative scroll-mt-24 overflow-hidden bg-cream-50 font-bold px-6 py-24 md:py-32" aria-label="Wedding schedule">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -53,7 +53,7 @@ export default function Schedule() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.7, ease: "easeInOut", delay: dayIdx * 0.1 }}
-            className="rounded-none bg-cream-100 p-8"
+            className="rounded-none bg-cream-50 p-8"
           >
             <p className="font-body text-xs italic uppercase tracking-[0.25em] text-honey">
               {day.label}

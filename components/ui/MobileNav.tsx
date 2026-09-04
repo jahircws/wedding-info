@@ -15,7 +15,7 @@ const MENU_ITEMS = [
   { label: "Venue", href: "#venue"},
   { label: "Registry", href: "#gifts"},
   { label: "Schedule", href: "#schedule"},
-  { label: "Reply", href: "#rsvp"},
+  { label: "RSVP", href: "#rsvp"},
   { label: "FAQ", href: "#faq"},
 ];
 
@@ -23,8 +23,13 @@ const MOBILE_ITEMS = [
   { label: "Home", href: "#hero", icon: Home, }, 
   { label: "Venue", href: "#venue", icon: MapPin, }, 
   { label: "Registry", href: "#gifts", icon: Gift, }, 
-  { label: "Reply", href: "#rsvp", icon: Mail, }, 
+  { label: "RSVP", href: "#rsvp", icon: Mail, }, 
 ];
+
+// Height of the fixed desktop nav (h-20 = 80px) plus a little breathing
+// room, used both to decide which section is "active" while scrolling and
+// to keep clicked sections from landing underneath the fixed bar.
+const NAV_OFFSET = 96;
 
 export default function MobileNav() {
   const [scrolled, setScrolled] = useState(false);
@@ -35,9 +40,12 @@ export default function MobileNav() {
   function onScroll() {
     setScrolled(window.scrollY > 80);
 
-    const scrollPosition = window.scrollY + 150;
+    // Offset by the fixed nav height so a section counts as "active" once
+    // it's actually visible below the navbar, not just technically passed.
+    const scrollPosition = window.scrollY + NAV_OFFSET;
 
     let currentSection = "#hero";
+    let currentTop = -Infinity;
 
     MENU_ITEMS.forEach((item) => {
       const section = document.querySelector<HTMLElement>(item.href);
@@ -46,7 +54,13 @@ export default function MobileNav() {
         const sectionTop =
           section.getBoundingClientRect().top + window.scrollY;
 
-        if (sectionTop <= scrollPosition) {
+        // Pick the section with the greatest top that's still above the
+        // scroll position — i.e. the closest section by DOM order, not by
+        // MENU_ITEMS array order (sections aren't listed in page order,
+        // which previously caused an earlier-in-page section like #rsvp to
+        // overwrite a later, correctly-active one like #venue).
+        if (sectionTop <= scrollPosition && sectionTop > currentTop) {
+          currentTop = sectionTop;
           currentSection = item.href;
         }
       }
@@ -75,7 +89,6 @@ export default function MobileNav() {
 
   function handleSelect(href: string) {
     setOpen(false);
-    setActiveSection(href);
 
     setTimeout(() => {
       document
@@ -93,10 +106,8 @@ export default function MobileNav() {
           DESKTOP TOP NAVIGATION
           ========================= */}
       <nav
-        className={`fixed left-0 right-0 top-0 z-40 hidden transition-all duration-300 md:block ${
-          scrolled
-            ? "bg-cream-50/95 shadow-sm backdrop-blur-md"
-            : "bg-cream-50/80 backdrop-blur-sm"
+        className={`fixed left-0 right-0 top-0 z-40 hidden bg-cream-50 transition-shadow duration-300 md:block ${
+          scrolled ? "shadow-sm" : ""
         }`}
         aria-label="Main navigation"
       >
@@ -110,7 +121,7 @@ export default function MobileNav() {
                   key={item.href}
                   type="button"
                   onClick={() => handleSelect(item.href)}
-                  className={`relative px-6 py-4 font-heading text-xl tracking-wide transition-colors duration-200 ${
+                  className={`relative px-6 py-4 font-body text-xl tracking-wide transition-colors duration-200 ${
                     isActive
                       ? "text-clay-900"
                       : "text-clay-600 hover:text-clay-900"
@@ -160,7 +171,7 @@ export default function MobileNav() {
                   strokeWidth={1.5}
                 />
 
-                <span className="font-heading text-xs">
+                <span className="font-body font-bold text-xs">
                   {item.label}
                 </span>
               </button>
@@ -175,7 +186,7 @@ export default function MobileNav() {
           >
             <Menu size={21} strokeWidth={1.5} />
 
-            <span className="font-heading text-xs">
+            <span className="font-body font-bold text-xs">
               More
             </span>
           </button>
@@ -212,7 +223,7 @@ export default function MobileNav() {
                   key={item.href}
                   type="button"
                   onClick={() => handleSelect(item.href)}
-                  className="block w-full py-5 font-heading text-2xl text-clay-900 transition-colors duration-200 ease-in-out hover:text-honey"
+                  className="block w-full py-5 font-body font-bold text-2xl text-clay-900 transition-colors duration-200 ease-in-out hover:text-honey"
                 >
                   {item.label}
                 </button>

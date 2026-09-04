@@ -3,7 +3,7 @@ import SectionOrnament from "@/components/ui/SectionOrnament";
 
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-clay-800 px-4 py-14 text-center text-cream-50">
+    <footer className="relative overflow-hidden bg-clay-800 px-4 pt-14 pb-[104px] text-center text-cream-50 md:pb-14">
       {/* Trees sit in normal flex flow beside the text column (not absolutely
           positioned over it), so at every breakpoint they can only ever push
           the layout apart — never overlap it. They start tiny on phones and
@@ -19,8 +19,8 @@ export default function Footer() {
         />
 
         <div className="min-w-0 flex-1">
-          <p className="font-heading text-4xl tracking-wide">S &amp; A</p>
-          <p className="mt-3 font-body italic text-cream-50/80">
+          <p className="font-heading font-bold text-4xl tracking-wide">S &amp; A</p>
+          <p className="mt-3 font-body text-cream-50/80">
             With love, we can&apos;t wait to celebrate with you.
           </p>
           <p className="mt-6 font-body text-[11px] uppercase tracking-[0.3em] text-cream-50/40">

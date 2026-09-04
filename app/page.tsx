@@ -48,6 +48,7 @@ export default async function HomePage() {
         venueAddress={settings.venueAddress}
       />
       <Hero />
+      <RsvpForm />
       <Venue
         venue={{
           label: "The Wedding",
@@ -60,7 +61,7 @@ export default async function HomePage() {
       />
       <Schedule />
       <Gifts />
-      <RsvpForm />
+      
       {/* <GuestListModal /> */}
       <FAQ />
       <Footer />

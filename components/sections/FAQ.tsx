@@ -47,7 +47,7 @@ export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="relative overflow-hidden bg-cream-50 px-6 py-24 md:py-32" aria-label="Frequently asked questions">
+    <section id="faq" className="relative scroll-mt-24 overflow-hidden bg-cream-100 px-6 py-24 md:py-32" aria-label="Frequently asked questions">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -56,7 +56,7 @@ export default function FAQ() {
         className="relative z-10 mx-auto mb-12 max-w-2xl text-center"
       >
         <img src="/icons/heart-ribbon.svg" alt="" aria-hidden="true" className="mx-auto mb-10 h-6 w-auto text-honey" />
-        <h2 className="font-heading text-4xl text-clay-500 md:text-5xl">Questions</h2>
+        <h2 className="font-heading text-4xl text-clay-500 font-bold md:text-5xl">Questions</h2>
         
       </motion.div>
 

@@ -81,7 +81,7 @@ export default function RsvpForm() {
   }
 
   return (
-    <section id="rsvp" className="bg-cream-100 px-6 py-24 md:py-32" aria-label="RSVP form">
+    <section id="rsvp" className="scroll-mt-24 bg-cream-50 px-6 py-24 md:py-32" aria-label="RSVP form">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -90,7 +90,7 @@ export default function RsvpForm() {
         className="mx-auto mb-12 max-w-2xl text-center"
       >
         <img src="/icons/champagne.svg" alt="" aria-hidden="true" className="mx-auto mb-10 h-20 w-auto text-honey" />
-        <h2 className="mt-2 font-heading text-4xl leading-[5rem] text-clay-500 md:break-normal md:text-5xl md:leading-tight">Join Us</h2>
+        <h2 className="mt-2 font-heading text-4xl leading-[5rem] text-clay-500 font-bold md:break-normal md:text-5xl md:leading-tight">Join Us</h2>
         <p className="mt-3 font-body text-clay-700/70">
           Please reply by <span className="font-bold text-clay-700">4 September 2026</span> so we can give the venues a final headcount.
         </p>
@@ -129,7 +129,7 @@ export default function RsvpForm() {
               transition={{ duration: 0.4, ease: "easeInOut" }}
               onSubmit={handleSubmit(onSubmit)}
               noValidate
-              className="space-y-6 rounded-none bg-cream-100 p-6 md:p-10"
+              className="space-y-6 rounded-none bg-cream-50 p-6 md:p-10"
             >
               <fieldset className="space-y-6">
                 <legend className={eyebrowClass}>Main Guest</legend>

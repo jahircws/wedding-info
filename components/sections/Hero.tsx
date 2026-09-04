@@ -24,7 +24,7 @@ export default function Hero() {
   }
 
   return (
-    <section id="hero" className="hero-shell text-clay-700">
+    <section id="hero" className="hero-shell scroll-mt-24 pt-24 text-clay-700 md:pt-28">
 
       <motion.p className="hero-eyebrow uppercase text-honey" {...riseIn(0.2)}>
         We look forward to welcoming you
@@ -43,7 +43,7 @@ export default function Hero() {
       </motion.div>
 
       <motion.div
-        className="hero-names mt-5 flex flex-row items-baseline gap-[0.15em] whitespace-nowrap font-heading text-clay-500 lg:text-[5.5rem]"
+        className="hero-names mt-5 flex flex-row items-baseline gap-[0.15em] whitespace-nowrap font-heading text-clay-500 font-bold lg:text-[5.5rem]"
         {...riseIn(0.75)}
       >
         <span>Sara</span>
@@ -51,30 +51,32 @@ export default function Hero() {
         <span>Atef</span>
       </motion.div>
 
-      <motion.div
+      {/* <motion.div
         className="hero-rule bg-clay-600"
         initial={shouldReduceMotion ? { scaleX: 1 } : { scaleX: 0 }}
         animate={{ scaleX: 1 }}
-        transition={{ duration: shouldReduceMotion ? 0.01 : 1, ease: "easeInOut", delay: shouldReduceMotion ? 0 : 1.35 }}
-      />
-
-      <motion.p className="hero-date italic" {...riseIn(1.5)}>
-        27th &amp; 28th of September, 2026
-      </motion.p>
-      <motion.p className="hero-place uppercase text-honey" {...riseIn(1.65)}>
-        Seville, Spain
-      </motion.p>
+        transition={{ duration: shouldReduceMotion ? 0.01 : 1, ease: "easeInOut", delay: shouldReduceMotion ? 0 : 1 }}
+      /> */}
 
       <motion.button
         type="button"
         onClick={scrollToRsvp}
-        className="hero-rsvp rounded-sm border border-clay-600 italic text-clay-500 transition-colors duration-300 ease-in-out hover:bg-clay-800 hover:text-cream-50"
-        {...riseIn(1.85)}
+        className="hero-rsvp rounded-sm border-b-2 border-clay-600 italic text-clay-500 transition-colors duration-300 ease-in-out hover:bg-clay-800 hover:text-cream-50"
+        {...riseIn(1.25)}
       >
         RSVP
       </motion.button>
 
-      <motion.p className="hero-footnote italic opacity-[0.55]" {...riseIn(2)}>
+      <motion.p
+        className="hero-date flex flex-row items-baseline justify-center gap-3"
+        {...riseIn(1.5)}
+      >
+        <span>27th &amp; 28th of September 2026</span>
+        <span className="text-honey" aria-hidden="true">|</span>
+        <span>Seville, Spain</span>
+      </motion.p>
+
+      <motion.p className="hero-footnote italic opacity-[0.55]" {...riseIn(1.75)}>
         details, travel &amp; itinerary below
       </motion.p>
     </section>
