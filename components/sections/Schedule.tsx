@@ -32,7 +32,7 @@ const days = [
 
 export default function Schedule() {
   return (
-    <section id="schedule" className="relative scroll-mt-24 overflow-hidden bg-cream-50 font-bold px-6 py-24 md:py-32" aria-label="Wedding schedule">
+    <section id="schedule" className="relative scroll-mt-24 overflow-hidden bg-cream-50 px-6 py-24 md:py-32" aria-label="Wedding schedule">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -41,8 +41,7 @@ export default function Schedule() {
         className="mx-auto mb-14 max-w-2xl text-center"
       >
         <img src="/icons/cake.svg" alt="" className="mx-auto mb-10 h-20 w-auto text-honey" />
-        <h2 className="mt-5 font-heading text-4xl leading-[5rem] text-clay-500 md:break-normal md:text-5xl md:leading-tight">The Schedule</h2>
-        
+        <h2 className="font-heading text-4xl leading-[5rem] text-clay-600 md:break-normal md:text-5xl md:leading-tight">The Schedule</h2>
       </motion.div>
 
       <div className="relative z-10 mx-auto grid max-w-4xl grid-cols-1 gap-10 md:grid-cols-2">
