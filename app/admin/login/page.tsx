@@ -56,7 +56,7 @@ export default function AdminLoginPage() {
         </div>
 
         <div>
-          <label htmlFor="password" className="mb-1 block font-heading text-xs uppercase tracking-wide text-clay-700/70">
+          <label htmlFor="password" className="mb-1 block font-body text-xs uppercase tracking-wide text-clay-700/70">
             Password
           </label>
           <input
