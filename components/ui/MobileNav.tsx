@@ -9,6 +9,7 @@ import {
   Mail,
   Menu,
 } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 const MENU_ITEMS = [
   { label: "Home", href: "#hero"},
@@ -32,6 +33,9 @@ const MOBILE_ITEMS = [
 const NAV_OFFSET = 96;
 
 export default function MobileNav() {
+  const pathname = usePathname();
+  if (pathname?.startsWith("/admin")) return null;
+
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("#hero");

@@ -115,7 +115,7 @@ export default function RsvpTable({ initialParties }: { initialParties: PartyRow
 
   return (
     <section aria-label="RSVP submissions">
-      <h2 className="mb-4 font-heading text-sm uppercase tracking-widest text-ink/70">
+      <h2 className="mb-4 font-body text-sm uppercase tracking-widest text-ink/70">
         RSVP Submissions ({filtered.length})
       </h2>
 
@@ -158,7 +158,7 @@ export default function RsvpTable({ initialParties }: { initialParties: PartyRow
             <div key={party.id} className="rounded-2xl border border-blush-200 bg-white/70 p-5">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
-                  <p className="font-heading text-sm text-ink">
+                  <p className="font-body text-sm text-ink">
                     {party.mainName} <span className="text-ink/50">&middot; {party.email}</span>
                     {party.phone ? <span className="text-ink/50"> &middot; {party.phone}</span> : null}
                   </p>

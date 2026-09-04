@@ -68,7 +68,7 @@ export default function SettingsPanel({
       aria-label="Wedding settings"
       className="rounded-2xl border border-clay-600/25 bg-white/70 p-6"
     >
-      <h2 className="mb-4 font-heading text-sm uppercase tracking-widest text-clay-700/70">
+      <h2 className="mb-4 font-body text-sm uppercase tracking-widest text-clay-700/70">
         Wedding Details
       </h2>
 
