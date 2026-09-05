@@ -18,14 +18,15 @@ datasource db {
 model Party {
   id                 String   @id @default(cuid())
   mainName           String
-  email              String
-  phone              String? // WhatsApp number, for day-of updates
+  email              String? // no longer collected on the form; kept nullable for old rows
+  phone              String? // no longer collected on the form; kept nullable for old rows
   attendingSunday    Boolean  @default(true) // Welcome evening, Casa de Pilatos
   attendingMonday    Boolean  @default(true) // Wedding day, Hacienda La Soledad
   hotel              String?
   shuttleToHacienda  Boolean  @default(false)
   shuttleBack        Boolean  @default(false)
   shuttleBackTime    String? // rough time, only meaningful when shuttleBack is true
+  starterChoice      String? // "TOMATO_CREAM" | "CARABINEROS_CARPACCIO" — main guest's own starter
   menuChoice         String? // "MEAT" | "FISH" | "VEGETARIAN" — main guest's own menu
   foodNotes          String? // allergies / intolerances for the main guest
   songRequest        String?
@@ -49,6 +50,7 @@ model Guest {
   shuttleToHacienda Boolean  @default(false)
   shuttleBack       Boolean  @default(false)
   shuttleBackTime   String? // rough time, only meaningful when shuttleBack is true
+  starterChoice     String? // "TOMATO_CREAM" | "CARABINEROS_CARPACCIO"
   menuChoice        String? // "MEAT" | "FISH" | "VEGETARIAN"
   foodNotes         String?
   status            String   @default("PENDING") // "PENDING" | "APPROVED" | "DECLINED"

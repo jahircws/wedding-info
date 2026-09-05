@@ -4,13 +4,18 @@ import { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion, AnimatePresence } from "framer-motion";
-import { rsvpSchema, MENU_CHOICES, type RsvpFormValues } from "@/lib/validations";
+import { rsvpSchema, MENU_CHOICES, STARTER_CHOICES, type RsvpFormValues } from "@/lib/validations";
 import SectionOrnament from "@/components/ui/SectionOrnament";
 
 const MENU_LABELS: Record<(typeof MENU_CHOICES)[number], string> = {
   MEAT: "Meat",
   FISH: "Fish",
   VEGETARIAN: "Vegetarian",
+};
+
+const STARTER_LABELS: Record<(typeof STARTER_CHOICES)[number], string> = {
+  TOMATO_CREAM: "Cold cream of roasted tomatoes",
+  CARABINEROS_CARPACCIO: "Carabineros carpaccio",
 };
 
 const baseFieldClass =
@@ -39,14 +44,13 @@ export default function RsvpForm() {
     resolver: zodResolver(rsvpSchema),
     defaultValues: {
       mainName: "",
-      email: "",
-      phone: "",
       attendingSunday: true,
       attendingMonday: true,
       hotel: "",
       shuttleToHacienda: false,
       shuttleBack: false,
       shuttleBackTime: "",
+      starterChoice: "",
       menuChoice: "",
       foodNotes: "",
       songRequest: "",
@@ -92,7 +96,7 @@ export default function RsvpForm() {
         <img src="/icons/champagne.svg" alt="" aria-hidden="true" className="mx-auto mb-10 h-20 w-auto text-honey" />
         <h2 className="mt-2 font-heading text-4xl leading-[5rem] text-clay-600 md:break-normal md:text-5xl md:leading-tight">Please RSVP</h2>
         <p className="copy-caps mt-3 text-clay-700/70">
-          Please reconfirm by <span className="font-bold text-clay-700">Friday, 11 September</span>, so we can have a final headcount.
+          Please reconfirm by <span className="font-bold text-clay-700">Friday, 11 September</span>.
         </p>
       </motion.div>
 
@@ -154,35 +158,6 @@ export default function RsvpForm() {
                   )}
                 </div>
 
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  <div>
-                    <label htmlFor="email" className={labelClass}>
-                      Email
-                    </label>
-                    <input
-                      id="email"
-                      type="email"
-                      placeholder="name@example.com"
-                      {...register("email")}
-                      aria-invalid={!!errors.email}
-                      aria-describedby={errors.email ? "email-error" : undefined}
-                      className={inputClass}
-                    />
-                    {errors.email && (
-                      <p id="email-error" role="alert" className="mt-1 text-sm text-red-600">
-                        {errors.email.message}
-                      </p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label htmlFor="phone" className={labelClass}>
-                      Phone (WhatsApp, for day-of updates)
-                    </label>
-                    <input id="phone" type="tel" placeholder="+34 600 000 000" maxLength={40} {...register("phone")} className={inputClass} />
-                  </div>
-                </div>
-
                 <div>
                   <p className={labelClass}>Which day(s) will you join us?</p>
                   <div className="flex flex-col gap-3 sm:flex-row sm:gap-8">
@@ -225,8 +200,22 @@ export default function RsvpForm() {
 
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div>
+                    <label htmlFor="starterChoice" className={labelClass}>
+                      Starter for Monday
+                    </label>
+                    <select id="starterChoice" {...register("starterChoice")} className={selectClass}>
+                      <option value="">Select a starter</option>
+                      {STARTER_CHOICES.map((choice) => (
+                        <option key={choice} value={choice}>
+                          {STARTER_LABELS[choice]}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
                     <label htmlFor="menuChoice" className={labelClass}>
-                      Menu choice for Monday
+                      Main course for Monday
                     </label>
                     <select id="menuChoice" {...register("menuChoice")} className={selectClass}>
                       <option value="">Select a menu</option>
@@ -237,13 +226,13 @@ export default function RsvpForm() {
                       ))}
                     </select>
                   </div>
+                </div>
 
-                  <div>
-                    <label htmlFor="foodNotes" className={labelClass}>
-                      Allergies or intolerances
-                    </label>
-                    <input id="foodNotes" type="text" placeholder="e.g. nut allergy, vegetarian" maxLength={150} {...register("foodNotes")} className={inputClass} />
-                  </div>
+                <div>
+                  <label htmlFor="foodNotes" className={labelClass}>
+                    Allergies or intolerances
+                  </label>
+                  <input id="foodNotes" type="text" placeholder="e.g. nut allergy, vegetarian" maxLength={150} {...register("foodNotes")} className={inputClass} />
                 </div>
 
                 <div className="space-y-3">
@@ -311,6 +300,7 @@ export default function RsvpForm() {
                         shuttleToHacienda: false,
                         shuttleBack: false,
                         shuttleBackTime: "",
+                        starterChoice: "",
                         menuChoice: "",
                         foodNotes: "",
                       })
@@ -396,8 +386,26 @@ export default function RsvpForm() {
 
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                           <div>
+                            <label htmlFor={`guests.${index}.starterChoice`} className={labelClass}>
+                              Starter
+                            </label>
+                            <select
+                              id={`guests.${index}.starterChoice`}
+                              {...register(`guests.${index}.starterChoice` as const)}
+                              className={selectClass}
+                            >
+                              <option value="">Select a starter</option>
+                              {STARTER_CHOICES.map((choice) => (
+                                <option key={choice} value={choice}>
+                                  {STARTER_LABELS[choice]}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+
+                          <div>
                             <label htmlFor={`guests.${index}.menuChoice`} className={labelClass}>
-                              Menu choice
+                              Main course
                             </label>
                             <select
                               id={`guests.${index}.menuChoice`}
@@ -412,19 +420,19 @@ export default function RsvpForm() {
                               ))}
                             </select>
                           </div>
+                        </div>
 
-                          <div>
-                            <label htmlFor={`guests.${index}.foodNotes`} className={labelClass}>
-                              Allergies / preferences
-                            </label>
-                            <input
-                              id={`guests.${index}.foodNotes`}
-                              type="text"
-                              placeholder="e.g. gluten-free" maxLength={150}
-                              {...register(`guests.${index}.foodNotes` as const)}
-                              className={inputClass}
-                            />
-                          </div>
+                        <div>
+                          <label htmlFor={`guests.${index}.foodNotes`} className={labelClass}>
+                            Allergies / preferences
+                          </label>
+                          <input
+                            id={`guests.${index}.foodNotes`}
+                            type="text"
+                            placeholder="e.g. gluten-free" maxLength={150}
+                            {...register(`guests.${index}.foodNotes` as const)}
+                            className={inputClass}
+                          />
                         </div>
 
                         <div className="space-y-3">

@@ -12,6 +12,7 @@ type GuestRow = {
   shuttleToHacienda: boolean;
   shuttleBack: boolean;
   shuttleBackTime: string | null;
+  starterChoice: string | null;
   menuChoice: string | null;
   foodNotes: string | null;
   status: Status;
@@ -20,7 +21,7 @@ type GuestRow = {
 type PartyRow = {
   id: string;
   mainName: string;
-  email: string;
+  email: string | null;
   phone: string | null;
   attendingSunday: boolean;
   attendingMonday: boolean;
@@ -28,6 +29,7 @@ type PartyRow = {
   shuttleToHacienda: boolean;
   shuttleBack: boolean;
   shuttleBackTime: string | null;
+  starterChoice: string | null;
   menuChoice: string | null;
   foodNotes: string | null;
   songRequest: string | null;
@@ -49,7 +51,13 @@ const MENU_LABELS: Record<string, string> = {
   VEGETARIAN: "Vegetarian",
 };
 
+const STARTER_LABELS: Record<string, string> = {
+  TOMATO_CREAM: "Cold cream of roasted tomatoes",
+  CARABINEROS_CARPACCIO: "Carabineros carpaccio",
+};
+
 const MENU_OPTIONS = Object.keys(MENU_LABELS);
+const STARTER_OPTIONS = Object.keys(STARTER_LABELS);
 
 const PAGE_SIZE = 10;
 
@@ -64,6 +72,11 @@ const submittedFormatter = new Intl.DateTimeFormat("en-GB", {
 function menuLabel(choice: string | null) {
   if (!choice) return null;
   return MENU_LABELS[choice] ?? choice;
+}
+
+function starterLabel(choice: string | null) {
+  if (!choice) return null;
+  return STARTER_LABELS[choice] ?? choice;
 }
 
 function summarizeAttendance(entity: {
@@ -107,10 +120,17 @@ export default function RsvpTable({ initialParties }: { initialParties: PartyRow
   const [allergyOnly, setAllergyOnly] = useState(false);
   const [nameSearch, setNameSearch] = useState("");
   const [menuFilter, setMenuFilter] = useState<string[]>([]);
+  const [starterFilter, setStarterFilter] = useState<string[]>([]);
   const [page, setPage] = useState(1);
 
   function toggleMenuFilter(choice: string) {
     setMenuFilter((prev) =>
+      prev.includes(choice) ? prev.filter((c) => c !== choice) : [...prev, choice]
+    );
+  }
+
+  function toggleStarterFilter(choice: string) {
+    setStarterFilter((prev) =>
       prev.includes(choice) ? prev.filter((c) => c !== choice) : [...prev, choice]
     );
   }
@@ -139,15 +159,20 @@ export default function RsvpTable({ initialParties }: { initialParties: PartyRow
         const matchesGuest = p.guests.some((g) => g.menuChoice && menuFilter.includes(g.menuChoice));
         if (!matchesParty && !matchesGuest) return false;
       }
+      if (starterFilter.length > 0) {
+        const matchesParty = p.starterChoice && starterFilter.includes(p.starterChoice);
+        const matchesGuest = p.guests.some((g) => g.starterChoice && starterFilter.includes(g.starterChoice));
+        if (!matchesParty && !matchesGuest) return false;
+      }
       return true;
     });
-  }, [parties, dayFilter, hotelFilter, allergyOnly, nameSearch, menuFilter]);
+  }, [parties, dayFilter, hotelFilter, allergyOnly, nameSearch, menuFilter, starterFilter]);
 
   // Any filter change can shrink the result set below the current page —
   // jump back to page 1 whenever the filters themselves change.
   useEffect(() => {
     setPage(1);
-  }, [dayFilter, hotelFilter, allergyOnly, nameSearch, menuFilter]);
+  }, [dayFilter, hotelFilter, allergyOnly, nameSearch, menuFilter, starterFilter]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
@@ -251,6 +276,37 @@ export default function RsvpTable({ initialParties }: { initialParties: PartyRow
         )}
       </div>
 
+      <div className="mb-6 flex flex-wrap items-center gap-2">
+        <span className="text-sm text-ink/60">Starter:</span>
+        {STARTER_OPTIONS.map((choice) => {
+          const active = starterFilter.includes(choice);
+          return (
+            <button
+              key={choice}
+              type="button"
+              onClick={() => toggleStarterFilter(choice)}
+              aria-pressed={active}
+              className={`rounded-full border px-3 py-1 text-xs transition-colors ${
+                active
+                  ? "border-gold bg-gold text-white"
+                  : "border-blush-200 bg-white text-ink/70 hover:border-gold"
+              }`}
+            >
+              {STARTER_LABELS[choice]}
+            </button>
+          );
+        })}
+        {starterFilter.length > 0 && (
+          <button
+            type="button"
+            onClick={() => setStarterFilter([])}
+            className="text-xs text-ink/50 underline hover:text-ink/70"
+          >
+            Clear
+          </button>
+        )}
+      </div>
+
       <div className="space-y-6">
         {paginated.map((party) => {
           const { days, shuttleParts } = summarizeAttendance(party);
@@ -260,12 +316,14 @@ export default function RsvpTable({ initialParties }: { initialParties: PartyRow
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <p className="font-body text-sm text-ink">
-                    {party.mainName} <span className="text-ink/50">&middot; {party.email}</span>
+                    {party.mainName}
+                    {party.email ? <span className="text-ink/50"> &middot; {party.email}</span> : null}
                     {party.phone ? <span className="text-ink/50"> &middot; {party.phone}</span> : null}
                   </p>
                   <p className="mt-1 text-xs text-ink/60">
                     {days.length > 0 ? days.join(" + ") : "Not attending"}
                     {party.hotel ? ` \u00b7 ${party.hotel}` : ""}
+                    {party.starterChoice ? ` \u00b7 ${starterLabel(party.starterChoice)}` : ""}
                     {party.menuChoice ? ` \u00b7 ${menuLabel(party.menuChoice)}` : ""}
                   </p>
                   {shuttleParts.length > 0 && (
@@ -311,6 +369,7 @@ export default function RsvpTable({ initialParties }: { initialParties: PartyRow
                         <span className="text-ink/80">
                           {guest.fullName}
                           {guestSummary.days.length > 0 ? ` \u00b7 ${guestSummary.days.join(" + ")}` : " \u00b7 Not attending"}
+                          {guest.starterChoice ? ` \u00b7 ${starterLabel(guest.starterChoice)}` : ""}
                           {guest.menuChoice ? ` \u00b7 ${menuLabel(guest.menuChoice)}` : ""}
                           {guest.foodNotes ? ` \u00b7 ${guest.foodNotes}` : ""}
                           {guestSummary.shuttleParts.length > 0 ? ` \u00b7 Shuttle: ${guestSummary.shuttleParts.join(", ")}` : ""}

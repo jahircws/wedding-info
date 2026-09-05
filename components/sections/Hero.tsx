@@ -3,10 +3,6 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 
-function scrollToRsvp() {
-  document.getElementById("rsvp")?.scrollIntoView({ behavior: "smooth", block: "start" });
-}
-
 export default function Hero() {
   const shouldReduceMotion = useReducedMotion();
 
@@ -27,7 +23,7 @@ export default function Hero() {
     <section id="hero" className="hero-shell scroll-mt-24 pt-24 text-clay-700 md:pt-28">
 
       <motion.p className="hero-eyebrow uppercase text-honey" {...riseIn(0.2)}>
-        We look forward to welcoming you
+        We look forward to celebrating our marriage with you
       </motion.p>
 
       <motion.div className="hero-stage" {...riseIn(0.4)}>
@@ -58,15 +54,6 @@ export default function Hero() {
         transition={{ duration: shouldReduceMotion ? 0.01 : 1, ease: "easeInOut", delay: shouldReduceMotion ? 0 : 1 }}
       /> */}
 
-      <motion.button
-        type="button"
-        onClick={scrollToRsvp}
-        className="hero-rsvp rounded-sm border-b-2 border-clay-600 italic text-clay-500 transition-colors duration-300 ease-in-out hover:bg-clay-800 hover:text-cream-50"
-        {...riseIn(1.25)}
-      >
-        RSVP
-      </motion.button>
-
       <motion.p className="hero-date" {...riseIn(1.5)}>
         27th &amp; 28th of September 2026
       </motion.p>
@@ -74,8 +61,8 @@ export default function Hero() {
         Seville, Spain
       </motion.p>
 
-      <motion.p className="hero-footnote italic opacity-[0.55]" {...riseIn(1.75)}>
-        details, travel &amp; itinerary below
+      <motion.p className="hero-footnote opacity-[0.55]" {...riseIn(1.75)}>
+        please respond below
       </motion.p>
     </section>
   );
