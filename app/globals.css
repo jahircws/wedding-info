@@ -63,16 +63,25 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Adine-Kirnberg";
+  src: url("/fonts/adine-kirnberg-regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* --font-heading: "Bathey", serif;
   --font-body: "Balerno-Lt", serif; 
   --font-heading: "GL-Script", serif; 
-  --font-heading: "Blue-Sapphire", serif; */
-  --font-heading: "Parisienne-Regular", serif;
+  --font-heading: "Blue-Sapphire", serif;
+  --font-heading: "Parisienne-Regular", serif; */
+  --font-heading: "Adine-Kirnberg", serif;
   --font-body: "Grande-Laguna", serif;
   --font-montecarlo: "MonteCarlo", cursive;
 }
-
+ 
 body {
   font: 20px/1.5em "Grande-Laguna";
   letter-spacing: 0px;
@@ -80,11 +89,11 @@ body {
   color: #723333;
   background: #f1ece1;
 }
-
+ 
 html {
   scroll-behavior: smooth;
 }
-
+ 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -98,18 +107,18 @@ html {
     scroll-behavior: auto !important;
   }
 }
-
+ 
 .frosted-card {
   background: rgba(255, 255, 255, 0.55);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.35);
 }
-
+ 
 .section-heading {
   @apply font-heading text-xs md:text-sm tracking-[0.3em] uppercase text-gold;
 }
-
+ 
 /* Decorative corner-bracket frame for the hero, matching the approved
    "Option A: Parallax Courtyard" mockup. Kept as plain CSS since Tailwind's
    utility classes can't express two independently-positioned pseudo-element
@@ -140,7 +149,7 @@ html {
   border-left: none;
   border-top: none;
 }
-
+ 
 /* Hero (courtyard) layout — same fluid clamp() sizing tuned in the approved
    mockup, so the whole section fills the viewport with no dead space and
    the type scales smoothly between phone, tablet, and desktop. */
@@ -201,7 +210,18 @@ html {
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
-
+ 
+/* Every section heading (Schedule, Registry, FAQ, RSVP, Seville, etc.)
+   shares this so they all read at the same size — capped at 4.5rem on
+   large/desktop screens, scaling down smoothly on smaller ones. Doesn't
+   apply to the hero names, which have their own bespoke sizing. Named
+   .section-title (not .section-heading) to avoid colliding with the
+   existing .section-heading eyebrow-label style above. */
+.section-title {
+  font-size: clamp(3.25rem, 8vw, 4.5rem);
+  line-height: 1.15;
+}
+ 
 /* Shared body-copy style, matched exactly to the hero's "SEVILLE, SPAIN"
    line (.hero-place): same family (inherits var(--font-body)), same
    fluid size, same tracking, all caps. Used for every non-heading piece
@@ -213,7 +233,7 @@ html {
   text-transform: uppercase;
   font-style: normal;
 }
-
+ 
 @media (max-width: 1024px) {
   .hero-shell {
     justify-content: center;
@@ -230,7 +250,7 @@ html {
     font-size: clamp(12px, 1.6vh, 14px);
   }
 }
-
+ 
 @media (max-width: 600px) {
   .hero-shell {
     justify-content: center;

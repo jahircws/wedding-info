@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 
-const faqs = [
+const faqs: { q: string; a?: string; linkLabel?: string; linkHref?: string }[] = [
   {
     q: "When should I RSVP?",
     a: "Please reconfirm by Friday, 11 September, so we can have a final headcount.",
@@ -36,6 +37,12 @@ const faqs = [
     q: "Can I bring a plus-one?",
     a: "Please let us know if your partner will be joining you and doesn't feature on your invitation, we would love to have them join us.",
   },
+  {
+    q: "Things to eat in Seville?",
+    linkLabel: "Our Google Maps List",
+    linkHref:
+      "https://www.google.com/maps/@/data=!3m1!4b1!4m3!11m2!2seiLLbbbV47V9sSPKmR7qmZjPh2iGIA!3e3?entry=tts&g_ep=EgoyMDI2MDUwNi4wKgBIAVAD&skid=509943ab-7f7a-4ee0-89c3-5fd2cc8880c7",
+  },
 ];
 
 export default function FAQ() {
@@ -51,7 +58,7 @@ export default function FAQ() {
         className="relative z-10 mx-auto mb-12 max-w-2xl text-center"
       >
         <img src="/icons/heart-ribbon.svg" alt="" aria-hidden="true" className="mx-auto mb-10 h-6 w-auto text-honey" />
-        <h2 className="font-heading text-4xl text-clay-600 md:text-5xl">Questions</h2>
+        <h2 className="section-title font-heading text-clay-600">Questions</h2>
       </motion.div>
 
       <div className="relative z-10 mx-auto max-w-2xl divide-y divide-clay-600/25">
@@ -76,7 +83,18 @@ export default function FAQ() {
                 transition={{ duration: 0.35, ease: "easeInOut" }}
                 className="overflow-hidden"
               >
-                <p className="copy-caps pt-3 text-clay-700/80">{item.a}</p>
+                {item.a && <p className="copy-caps pt-3 text-clay-700/80">{item.a}</p>}
+                {item.linkHref && (
+                  <a
+                    href={item.linkHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="copy-caps mt-3 inline-flex items-center gap-1 border-b border-clay-600/60 pt-3 text-clay-700/80 transition-colors duration-200 ease-in-out hover:text-clay-900"
+                  >
+                    {item.linkLabel}
+                    <ArrowUpRight size={14} strokeWidth={2} aria-hidden="true" />
+                  </a>
+                )}
               </motion.div>
             </div>
           );

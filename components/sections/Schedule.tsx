@@ -52,7 +52,7 @@ export default function Schedule({ weddingVenue }: { weddingVenue: ScheduleVenue
         className="mx-auto mb-14 max-w-2xl text-center"
       >
         <img src="/icons/cake.svg" alt="" className="mx-auto mb-10 h-20 w-auto text-honey" />
-        <h2 className="font-heading text-4xl leading-[5rem] text-clay-600 md:break-normal md:text-5xl md:leading-tight">The Schedule</h2>
+        <h2 className="section-title font-heading text-clay-600">The Schedule</h2>
       </motion.div>
 
       <div className="relative z-10 mx-auto grid max-w-4xl grid-cols-1 gap-10 md:grid-cols-2">

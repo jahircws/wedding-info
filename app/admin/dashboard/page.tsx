@@ -19,7 +19,7 @@ export default async function AdminDashboardPage() {
           <LogoutButton />
         </header>
 
-        {/* <SettingsPanel
+        <SettingsPanel
           initialSettings={
             settings
               ? {
@@ -33,7 +33,7 @@ export default async function AdminDashboardPage() {
                 }
               : null
           }
-        /> */}
+        />
 
         <RsvpTable
           initialParties={parties.map((p) => ({

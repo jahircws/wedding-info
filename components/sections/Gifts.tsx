@@ -35,7 +35,7 @@ export default function Gifts() {
         className="relative z-10 mx-auto mb-10 max-w-2xl text-center"
       >
                 <img src="/icons/beach.svg" alt="" aria-hidden="true" className="mx-auto mb-10 h-20 w-20 text-honey" />
-        <h2 className="font-heading text-4xl leading-[5rem] text-clay-600 md:break-normal md:text-5xl md:leading-tight">Registry</h2>
+        <h2 className="section-title font-heading text-clay-600">Registry</h2>
         
         <p className="copy-caps mt-6 leading-relaxed text-clay-700/80">
           Your presence is the greatest gift we could ask for. We know that joining us in

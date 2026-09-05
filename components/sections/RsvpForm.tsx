@@ -94,7 +94,7 @@ export default function RsvpForm() {
         className="mx-auto mb-12 max-w-2xl text-center"
       >
         <img src="/icons/champagne.svg" alt="" aria-hidden="true" className="mx-auto mb-10 h-20 w-auto text-honey" />
-        <h2 className="mt-2 font-heading text-4xl leading-[5rem] text-clay-600 md:break-normal md:text-5xl md:leading-tight">Please RSVP</h2>
+        <h2 className="mt-2 section-title font-heading text-clay-600">Please RSVP</h2>
         <p className="copy-caps mt-3 text-clay-700/70">
           Please reconfirm by <span className="font-bold text-clay-700">Friday, 11 September</span>.
         </p>

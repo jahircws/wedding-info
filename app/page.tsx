@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import JsonLd from "@/components/JsonLd";
 import Schedule from "@/components/sections/Schedule";
 import Gifts from "@/components/sections/Gifts";
+import Seville from "@/components/sections/Seville";
 import RsvpForm from "@/components/sections/RsvpForm";
 import GuestListModal from "@/components/sections/GuestListModal";
 import FAQ from "@/components/sections/FAQ";
@@ -19,7 +20,7 @@ const FALLBACK_SETTINGS = {
   venueAddress: "A-8026, 41500 Alcalá de Guadaíra, Sevilla, Spain",
   ceremonyTime: "5:30 PM",
   receptionTime: "8:10 PM",
-  mapUrl: "https://maps.google.com/?cid=16296625564652064420",
+  mapUrl: "https://share.google/EwlhDFQvPL2o2MvTz",
 };
 
 async function getSettings() {
@@ -52,10 +53,10 @@ export default async function HomePage() {
           mapUrl: settings.mapUrl,
         }}
       />
-      <Gifts />
-      
+      <Gifts />      
       {/* <GuestListModal /> */}
       <FAQ />
+      <Seville />
       <Footer />
     </main>
   );

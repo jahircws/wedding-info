@@ -13,10 +13,11 @@ import { usePathname } from "next/navigation";
 // Order matches the order sections actually appear on the page.
 const MENU_ITEMS = [
   { label: "Home", href: "#hero" },
-  { label: "Please RSVP", href: "#rsvp" },
+  { label: "RSVP", href: "#rsvp" },
   { label: "Schedule", href: "#schedule" },
   { label: "Registry", href: "#gifts" },
   { label: "FAQ", href: "#faq" },
+  { label: "Explore", href: "#seville" },
 ];
 
 const MOBILE_ITEMS = [
