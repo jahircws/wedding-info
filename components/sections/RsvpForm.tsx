@@ -8,8 +8,8 @@ import { rsvpSchema, MENU_CHOICES, STARTER_CHOICES, type RsvpFormValues } from "
 import SectionOrnament from "@/components/ui/SectionOrnament";
 
 const MENU_LABELS: Record<(typeof MENU_CHOICES)[number], string> = {
-  MEAT: "Meat",
-  FISH: "Fish",
+  MEAT: "Beef cheek on truffle risotto",
+  FISH: "Sole and scallops on cava sauce",
   VEGETARIAN: "Vegetarian",
 };
 

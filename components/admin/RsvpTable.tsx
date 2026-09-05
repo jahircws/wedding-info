@@ -46,8 +46,8 @@ const statusStyles: Record<Status, string> = {
 };
 
 const MENU_LABELS: Record<string, string> = {
-  MEAT: "Meat",
-  FISH: "Fish",
+  MEAT: "Beef cheek on truffle risotto",
+  FISH: "Sole and scallops on cava sauce",
   VEGETARIAN: "Vegetarian",
 };
 
