@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 type Status = "PENDING" | "APPROVED" | "DECLINED";
 
@@ -87,6 +89,114 @@ function summarizeAttendance(entity: {
   return { days, shuttleParts };
 }
 
+const EXPORT_COLUMNS: { key: string; label: string }[] = [
+  { key: "party", label: "Party" },
+  { key: "role", label: "Role" },
+  { key: "name", label: "Name" },
+  { key: "email", label: "Email" },
+  { key: "phone", label: "Phone" },
+  { key: "hotel", label: "Hotel" },
+  { key: "sunday", label: "Sunday" },
+  { key: "monday", label: "Monday" },
+  { key: "shuttle", label: "Shuttle to Hacienda" },
+  { key: "starter", label: "Starter" },
+  { key: "menu", label: "Menu" },
+  { key: "foodNotes", label: "Food notes" },
+  { key: "songRequest", label: "Song request" },
+  { key: "notes", label: "Notes" },
+  { key: "status", label: "Status" },
+  { key: "submitted", label: "Submitted" },
+];
+
+// Flattens each party into one row per person (main guest + each additional
+// guest under them) so every row lines up under the same columns.
+function buildExportRows(parties: PartyRow[]) {
+  const rows: Record<string, string>[] = [];
+
+  for (const p of parties) {
+    const submitted = submittedFormatter.format(new Date(p.createdAt));
+
+    rows.push({
+      party: p.mainName,
+      role: "Main guest",
+      name: p.mainName,
+      email: p.email ?? "",
+      phone: p.phone ?? "",
+      hotel: p.hotel ?? "",
+      sunday: p.attendingSunday ? "Yes" : "No",
+      monday: p.attendingMonday ? "Yes" : "No",
+      shuttle: p.shuttleToHacienda ? "Yes" : "No",
+      starter: starterLabel(p.starterChoice) ?? "",
+      menu: menuLabel(p.menuChoice) ?? "",
+      foodNotes: p.foodNotes ?? "",
+      songRequest: p.songRequest ?? "",
+      notes: p.notes ?? "",
+      status: p.status,
+      submitted,
+    });
+
+    for (const g of p.guests) {
+      rows.push({
+        party: p.mainName,
+        role: "Guest",
+        name: g.fullName,
+        email: "",
+        phone: "",
+        hotel: p.hotel ?? "",
+        sunday: g.attendingSunday ? "Yes" : "No",
+        monday: g.attendingMonday ? "Yes" : "No",
+        shuttle: g.shuttleToHacienda ? "Yes" : "No",
+        starter: starterLabel(g.starterChoice) ?? "",
+        menu: menuLabel(g.menuChoice) ?? "",
+        foodNotes: g.foodNotes ?? "",
+        songRequest: "",
+        notes: "",
+        status: g.status,
+        submitted,
+      });
+    }
+  }
+
+  return rows;
+}
+
+function csvEscape(value: string) {
+  return /[",\n]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value;
+}
+
+function downloadBlob(blob: Blob, filename: string) {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
+function exportCsv(rows: Record<string, string>[]) {
+  const header = EXPORT_COLUMNS.map((c) => csvEscape(c.label)).join(",");
+  const body = rows.map((row) => EXPORT_COLUMNS.map((c) => csvEscape(row[c.key] ?? "")).join(","));
+  const csv = [header, ...body].join("\n");
+  downloadBlob(new Blob([csv], { type: "text/csv;charset=utf-8;" }), `rsvps-${Date.now()}.csv`);
+}
+
+function exportPdf(rows: Record<string, string>[]) {
+  const doc = new jsPDF({ orientation: "landscape" });
+  doc.setFontSize(12);
+  doc.text("Sara & Atef — RSVP Export", 14, 12);
+  autoTable(doc, {
+    startY: 18,
+    head: [EXPORT_COLUMNS.map((c) => c.label)],
+    body: rows.map((row) => EXPORT_COLUMNS.map((c) => row[c.key] ?? "")),
+    styles: { fontSize: 7, cellPadding: 2 },
+    headStyles: { fillColor: [178, 140, 66] },
+    margin: { left: 10, right: 10 },
+  });
+  doc.save(`rsvps-${Date.now()}.pdf`);
+}
+
 // Builds a compact page list like [1, "ellipsis", 4, 5, 6, "ellipsis", 20]
 // instead of rendering every page number when there are a lot of them.
 function getPageItems(current: number, total: number): (number | "ellipsis")[] {
@@ -165,6 +275,14 @@ export default function RsvpTable({ initialParties }: { initialParties: PartyRow
     setPage(1);
   }, [dayFilter, hotelFilter, allergyOnly, nameSearch, menuFilter, starterFilter]);
 
+  function handleExportCsv() {
+    exportCsv(buildExportRows(filtered));
+  }
+
+  function handleExportPdf() {
+    exportPdf(buildExportRows(filtered));
+  }
+
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
   const paginated = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
@@ -193,9 +311,28 @@ export default function RsvpTable({ initialParties }: { initialParties: PartyRow
 
   return (
     <section aria-label="RSVP submissions">
-      <h2 className="mb-4 font-body text-sm uppercase tracking-widest text-ink/70">
-        RSVP Submissions ({filtered.length})
-      </h2>
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <h2 className="font-body text-sm uppercase tracking-widest text-ink/70">
+          RSVP Submissions ({filtered.length})
+        </h2>
+
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={handleExportCsv}
+            className="rounded-lg border border-blush-200 bg-white px-3 py-2 text-xs font-medium text-ink/70 transition-colors hover:border-gold hover:text-ink"
+          >
+            Export CSV
+          </button>
+          <button
+            type="button"
+            onClick={handleExportPdf}
+            className="rounded-lg border border-blush-200 bg-white px-3 py-2 text-xs font-medium text-ink/70 transition-colors hover:border-gold hover:text-ink"
+          >
+            Export PDF
+          </button>
+        </div>
+      </div>
 
       <div className="mb-4 flex flex-wrap gap-4">
         <input
