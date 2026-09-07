@@ -10,8 +10,6 @@ type GuestRow = {
   attendingSunday: boolean;
   attendingMonday: boolean;
   shuttleToHacienda: boolean;
-  shuttleBack: boolean;
-  shuttleBackTime: string | null;
   starterChoice: string | null;
   menuChoice: string | null;
   foodNotes: string | null;
@@ -27,8 +25,6 @@ type PartyRow = {
   attendingMonday: boolean;
   hotel: string | null;
   shuttleToHacienda: boolean;
-  shuttleBack: boolean;
-  shuttleBackTime: string | null;
   starterChoice: string | null;
   menuChoice: string | null;
   foodNotes: string | null;
@@ -83,16 +79,11 @@ function summarizeAttendance(entity: {
   attendingSunday: boolean;
   attendingMonday: boolean;
   shuttleToHacienda: boolean;
-  shuttleBack: boolean;
-  shuttleBackTime: string | null;
 }) {
   const days = [entity.attendingSunday ? "Sunday" : null, entity.attendingMonday ? "Monday" : null].filter(
     Boolean
   );
-  const shuttleParts = [
-    entity.shuttleToHacienda ? "to Hacienda" : null,
-    entity.shuttleBack ? `back${entity.shuttleBackTime ? ` (~${entity.shuttleBackTime})` : ""}` : null,
-  ].filter(Boolean);
+  const shuttleParts = [entity.shuttleToHacienda ? "to Hacienda" : null].filter(Boolean);
   return { days, shuttleParts };
 }
 

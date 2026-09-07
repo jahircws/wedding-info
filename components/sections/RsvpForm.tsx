@@ -48,8 +48,6 @@ export default function RsvpForm() {
       attendingMonday: true,
       hotel: "",
       shuttleToHacienda: false,
-      shuttleBack: false,
-      shuttleBackTime: "",
       starterChoice: "",
       menuChoice: "",
       foodNotes: "",
@@ -60,8 +58,6 @@ export default function RsvpForm() {
   });
 
   const { fields, append, remove } = useFieldArray({ control, name: "guests" });
-  const shuttleBack = watch("shuttleBack");
-  const guestShuttleBack = watch("guests");
 
   async function onSubmit(values: RsvpFormValues) {
     setSubmitState("submitting");
@@ -244,32 +240,6 @@ export default function RsvpForm() {
                     />
                     I&apos;ll use the shuttle bus to the Hacienda on the 28th
                   </label>
-                  <label className={checkboxLabelClass}>
-                    <input type="checkbox" {...register("shuttleBack")} className="h-4 w-4 accent-honey" />
-                    I&apos;ll use the shuttle bus back to Seville
-                  </label>
-                  <AnimatePresence initial={false}>
-                    {shuttleBack && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3, ease: "easeInOut" }}
-                        className="overflow-hidden"
-                      >
-                        <label htmlFor="shuttleBackTime" className={labelClass}>
-                          Roughly what time?
-                        </label>
-                        <input
-                          id="shuttleBackTime"
-                          type="text"
-                          placeholder="e.g. 1:00 AM"
-                          {...register("shuttleBackTime")}
-                          className={inputClass}
-                        />
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
                 </div>
 
                 <div>
@@ -298,8 +268,6 @@ export default function RsvpForm() {
                         attendingSunday: true,
                         attendingMonday: true,
                         shuttleToHacienda: false,
-                        shuttleBack: false,
-                        shuttleBackTime: "",
                         starterChoice: "",
                         menuChoice: "",
                         foodNotes: "",
@@ -319,7 +287,6 @@ export default function RsvpForm() {
 
                 <AnimatePresence initial={false}>
                   {fields.map((field, index) => {
-                    const guestShuttleBackOn = guestShuttleBack?.[index]?.shuttleBack;
                     return (
                       <motion.div
                         key={field.id}
@@ -444,36 +411,6 @@ export default function RsvpForm() {
                             />
                             They&apos;ll use the shuttle bus to the Hacienda
                           </label>
-                          <label className={checkboxLabelClass}>
-                            <input
-                              type="checkbox"
-                              {...register(`guests.${index}.shuttleBack` as const)}
-                              className="h-4 w-4 accent-honey"
-                            />
-                            They&apos;ll use the shuttle bus back to Seville
-                          </label>
-                          <AnimatePresence initial={false}>
-                            {guestShuttleBackOn && (
-                              <motion.div
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: "auto" }}
-                                exit={{ opacity: 0, height: 0 }}
-                                transition={{ duration: 0.3, ease: "easeInOut" }}
-                                className="overflow-hidden"
-                              >
-                                <label htmlFor={`guests.${index}.shuttleBackTime`} className={labelClass}>
-                                  Roughly what time?
-                                </label>
-                                <input
-                                  id={`guests.${index}.shuttleBackTime`}
-                                  type="text"
-                                  placeholder="e.g. 1:00 AM"
-                                  {...register(`guests.${index}.shuttleBackTime` as const)}
-                                  className={inputClass}
-                                />
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
                         </div>
                       </motion.div>
                     );
