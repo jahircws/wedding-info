@@ -15,6 +15,24 @@ const WELCOME_VENUE: ScheduleVenue = {
   mapUrl: "https://maps.google.com/?cid=722524835013631915",
 };
 
+const SHUTTLE_STOPS = [
+  {
+    time: "4:50 PM",
+    name: "Hotel Alfonso XIII",
+    mapUrl: "https://maps.app.goo.gl/fEJ8WHAdwfsK9Fm2A",
+  },
+  {
+    time: "5:05 PM",
+    name: "Palacio de Villapanes",
+    mapUrl: "https://maps.app.goo.gl/tyzGe5theawPuLVF9",
+  },
+  {
+    time: "5:15 PM",
+    name: "Hotel Only You",
+    mapUrl: undefined,
+  },
+];
+
 function buildDays(weddingVenue: ScheduleVenue) {
   return [
     {
@@ -95,6 +113,39 @@ export default function Schedule({ weddingVenue }: { weddingVenue: ScheduleVenue
           </motion.div>
         ))}
       </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.7, ease: "easeInOut" }}
+        className="relative z-10 mx-auto mt-10 max-w-4xl rounded-none bg-cream-50 p-8"
+      >
+        <p className="copy-caps text-honey">Shuttle to the Wedding</p>
+        <h3 className="mt-1 font-body copy-caps text-clay-700">Monday, 28 September 2026</h3>
+
+        <ul className="mt-6 space-y-4">
+          {SHUTTLE_STOPS.map((stop) => (
+            <li key={stop.name} className="flex items-baseline gap-4">
+              <span className="copy-caps w-32 shrink-0 text-honey">{stop.time}</span>
+              <span className="copy-caps text-clay-700/85">
+                {stop.name}
+                {stop.mapUrl && (
+                  <a
+                    href={stop.mapUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="copy-caps ml-2 inline-flex items-center gap-1 border-b border-clay-600/60 text-clay-700/60 transition-colors duration-200 ease-in-out hover:text-clay-900"
+                  >
+                    Get Directions
+                    <ArrowUpRight size={14} strokeWidth={2} aria-hidden="true" />
+                  </a>
+                )}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </motion.div>
 
       <motion.p
         initial={{ opacity: 0, y: 12 }}
