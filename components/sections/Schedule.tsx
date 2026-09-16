@@ -137,7 +137,7 @@ export default function Schedule({ weddingVenue }: { weddingVenue: ScheduleVenue
                     rel="noopener noreferrer"
                     className="copy-caps ml-2 inline-flex items-center gap-1 border-b border-clay-600/60 text-clay-700/60 transition-colors duration-200 ease-in-out hover:text-clay-900"
                   >
-                    Get Directions
+                    Pickup Spot
                     <ArrowUpRight size={14} strokeWidth={2} aria-hidden="true" />
                   </a>
                 )}
