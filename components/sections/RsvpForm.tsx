@@ -4,24 +4,12 @@ import { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion, AnimatePresence } from "framer-motion";
-import { rsvpSchema, MENU_CHOICES, STARTER_CHOICES, type RsvpFormValues } from "@/lib/validations";
+import { rsvpSchema, type RsvpFormValues } from "@/lib/validations";
 import SectionOrnament from "@/components/ui/SectionOrnament";
-
-const MENU_LABELS: Record<(typeof MENU_CHOICES)[number], string> = {
-  MEAT: "Beef cheek on truffle risotto",
-  FISH: "Sole and scallops on cava sauce",
-  VEGETARIAN: "Vegetarian",
-};
-
-const STARTER_LABELS: Record<(typeof STARTER_CHOICES)[number], string> = {
-  TOMATO_CREAM: "Cold cream of roasted tomatoes",
-  CARABINEROS_CARPACCIO: "Carabineros carpaccio",
-};
 
 const baseFieldClass =
   "w-full rounded-none border border-clay-600/25 bg-white px-4 font-body text-sm outline-none transition-colors duration-200 ease-in-out focus:border-clay-600 placeholder:text-xs placeholder:text-clay-700/40";
 const inputClass = `${baseFieldClass} h-[46px]`;
-const selectClass = `${inputClass} appearance-none bg-no-repeat bg-[right_1rem_center] bg-[length:11px] pr-9 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%238b3f27%22 stroke-width=%222%22><polyline points=%226 9 12 15 18 9%22/></svg>')]`;
 const textareaClass = `${baseFieldClass} py-3`;
 const labelClass = "mb-1 block font-body text-xs uppercase tracking-wide text-clay-700/90";
 const eyebrowClass = "text-sm text-center uppercase tracking-[0.22em] text-honey";
@@ -194,39 +182,9 @@ export default function RsvpForm() {
                   />
                 </div>
 
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  <div>
-                    <label htmlFor="starterChoice" className={labelClass}>
-                      Starter for Monday
-                    </label>
-                    <select id="starterChoice" {...register("starterChoice")} className={selectClass}>
-                      <option value="">Select a starter</option>
-                      {STARTER_CHOICES.map((choice) => (
-                        <option key={choice} value={choice}>
-                          {STARTER_LABELS[choice]}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <label htmlFor="menuChoice" className={labelClass}>
-                      Main course for Monday
-                    </label>
-                    <select id="menuChoice" {...register("menuChoice")} className={selectClass}>
-                      <option value="">Select a menu</option>
-                      {MENU_CHOICES.map((choice) => (
-                        <option key={choice} value={choice}>
-                          {MENU_LABELS[choice]}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
                 <div>
                   <label htmlFor="foodNotes" className={labelClass}>
-                    Allergies or intolerances
+                    Please let us know if you have any food intolerances or allergies
                   </label>
                   <input id="foodNotes" type="text" placeholder="e.g. nut allergy, vegetarian" maxLength={150} {...register("foodNotes")} className={inputClass} />
                 </div>
@@ -351,47 +309,9 @@ export default function RsvpForm() {
                           </div>
                         </div>
 
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                          <div>
-                            <label htmlFor={`guests.${index}.starterChoice`} className={labelClass}>
-                              Starter
-                            </label>
-                            <select
-                              id={`guests.${index}.starterChoice`}
-                              {...register(`guests.${index}.starterChoice` as const)}
-                              className={selectClass}
-                            >
-                              <option value="">Select a starter</option>
-                              {STARTER_CHOICES.map((choice) => (
-                                <option key={choice} value={choice}>
-                                  {STARTER_LABELS[choice]}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
-
-                          <div>
-                            <label htmlFor={`guests.${index}.menuChoice`} className={labelClass}>
-                              Main course
-                            </label>
-                            <select
-                              id={`guests.${index}.menuChoice`}
-                              {...register(`guests.${index}.menuChoice` as const)}
-                              className={selectClass}
-                            >
-                              <option value="">Select a menu</option>
-                              {MENU_CHOICES.map((choice) => (
-                                <option key={choice} value={choice}>
-                                  {MENU_LABELS[choice]}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
-                        </div>
-
                         <div>
                           <label htmlFor={`guests.${index}.foodNotes`} className={labelClass}>
-                            Allergies / preferences
+                            Please let us know if you have any food intolerances or allergies
                           </label>
                           <input
                             id={`guests.${index}.foodNotes`}
